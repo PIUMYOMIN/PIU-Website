@@ -1,0 +1,198 @@
+/*Start  Facilities Section */
+.facilities {
+    /* background: #4776E6; */
+    /* background: linear-gradient(to right, #8E54E9, #4776e6d6); */
+}
+
+.facilities .f-titles {
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 40px 0;
+}
+
+.facilities .card {
+    transition: all 0.2s linear;
+}
+
+.facilities .card:hover {
+    transform: scale(1.05);
+}
+
+.facilities .card-header img {
+    width: 100%;
+    height: 100%;
+}
+
+.facilities p {
+    padding: 10px;
+}
+
+.facilities a:hover {
+    color: #4776e6;
+}
+/*End  Facilities Section */
+
+/*Start Profile Section */
+
+.profile-navs {
+    width: 100%;
+    height: 80px;
+    background: #e66030;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-navs > div {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 5px;
+    padding: 10px;
+
+    transition: all 0.3s;
+}
+
+.profile-navs > div:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.profile-images {
+    background: #333;
+    padding: 20px;
+}
+
+.profile-images img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.profile-images h3 {
+    color: #fff;
+}
+
+.role-infos,
+.career-infos,
+.education-infos,
+.experience-infos {
+    display: none;
+}
+
+.role-infos.active,
+.career-infos.active,
+.education-infos.active,
+.experience-infos.active {
+    display: block;
+}
+
+.role-infos h5,
+.career-infos h5,
+.education-infos h5,
+.experience-infos h5 {
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 15px 0;
+}
+
+.role-infos p,
+.career-infos-infos p,
+.education-infos p,
+.experience-infos p {
+    text-align: justify;
+}
+
+/*End  Profile Section */
+
+/* Start Donate Section */
+
+.donate-banners {
+    height: 40vh;
+    /* background: rgba(54, 50, 50, 0.5); */
+    /* background: #555; */
+    background: #002147;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+}
+
+.donate-videos video {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+
+.donate-banners p {
+    color: #fff;
+    font-size: 1, 5rem;
+    text-align: center;
+    padding: 5px;
+}
+
+.bankings {
+    background: rgba(214, 177, 107, 0.6);
+    padding: 10px;
+}
+
+.bankings .row {
+    margin: 10px 0 25px 0;
+}
+
+.bankings h4 {
+    width: 80%;
+    background: #e66030;
+    color: #fff;
+    margin-left: 10%;
+    padding: 10px 0;
+}
+
+.bankings img {
+    width: 80%;
+    height: 100%;
+}
+@media (max-width: 768px) {
+    .donate-banners {
+        height: 60vh;
+        background: #002147;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        position: relative;
+    }
+}
+
+/* End Donate Section */
+
+/* Start Alumni Section */
+.alumnis {
+}
+
+.alumnis h1 {
+    padding: 20px 0;
+}
+
+.alumnis .row {
+    margin-bottom: 10px;
+    padding: 20px 0;
+    border-bottom: 1px solid #000;
+}
+
+.alumnis img {
+    width: 100%;
+    height: 100%;
+}
+
+.alumnis p {
+    text-align: justify;
+}
+
+/* End Alumni Section */

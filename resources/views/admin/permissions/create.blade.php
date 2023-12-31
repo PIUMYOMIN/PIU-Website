@@ -1,0 +1,44 @@
+<x-admin_layout>
+<div class="sb2-2-2">
+                    <ul>
+                        <li><a href="index-2.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+                        </li>
+                        <li class="active-bre"><a href="#"> Add New Permission</a>
+                        </li>
+                        <li class="page-back"><a href="index-2.html"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--== User Details ==-->
+                <div class="sb2-2-3">
+                    <div class="row">
+                        <div class="col-md-12">
+						<div class="box-inn-sp admin-form">
+                                <div class="inn-title">
+                                    <h4>Add Permission</h4>
+                                    <p>Here you can edit your website basic details URL, Phone, Email, Address, User and password and more</p>
+                                </div>
+                                <div class="tab-inn">
+                                    <form action="{{ route('admin.permissions.store') }}" method="POST">
+                                      @csrf
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input type="text" name="name" value="" class="validate" required>
+                                                <label class="">Permission name</label>
+                                            </div>
+                                        </div>
+										<div class="row">
+                                            <div class="input-field col s2">
+                                                <button type="submit" class="waves-effect waves-button-input waves-light btn-large waves-input-wrapper" style="">
+                                                    Create
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</x-admin_layout>
