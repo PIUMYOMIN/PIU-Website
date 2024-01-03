@@ -58,8 +58,8 @@ return [
     ],
 
     'twitter' => [
-        'client_id' => env('Twitter_CLIENT_ID'),
-        'client_secret' => env('Twitter_CLIENT_SECRET'),
+        'client_id' => env('TWITTER_CLIENT_ID'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET'),
         // 'redirect' => 'https://www.piueducation.org/auth/twitter/user/callback',
         'redirect' => 'https://www.piueducation.org/auth/twitter/user/callback',
     ],
