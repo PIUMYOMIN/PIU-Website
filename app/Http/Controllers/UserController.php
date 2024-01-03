@@ -187,16 +187,18 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    // Google redirect link 
+    // Google redirect link
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
     }
 
-    // Google callback 
+    // Google callback
     public function googleCallback(Request $request)
     {
         $user = Socialite::driver('google')->user();
+
+        dd($user);
 
         $exitingUser = User::where('email',$user->email)->first();
 
@@ -228,6 +230,7 @@ class UserController extends Controller
     {
         try {
             $user = Socialite::driver('facebook')->user();
+            dd($user);
         } catch (Exception $e) {
             return redirect('/')->with('error', 'Failed to authenticate with Facebook.');
         };
