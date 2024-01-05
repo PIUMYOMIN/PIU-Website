@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -292,6 +293,34 @@ class UserController extends Controller
         }
 
         return redirect('/')->with('success', 'Welcome ' . auth()->user()->name);
+    }
+
+    public function passwordChange(User $user)
+    {
+        return view('admin.user.changePassword',[
+            'user' => $user
+        ]);
+    }
+
+    public function passwordUpdate(User $user)
+    {
+        $data = request()->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|min:8',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        // Check if the old password matches the current password in the database
+        if (!Hash::check($data['old_password'], $user->password)) {
+            return back()->withErrors(['old_password' => 'The old password is incorrect.']);
+        }
+
+        // Update the user's password
+        $user->password = bcrypt($data['new_password']);
+        $user->save();
+
+        // Redirect the user with a success message
+        return redirect()->route('admin.user.profile.edit', ['user' => auth()->user()->id])->with('success', 'Password updated successfully!');
     }
 
     public function profile()

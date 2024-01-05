@@ -22,7 +22,7 @@
                         aria-hidden="true"></i> Profile Setting</a>
             </li>
             <li>
-                <a href="#!"><i class="fa fa-key" aria-hidden="true"></i> Change Password</a>
+                <a href="{{ route('admin.user.password-change',['user' => auth()->user()->id]) }}"><i class="fa fa-key" aria-hidden="true"></i> Change Password</a>
             </li>
             @if (auth()->user()->can('Read and Write'))
                 <li>

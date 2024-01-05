@@ -60,8 +60,9 @@ Route::middleware(['auth','role:admin|writer|user'])->name('admin.')->prefix('ad
   Route::get('/users',[UserController::class,'index'])->name('users.index');
   Route::get('/user/{user:id}/details',[UserController::class,'show'])->name('user.details');
   Route::get('/user/{user:id}/update',[UserController::class,'update'])->name('user.update');
-
   Route::delete('/user/{user:id}',[UserController::class,'destroy'])->name('user.destroy');
+  Route::get('/user/password-change/{user:id}',[UserController::class,'passwordChange'])->name('user.password-change');
+  Route::post('/user/passwordUpdate/{user:id}',[UserController::class,'passwordUpdate'])->name('user.passwordUpdate');
 
   //user role
   Route::post('/user/{user:id}/roles',[UserController::class,'assignRole'])->name('user.roles');
