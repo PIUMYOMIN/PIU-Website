@@ -231,7 +231,6 @@ class UserController extends Controller
     {
         try {
             $user = Socialite::driver('facebook')->user();
-            dd($user);
         } catch (Exception $e) {
             return redirect('/')->with('error', 'Failed to authenticate with Facebook.');
         };
