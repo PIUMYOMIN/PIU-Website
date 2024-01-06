@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\AdminPositionController;
 use App\Http\Controllers\Admin\AdminSeminarController;
 use App\Http\Controllers\Admin\SeminarEnrollController;
 use App\Http\Controllers\Admin\AdminEventController;
+use App\Http\Controllers\Admin\AdminTeamController;
 use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminEventRegisterController;
 use App\Http\Controllers\PermissionController;
@@ -97,6 +98,14 @@ Route::middleware(['auth','role:admin|writer|user'])->name('admin.')->prefix('ad
   Route::get('/news/{new:slug}/edit',[AdminNewsController::class,'edit'])->name('news.edit');
   Route::patch('/news/form/{new:slug}/update',[AdminNewsController::class,'update'])->name('news.form.update');
   Route::delete('/news/{new:slug}/delete',[AdminNewsController::class,'destroy'])->name('news.delete');
+
+  // teams Routes
+  Route::get('/teams',[AdminTeamController::class,'index'])->name('team.index');
+  Route::get('/team/create',[AdminTeamController::class,'create'])->name('team.create');
+  Route::post('/team/form/submit',[AdminTeamController::class,'store'])->name('team.form.submit');
+  Route::get('/team/{team:id}/edit',[AdminTeamController::class,'edit'])->name('team.edit');
+  Route::patch('/team/form/{team:id}/update',[AdminTeamController::class,'update'])->name('team.edit.form.submit');
+  Route::delete('/team/{team:id}/delete',[AdminTeamController::class,'destroy'])->name('team.delete');
 
   //Slider
   Route::get('/slides', [AdminSlideController::class,'index'])->name('slide');

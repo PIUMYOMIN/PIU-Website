@@ -90,15 +90,13 @@
                         </ul>
                     </div>
                 </li>
-                <li><a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-bars"
+                <li><a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-users"
                             aria-hidden="true"></i>
-                        Menu</a>
+                        Teams</a>
                     <div class="collapsible-body left-sub-menu">
                         <ul>
-                            <li><a href="admin-main-menu.html">Main menu</a></li>
-                            <li><a href="admin-about-menu.html">About menu</a></li>
-                            <li><a href="admin-admission-menu.html">Admission menu</a></li>
-                            <li><a href="admin-all-menu.html">All page menu</a></li>
+                            <li><a href="/admin/teams">All Teams</a></li>
+                            <li><a href="/admin/team/create">New Team Member</a></li>
                         </ul>
                     </div>
                 </li>
