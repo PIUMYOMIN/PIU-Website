@@ -31,37 +31,22 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    // 'facebook' => [
-    //     'client_id' => env('FACEBOOK_CLIENT_ID'),
-    //     'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-    //     'redirect' => 'localhost:8000',
-    // ],
-
-    // 'twitter' => [
-    //     'client_id' => env('TWITTER_CLIENT_ID'),
-    //     'client_secret' => env('TWITTER_CLIENT_SECRET'),
-    //     'redirect' => 'localhost:8000',
-    // ],
-
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        // 'redirect' => 'https://www.piueducation.org/auth/google/user/callback',
-        'redirect' => 'https://www.piueducation.org/auth/google/user/callback',
+        'redirect' => env('GOOGLE_REDIRECT'),
     ],
 
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-        // 'redirect' => 'https://www.piueducation.org/auth/facebook/user/callback',
-        'redirect' => 'https://www.piueducation.org/auth/facebook/user/callback',
+        'redirect' => env('FACEBOOK_REDIRECT'),
     ],
 
     'twitter' => [
         'client_id' => env('TWITTER_CLIENT_ID'),
         'client_secret' => env('TWITTER_CLIENT_SECRET'),
-        // 'redirect' => 'https://www.piueducation.org/auth/twitter/user/callback',
-        'redirect' => 'https://www.piueducation.org/auth/twitter/user/callback',
+        'redirect' => env('TWITTER_REDIRECT'),
     ],
 
 ];
