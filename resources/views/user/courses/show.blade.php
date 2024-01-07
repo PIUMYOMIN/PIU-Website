@@ -4,53 +4,6 @@
             <div class="row">
                 <div class="cor">
                     <div class="col-md-3">
-                        <div class="cor-top-deta cor-side-com">
-                            <div class="cor-top-deta">
-                                <div class="ho-st-login cor-apply field-com">
-                                    <div class="col s12">
-                                        <form class="col s12">
-                                            <div class="cor-left-app-tit">
-                                                <h4>Apply This Course</h4>
-                                                <p>Nulla at velit convallis lectus.</p>
-                                            </div>
-                                            <div class="row">
-                                                <div class="input-field col s12">
-                                                    <input type="text" class="validate">
-                                                    <label>Full Name</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="input-field col s12">
-                                                    <input type="text" class="validate">
-                                                    <label>Email id</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="input-field col s12">
-                                                    <input type="text" class="validate">
-                                                    <label>Phone</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="input-field col s12">
-                                                    <select>
-									  <option value="" disabled selected>Select Course</option>
-									  <option value="1">Option 1</option>
-									  <option value="2">Option 2</option>
-									  <option value="3">Option 3</option>
-									</select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="input-field col s12">
-                                                    <input type="submit" value="APPLY NOW" class="waves-effect waves-light light-btn">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="cor-side-com">
                             <div class="">
                                 <div class="de-left-tit">
@@ -59,42 +12,17 @@
                             </div>
                             <div class="ho-event">
                                 <ul>
-                                    <li>
-                                        <div class="ho-ev-link ho-ev-link-full">
-                                            <a href="#">
-                                                <h4>Workshop PHP</h4>
-                                            </a>
-                                            <p>Nulla at velit convallis venenatis.</p>
-                                            <span>9:15 am – 5:00 pm</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="ho-ev-link ho-ev-link-full">
-                                            <a href="#">
-                                                <h4>Workshop PHP</h4>
-                                            </a>
-                                            <p>Nulla at velit convallis venenatis.</p>
-                                            <span>9:15 am – 5:00 pm</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="ho-ev-link ho-ev-link-full">
-                                            <a href="#">
-                                                <h4>Workshop PHP</h4>
-                                            </a>
-                                            <p>Nulla at velit convallis venenatis.</p>
-                                            <span>9:15 am – 5:00 pm</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="ho-ev-link ho-ev-link-full">
-                                            <a href="#">
-                                                <h4>Workshop PHP</h4>
-                                            </a>
-                                            <p>Nulla at velit convallis venenatis.</p>
-                                            <span>9:15 am – 5:00 pm</span>
-                                        </div>
-                                    </li>
+                                    @foreach ($events as $event) 
+                                        <li>
+                                            <div class="ho-ev-link ho-ev-link-full">
+                                                <a href="#">
+                                                    <h4>{{ $event->name }}</h4>
+                                                </a>
+                                                <p>{{ Str::limit($event->description, 25, '...') }}</p>
+                                                <span>{{ $event->date }}</span>
+                                            </div>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
@@ -217,73 +145,69 @@
                             </div>
                             <div class="cor-p6">
                                 <h3>Student Reviews</h3>
-                                <div class="cor-p6-revi">
-                                    <div class="cor-p6-revi-left">
-                                        <img src="images/4.jpg" alt="">
+                                @foreach ($comments as $comment) 
+                                    <div class="cor-p6-revi">
+                                        <div class="cor-p6-revi-left">
+                                            <img src="images/4.jpg" alt="">
+                                        </div>
+                                        <div class="cor-p6-revi-right">
+                                            <h4>{{ $comment->user->name }}</h4>
+                                            <span>Date: {{ $comment->created_at->format('Y-m-d') }}</span>
+                                            <p>{{ $comment->message }}</p>
+                                        </div>
                                     </div>
-                                    <div class="cor-p6-revi-right">
-                                        <h4>Rachel Britain</h4>
-                                        <span>Date: 12may, 2017</span>
-                                        <p>Mauris elementum et libero ac pharetra. Proin tristique dapibus tellus, lacinia blandit mi tincidunt at. Vivamus vitae interdum felis. Pellentesque congue mollis erat in imperdiet.</p>
-                                    </div>
-                                </div>
-                                <div class="cor-p6-revi">
-                                    <div class="cor-p6-revi-left">
-                                        <img src="images/4.jpg" alt="">
-                                    </div>
-                                    <div class="cor-p6-revi-right">
-                                        <h4>Rachel Britain</h4>
-                                        <span>Date: 12may, 2017</span>
-                                        <p>Mauris elementum et libero ac pharetra. Proin tristique dapibus tellus, lacinia blandit mi tincidunt at. Vivamus vitae interdum felis. Pellentesque congue mollis erat in imperdiet.</p>
-                                    </div>
-                                </div>
-                                <div class="cor-p6-revi">
-                                    <div class="cor-p6-revi-left">
-                                        <img src="images/4.jpg" alt="">
-                                    </div>
-                                    <div class="cor-p6-revi-right">
-                                        <h4>Rachel Britain</h4>
-                                        <span>Date: 12may, 2017</span>
-                                        <p>Mauris elementum et libero ac pharetra. Proin tristique dapibus tellus, lacinia blandit mi tincidunt at. Vivamus vitae interdum felis. Pellentesque congue mollis erat in imperdiet.</p>
-                                    </div>
-                                </div>
-                                <div class="cor-p6-revi">
-                                    <div class="cor-p6-revi-left">
-                                        <img src="images/4.jpg" alt="">
-                                    </div>
-                                    <div class="cor-p6-revi-right">
-                                        <h4>Rachel Britain</h4>
-                                        <span>Date: 12may, 2017</span>
-                                        <p>Mauris elementum et libero ac pharetra. Proin tristique dapibus tellus, lacinia blandit mi tincidunt at. Vivamus vitae interdum felis. Pellentesque congue mollis erat in imperdiet.</p>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                             <div class="cor-p6">
                                 <h3>Write Reviews</h3>
                                 <div class="cor-p7-revi">
-                                    <form class="col s12">
-                                        <div class="row">
-                                            <div class="input-field col s6">
-                                                <input type="text" class="validate">
-                                                <label>Name</label>
+                                    @auth
+                                        <form class="col s12" action="{{ route('admin.course.comment.create') }}" method="POST">
+                                            @csrf
+                                            @method('POST')
+                                            <div class="row">
+                                                <div class="input-field col s6">
+                                                    <input type="text" name="name" class="validate" required>
+                                                    <label>Name</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <input type="text" name="email" class="validate" required>
+                                                    <label>Email</label>
+                                                </div>
                                             </div>
-                                            <div class="input-field col s6">
-                                                <input type="text" class="validate">
-                                                <label>Email id</label>
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <textarea class="materialize-textarea" name="message" required></textarea>
+                                                    <label>Message</label>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <textarea class="materialize-textarea"></textarea>
-                                                <label>Message</label>
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    {!! NoCaptcha::display() !!}
+                                                    @error('g-recaptcha-response')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <input type="submit" value="Submit" class="waves-effect waves-light btn-book">
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <input type="hidden" name="course_id" value="{{ $course->id }}">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                            <div class="row">
+        <div class="input-field col s12">
+            <input type="hidden" name="course_link" class="validate" value="{{ url()->current() }}">
+        </div>
+    </div>
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <input type="submit" value="Submit" class="waves-effect waves-light btn-book">
+                                                </div>
+                                            </div>
+                                        </form>
+                                        @else
+                                        <p>Please <a class="text-danger" href="/login">(login here)</a> to leave the comment.</p>
+                                    @endauth
                                 </div>
                             </div>
                         </div>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseCategory;
+use App\Models\CourseComment;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -24,6 +26,8 @@ class CourseController extends Controller
             return view('user.courses.show',[
                 'course' => $course,
                 'categories' => CourseCategory::all(),
+                'comments' => CourseComment::all(),
+                'events' => Event::all()
             ]);
     }
 }

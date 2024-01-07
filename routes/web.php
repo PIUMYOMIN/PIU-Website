@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminCourseCategoryController;
 use App\Http\Controllers\Admin\AdminCourseController;
+use App\Http\Controllers\Admin\AdminCourseCommentController;
 use App\Http\Controllers\Admin\AdminSlideController;
 use App\Http\Controllers\Admin\AdminDepartmentController;
 use App\Http\Controllers\Admin\AdminPositionController;
@@ -122,6 +123,11 @@ Route::middleware(['auth','role:admin|writer|user'])->name('admin.')->prefix('ad
   Route::post('/course/category/create', [AdminCourseCategoryController::class,'store'])->name('course.category.create');
   Route::get('/course/category/{category:id}/edit', [AdminCourseCategoryController::class,'edit'])->name('course.category.edit');
   Route::patch('/course/category/{category:id}/update', [AdminCourseCategoryController::class,'update'])->name('course.category.update');
+
+  //course comment
+  Route::post('/course/comment/create', [AdminCourseCommentController::class,'store'])->name('course.comment.create');
+  Route::get('/course/category/{category:id}/edit', [AdminCourseCommentController::class,'edit'])->name('course.comment.edit');
+  Route::patch('/course/category/{comment:id}/update', [AdminCourseCommentController::class,'update'])->name('course.comment.update');
 
   //courses
   Route::delete('/course/{course:id}/delete', [AdminCourseController::class,'delete'])->name('course.delete');

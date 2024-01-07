@@ -110,7 +110,7 @@ class UserController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
-            return redirect('/');
+            return redirect()->back();
         }
 
         // Authentication failed...
@@ -185,7 +185,7 @@ class UserController extends Controller
     public function logout()
     {
         auth()->logout();
-        return redirect('/');
+        return redirect()->back();
     }
 
     // Google redirect link

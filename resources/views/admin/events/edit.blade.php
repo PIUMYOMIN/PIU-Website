@@ -36,16 +36,22 @@
                                                 <label class="">event Descriptions</label>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="input-field col s6">
-                                                <input type="date" name="date" value="{{ $event->date }}" class="validate" required>
-                                                <label class="" style="margin-left: 20%">Date</label>
+                                        <div class="input-field col s6">
+                                                <div class="col s6">
+                                                    <input type="text" name="start_time" class="validate" value="" required>
+                                                <label class="">Start Time</label>
+                                                @error('start_time')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                                </div>
+                                                <div class="col s6">
+                                                    <input type="text" name="end_time" class="validate" value="{{ $event->end_time }}" required>
+                                                <label class="">End Time</label>
+                                                @error('end_time')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                                </div>
                                             </div>
-                                            <div class="input-field col s6">
-                                                <input type="text" name="time" class="validate" value="{{ $event->time }}" required>
-                                                <label class="">Time</label>
-                                            </div>
-                                        </div>
                                         <div class="row">
                                             <div class="input-field col s6">
                                                 <input type="text" name="location" value="{{ $event->location }}" class="validate" required>

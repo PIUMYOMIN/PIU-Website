@@ -26,7 +26,7 @@
                                       @method('POST')
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input type="text" name="name" value="" class="validate" required>
+                                                <input type="text" name="name" value="{{ old('name') }}" class="validate" required>
                                                 <label class="">Event name</label>
                                                 @error('name')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -35,7 +35,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <textarea name="description"></textarea>
+                                                <textarea name="description">{{ old('description') }}</textarea>
                                                 <label class="">Event Descriptions</label>
                                                 @error('description')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -44,30 +44,39 @@
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s6">
-                                                <input type="date" name="date" value="" class="validate" required>
+                                                <input type="date" name="date" value="{{ old('date') }}" class="validate" required>
                                                 <label class="" style="margin-left: 20%">Date</label>
                                                 @error('date')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="input-field col s6">
-                                                <input type="text" name="time" class="validate" value="" required>
-                                                <label class="">Time</label>
-                                                @error('time')
+                                                <div class="col s6">
+                                                    <input type="time" name="start_time" class="validate" value="{{ old('start_time') }}" required placeholder="Start Time">
+                                                {{-- <label class="">Start Time</label> --}}
+                                                @error('start_time')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
+                                                </div>
+                                                <div class="col s6">
+                                                    <input type="time" name="end_time" class="validate" value="{{ old('end_time') }}" required placeholder="End Time">
+                                                {{-- <label class="">End Time</label> --}}
+                                                @error('end_time')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s6">
-                                                <input type="text" name="location" value="" class="validate" required>
+                                                <input type="text" name="location" value="{{ old('location') }}" class="validate" required>
                                                 <label class="">Location</label>
                                                 @error('location')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="input-field col s6">
-                                                <input type="number" name="seat" class="validate" value="" required>
+                                                <input type="number" name="seat" class="validate" value="{{ old('seat') }}" required>
                                                 <label class="">Seat</label>
                                                 @error('seat')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -76,14 +85,14 @@
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s6">
-                                                <input type="text" name="city" value="" class="validate">
+                                                <input type="text" name="city" value="{{ old('city') }}" class="validate">
                                                 <label class="">City</label>
                                                 @error('city')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="input-field col s6">
-                                                <input type="text" name="country" value="" class="validate">
+                                                <input type="text" name="country" value="{{ old('country') }}" class="validate">
                                                 <label class="">Country</label>
                                                 @error('country')
                                                     <span class="text-danger">{{ $message }}</span>

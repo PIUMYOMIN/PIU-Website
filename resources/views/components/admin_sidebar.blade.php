@@ -112,7 +112,7 @@
                                 <a href="/admin/events">All Events</a>
                             </li>
                             <li>
-                                <a href="/admin/events/create">Create New Events</a>
+                                <a href="/admin/event/create">Create New Events</a>
                             <li>
                                 <a href="/admin/event-enquiry">Event Enquiry</a>
                             </li>
