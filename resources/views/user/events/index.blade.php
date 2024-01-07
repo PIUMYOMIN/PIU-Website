@@ -5,7 +5,7 @@
                 <div class="cor about-sp">
                     <div class="ed-about-tit">
                         <div class="con-title">
-                            <h2>College <span> Events</span></h2>
+                            <h2>University <span> Events</span></h2>
                             <p>Fusce id sem at ligula laoreet hendrerit venenatis sed purus. Ut pellentesque maximus lacus, nec pharetra augue.</p>
                         </div>
                         <div>

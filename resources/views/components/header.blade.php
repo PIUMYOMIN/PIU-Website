@@ -71,7 +71,7 @@
                                 <li><a href="/">Home</a>
                                 </li>
                                 <li class="about-menu">
-                                    <a href="about.html" class="mm-arr">About us</a>
+                                    <a href="/about-us" class="mm-arr">About us</a>
                                     <!-- MEGA MENU 1 -->
                                     <div class="mm-pos">
                                         <div class="about-mm m-menu">
@@ -85,25 +85,24 @@
                                                     </div>
                                                 </div>
                                                 <div class="mm1-com mm1-s2">
-                                                    <p>Want to change the world? At Berkeley we’re doing just that. When you join the Golden Bear community, you’re part of an institution that shifts the global conversation every single day.</p>
-                                                    <a href="about.html" class="mm-r-m-btn">Read more</a>
+                                                    <p>In 2013 the Founder President and his colleagues were invited from Australian Education Institutions, primary schools, and universities. There, he took the chance to affiliate with Australian Catholic University (ACU).</p>
+                                                    <a href="/about-us" class="mm-r-m-btn">Read more</a>
                                                 </div>
                                                 <div class="mm1-com mm1-s3">
                                                     <ul>
-                                                        <li><a href="/courses">All Courses</a></li>
-                                                        <li><a href="course-details.html">Course details</a></li>
-                                                        <li><a href="about.html">About</a></li>
-                                                        <li><a href="admission.html">Admission</a></li>
-                                                        <li><a href="awards.html">Awards</a></li>
+                                                        <li><a href="/courses">Faculties</a></li>
+                                                        <li><a href="/about-us">About</a></li>
+                                                        <li><a href="/news">News</a></li>
+                                                        <li><a href="/seminars">Seminars</a></li>
+                                                        <li><a href="/events">Events</a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="mm1-com mm1-s4">
                                                     <ul>
-                                                        <li><a href="dashboard.html">Student profile</a></li>
-                                                        <li><a href="db-courses.html">Dashboard courses</a></li>
-                                                        <li><a href="db-exams.html">Dashboard exams</a></li>
-                                                        <li><a href="db-profile.html">Dashboard profile</a></li>
-                                                        <li><a href="db-time-line.html">Dashboard timeline</a></li>
+                                                        <li><a href="#!">Student Reviews</a></li>
+                                                        <li><a href="#!">Blogs</a></li>
+                                                        <li><a href="#!">Supports</a></li>
+                                                        <li><a href="/teams">Teams</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -111,7 +110,7 @@
                                     </div>
                                 </li>
                                 <li class="admi-menu">
-                                    <a href="#" class="mm-arr">Admission</a>
+                                    <a href="/admission" class="mm-arr">Admission</a>
                                     <!-- MEGA MENU 1 -->
                                     <div class="mm-pos">
                                         <div class="admi-mm m-menu">
@@ -161,8 +160,6 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li><a href="/courses">Faculties</a></li>
-                                <li><a href="events.html">Events</a>
                                 </li>
                                 <li><a href="/contact">Contact us</a>
                                 </li>

@@ -227,15 +227,15 @@ Route::get('/data',function(){
 });
 
 // google login
-Route::get('/auth/google/user/redirect', [UserController::class,'redirectToGoogle'])->name('redirectToGoogle');
+Route::get('/auth/google/user/redirect', [UserController::class,'redirectToGoogle'])->name('auth.google.user.redirect');
 Route::get('/auth/google/user/callback', [UserController::class,'googleCallback'])->name('googleCallback');
 
 //facebook login
-Route::get('/auth/facebook/user/redirect', [UserController::class,'redirectToFacebook'])->name('redirectToFacebook');
+Route::get('/auth/facebook/user/redirect', [UserController::class,'redirectToFacebook'])->name('auth.facebook.user.redirect');
 Route::get('/auth/facebook/user/callback', [UserController::class,'facebookCallback'])->name('facebookCallback');
 
 //twitter login
-Route::get('/auth/twitter/user/redirect', [UserController::class,'redirectToTwitter'])->name('redirectToTwitter');
+Route::get('/auth/twitter/user/redirect', [UserController::class,'redirectToTwitter'])->name('auth.twitter.user.redirect');
 Route::get('/auth/twitter/user/callback', [UserController::class,'twitterCallback'])->name('twitterCallback');
 
 Route::get('/about-us',function(){
