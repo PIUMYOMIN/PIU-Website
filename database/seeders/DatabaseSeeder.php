@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DepartmentSeeder::class);
         $this->call(PositionSeeder::class);
         $this->call(CourseCategorySeeder::class);
+        $this->call(JobSeeder::class);
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',

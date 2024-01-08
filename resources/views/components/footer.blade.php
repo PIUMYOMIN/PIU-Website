@@ -23,8 +23,6 @@
                     <ul>
                         <li><a href="/contact">Contact us</a>
                         </li>
-                        <li><a href="/feedback">Feedback</a>
-                        </li>
                         <li><a href="/pravicy-policy">Pravicy Policy</a>
                         </li>
                     </ul>
@@ -33,12 +31,12 @@
             <div class="row wed-foot-link-1">
                 <div class="col-md-4 foot-tc-mar-t-o">
                     <h4>Get In Touch</h4>
-                    <p>Address: Nanshae,19 block, Between 58/59 and 62 Road, Aungmyaythazan Tsp, Mandalay, Myanmar</p>
+                    <p>Address: Nanshae, 19 Street, Bet 58/59, Aungmyaytharzan Tsp, Mandalay, Myanmar</p>
                     <p>Phone: <a href="tel:+09-793200074">+09-793200074</a></p>
                     <p>Email: <a href="mailto:piu.edu2014@gmail.com">piu.edu2014@gmail.com</a></p>
                 </div>
                 <div class="col-md-4">
-                    <h4>SOCIAL MEDIA</h4>
+                    <h4>Follow us</h4>
                     <ul>
                         <li>
                             <a href="https://www.facebook.com/PhaungDawOoInternationalUniveristy" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i>

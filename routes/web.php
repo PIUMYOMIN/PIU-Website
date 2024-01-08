@@ -242,6 +242,6 @@ Route::get('/about-us',function(){
   return view('user.about.index');
 });
 
-Route::get('/pravicy',function(){
+Route::get('/pravicy-policy',function(){
   return view('user.pravicy.index');
 });
