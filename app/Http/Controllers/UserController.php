@@ -106,24 +106,22 @@ class UserController extends Controller
 
     public function user_login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $email = $request->input('email');
+        $password = $request->input('password');
         $remember = $request->has('remember');
 
-        // Manually fetching the user by email
-        $user = User::where('email', $credentials['email'])->first();
+        $user = User::where('email', $email)->first();
 
-        if ($user) {
-            // User found - check password manually
-            if (Hash::check($credentials['password'], $user->password)) {
-                // Password matches - proceed with login
-                Auth::login($user, $remember);
-                return redirect()->back();
-            }
+        if ($user && Hash::check($password, $user->password)) {
+            // Password matches - proceed with login
+            Auth::login($user, $remember);
+            return redirect()->back();
+        }else{
+            // Authentication failed or user not found
+            return redirect('/login')->withErrors(['email' => 'Invalid credentials'])->withInput($request->except('password'));
         }
-    
-        // Authentication failed or user not found
-        return redirect('/login')->withErrors(['email' => 'Invalid credentials'])->withInput($request->except('password'));
     }
+
 
 
     public function assignRole(Request $request, User $user)
