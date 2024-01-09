@@ -107,14 +107,17 @@ class UserController extends Controller
     public function user_login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        $remember = $request->has('remember');
 
-        if (Auth::attempt($credentials, $remember)) {
-            return redirect()->back();
+        // Attempt to authenticate the user
+        if (Auth::attempt($credentials, $request->has('remember'))) {
+            // Authentication passed
+            return redirect()->intended('/'); // Redirect to a specific page after successful login
         }
 
-        // Authentication failed...
-        return redirect('/login')->withErrors(['email' => 'Invalid credentials'])->withInput($request->except('password'));
+        // Authentication failed
+        return back()->withInput($request->only('email', 'remember'))->withErrors([
+            'email' => 'Invalid email or password.',
+        ]);
     }
 
     public function assignRole(Request $request, User $user)
