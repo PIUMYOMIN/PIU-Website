@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -106,19 +106,16 @@ class UserController extends Controller
 
     public function user_login(Request $request)
     {
-        $credentials = $request->only('credential', 'password');
+        $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
-            // Authentication passed
-            return redirect()->intended('/'); // Redirect to intended page after successful login
+            return redirect()->back();
         }
 
-        // Authentication failed
-        return redirect('/login')->withErrors(['credential' => 'Invalid credentials'])->withInput($request->except('password'));
+        // Authentication failed...
+        return redirect('/login')->withErrors(['email' => 'Invalid credentials'])->withInput($request->except('password'));
     }
-
-
 
     public function assignRole(Request $request, User $user)
     {
