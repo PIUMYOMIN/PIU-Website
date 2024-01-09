@@ -10,8 +10,7 @@ use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use Illuminate\Support\Facades\Hash;
-// use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
