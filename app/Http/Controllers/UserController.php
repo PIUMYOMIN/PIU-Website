@@ -104,29 +104,26 @@ class UserController extends Controller
         return back()->with('success', 'User updated successfully');
     }
 
-    use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+    public function user_login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
 
-public function user_login(Request $request)
-{
-    $credentials = $request->only('email', 'password');
-    $remember = $request->has('remember');
+        // Manually fetching the user by email
+        $user = User::where('email', $credentials['email'])->first();
 
-    // Manually fetching the user by email
-    $user = User::where('email', $credentials['email'])->first();
-
-    if ($user) {
-        // User found - check password manually
-        if (Hash::check($credentials['password'], $user->password)) {
-            // Password matches - proceed with login
-            Auth::login($user, $remember);
-            return redirect()->back();
+        if ($user) {
+            // User found - check password manually
+            if (Hash::check($credentials['password'], $user->password)) {
+                // Password matches - proceed with login
+                Auth::login($user, $remember);
+                return redirect()->back();
+            }
         }
+    
+        // Authentication failed or user not found
+        return redirect('/login')->withErrors(['email' => 'Invalid credentials'])->withInput($request->except('password'));
     }
-
-    // Authentication failed or user not found
-    return redirect('/login')->withErrors(['email' => 'Invalid credentials'])->withInput($request->except('password'));
-}
 
 
     public function assignRole(Request $request, User $user)
