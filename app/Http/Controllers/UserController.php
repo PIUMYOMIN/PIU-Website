@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -105,19 +105,25 @@ class UserController extends Controller
     }
 
     public function user_login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-        $remember = $request->has('remember');
+{
+    $credentials = $request->only('email', 'password');
+    $remember = $request->has('remember');
 
-        dd($credentials,$remember);
+    // Debugging - Dumping credentials and remember flag
+    dd($credentials, $remember);
 
-        if (Auth::attempt($credentials, $remember)) {
-            return redirect()->back();
-        }
+    // Manually checking the password against the hashed password
+    $user = User::where('email', $request->email)->first();
 
-        // Authentication failed...
-        return redirect('/login')->withErrors(['email' => 'Invalid credentials'])->withInput($request->except('password'));
+    if ($user && Hash::check($request->password, $user->password)) {
+        // Password matches - proceed with login
+        Auth::login($user, $remember);
+        return redirect()->back();
     }
+
+    // Authentication failed...
+    return redirect('/login')->withErrors(['email' => 'Invalid credentials'])->withInput($request->except('password'));
+}
 
     public function assignRole(Request $request, User $user)
     {
