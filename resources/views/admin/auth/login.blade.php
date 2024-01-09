@@ -17,7 +17,7 @@
                             @method('POST')
                             <div>
                                 <div class="input-field s12">
-                                    <input type="email" name="email" data-ng-model="name" class="validate">
+                                    <input type="email" name="credential" data-ng-model="name" class="validate">
                                     <label class="">User name</label>
                                 </div>
                             </div>
