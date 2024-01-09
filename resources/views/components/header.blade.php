@@ -85,7 +85,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="mm1-com mm1-s2">
-                                                    <p>In 2013 the Founder President and his colleagues were invited from Australian Education Institutions, primary schools, and universities. There, he took the chance to affiliate with Australian Catholic University (ACU).</p>
+                                                    <p>25th years ago Phaung Daw Oo monastic education school was established by the two brothers, Ven Nayaka and Ven Jotika. During eight years times the school has been developed from primary to high school level: In 1993 Primary, In 1998 Secondary, In 2000 High School. </p>
                                                     <a href="/about-us" class="mm-r-m-btn">Read more</a>
                                                 </div>
                                                 <div class="mm1-com mm1-s3">

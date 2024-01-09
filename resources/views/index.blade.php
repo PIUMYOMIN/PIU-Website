@@ -7,7 +7,6 @@
             <div class="row">
                 <div class="con-title">
                     <h2>Discover <span>More</span></h2>
-                    <p>Fusce id sem at ligula laoreet hendrerit venenatis sed purus. Ut pellentesque maximus lacus, nec pharetra augue.</p>
                 </div>
             </div>
             <div class="row">
@@ -86,9 +85,6 @@
         <div class="container com-sp pad-bot-0">
             <div class="row">
                 <div class="col-md-4">
-                    <!--<div class="ho-ex-title">
-							<h4>Upcoming Event</h4>
-						</div>-->
                     <div class="ho-ev-latest ho-ev-latest-bg-1">
                         <div class="ho-lat-ev">
                             <h4 class="text-center">Upcoming Event</h4>

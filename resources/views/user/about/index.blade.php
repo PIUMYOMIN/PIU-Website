@@ -1,80 +1,62 @@
 <x-layout>
   <section>
-        <div class="pro-cover">
-        </div>
         <div class="stu-db">
-            <div class="container pg-inn shadow-lg">
+            <div class="container pg-inn">
                 <div class="col-md-3">
-                    <div class="pro-user">
-                        <img src="images/Principal.jpg" alt="user">
-                    </div>
                     <div class="pro-user-bio">
                         <ul>
-                            <li>
-                                <h4>Ven.Nayaka</h4>
-                            </li>
-                            <li>President of PIU</li>
+                            <li>Related links &</li>
+                            <li>Tags</li>
+                            <li><a href="/president-of-piu"></i> About President</a></li>
+                            {{-- <li><a href="#!"></i> About Rector</a></li>
+                            <li><a href="#!"></i> Campuses</a></li> --}}
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <div class="udb">
-
+                    <div class="">
                         <div class="udb-sec udb-prof">
-                            <h4>About</h4>
+                            <h4>Introduction</h4>
                             <p class="text-justify">
-                                Ven. U Nayaka is a Buddhist monk. He was deeplyconcerned that his country would never be
-                                able to sustain democracybecause a large section of the population lacked access to
-                                basiceducation. So, in 1993, he set up a monastic school to educate poorchildren, monks,
-                                and nuns regardless of race, gender, ethnicity, andreligion, thus breaking the tradition
-                                that monastic schools normallyserve only monks and male students.
+                                25th years ago Phaung Daw Oo monastic education school was established by the two
+                                brothers, Ven Nayaka and Ven Jotika. During eight years times the school has been
+                                developed from primary to high school level: In 1993 Primary, In 1998 Secondary, In 2000
+                                High School. In 2011 the principal and his colleagues attended an annual conference of
+                                International Network of Engage Buddhist (INEB). The conference gave him a chance to
+                                study about Santiniketan University founded by Rabindra Nath Tagore which has the
+                                education programs start from Kindergarten to PhD level. It inspired him to establish a
+                                University. When he came back he steps forward to upgrade his school to university. In
+                                2013 the principal and his colleagues were invited from Australian Education
+                                Institutions, primary schools and universities. There, he took chance to affiliate with
+                                Australian Catholic University (ACU). 15 students from Phaung Daw Oo High School were
+                                sent to study in ACU for education in Diploma. In 2014 A well-wishers donated 450 acres
+                                land near Mandalay to establish a university. Meanwhile the Phaung Daw Oo School tries
+                                to link with some Western Universities like American University (AU), Menandar
+                                University, Hamsted University, Victoria University, and University of Melbourne.
+                                Students were sent to theses universities to study MA program, BA program and Intensive
+                                courses. In 2017_2018 the Eastern Universities also came and joined the school to work
+                                education matter together: Foguang Shan University from Taiwan and International
+                                Buddhist College (IBC) from Thailand. On January 25, 2019, the PIU signed a higher
+                                academic cooperation agreement with IBC in Mandalay.
                             </p>
                         </div>
                         <div class="udb-sec udb-prof">
-                            <h4>Education Philosophy and Practices</h4>
+                            <h4>History Of University</h4>
                             <p class="text-justify">
-                                U Nayaka aims to reform religious education to producewell-qualified teachers and
-                                educated students who can become leaders.At the same time, he is a leading advocate for
-                                change from traditionalrote memorization teaching to a child-centered approach, not just
-                                inmonastic schools but across the entire education system. His goal isto provide
-                                well-trained teachers who will bring his approach,especially to poor rural areas and the
-                                many conflict zones of Myanmar. With support from international donors, he has built
-                                Phaung Daw OoSchool in Mandalay which has an enrolment of over 8,000 studentsyearly as
-                                well as a network of cooperating monastic schools across thecountry which are serving
-                                several thousand more students. The schoolsare staffed with young teachers trained in
-                                modern child-centeredmethods that encourage active learning and critical thinking, and
-                                aspecial focus is put on health and hygiene. In addition to standardacademic and
-                                Buddhist studies, students are given the opportunity tolearn English and develop
-                                professional skills in carpentry, tailoring,IT, culinary arts, and journalism.
-                            </p>
-                        </div>
-                        <div class="udb-sec udb-prof">
-                            <h4>Honorary titles awarded</h4>
-                            <p class="text-justify">
-                                U Nayaka’s work has been acknowledged by severalawards, including the Order of the
-                                Republic of the Union of MyanmarPresident’s State Excellence Award in 2013. In 2003 he
-                                was invited bythe US Department of State to consult on Education in Burma. In 2008he
-                                also was invited to consult at the United Nations in New York. Hewas also awarded the
-                                highest honorary name of Agga mahasaddhammajotika Dhaja by the government of Myanmar and
-                                also presentedCitizen of Burma.
-                            </p>
-                        </div>
-                        <div class="udb-sec udb-prof">
-                            <h4>Forming an international standard University</h4>
-                            <p class="text-justify">
-                                In 2013 the Founder President and his colleagues were invited from Australian Education
-                                Institutions, primary schools, and universities. There, he took the chance to affiliate
-                                with Australian Catholic University (ACU). 15 students from Phaung Daw Oo High School
-                                were sent to study in ACU for an education in Diploma. In 2014 well-wishers donated 450
-                                acres of land near Mandalay to establish a university which is now called Phuang Daw Oo
-                                International University (PIU). Meanwhile, the Phaung Daw Oo School tries to link with
-                                some Western Universities like American University (AU), Menandar University, Hamsted
-                                University, Victoria University, and the University of Melbourne. Students were sent to
-                                these universities to study MA programs, BA programs, and Intensive courses. In
-                                2017-2018 the Eastern Universities also came and joined the school to work on education
-                                matters together: Fo Guang Shan University from Taiwan and International Buddhist
-                                College (IBC) from Thailand. On January 25, 2019, the PIU signed a higher academic
-                                cooperation agreement with IBC in Mandalay.
+                                As the education in Myanmar is lasting behind so do every aspect of Myanmar. Therefore,
+                                it is desperately needed to lift the status of education in Myanmar. We can see that the
+                                countries which have internationally high ranking universities become well developed
+                                ones in the world. To establish quality assurance university qualify teachers and
+                                eligible students are needed. As Myanmar has been deteriorating for many years qualify
+                                teachers are very difficult to have. So, no eligible students become. I have been facing
+                                this broken process of education system for over a decade. Good quality university
+                                students have to become from good quality basic education level students i.e primary,
+                                secondary, and tertiary. Taking the help from international education aid organization I
+                                have provided numbers of teacher trainings, from which quality teachers were produced. I
+                                hope those quality teachers will reproduce eligible students. In fact, this education
+                                reform process is just for basic education level. Now it is time for university level. I
+                                believe Phaung Daw Oo International University will become the international standard
+                                one.
                             </p>
                         </div>
                     </div>

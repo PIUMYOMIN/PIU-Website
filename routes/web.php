@@ -242,6 +242,10 @@ Route::get('/about-us',function(){
   return view('user.about.index');
 });
 
+Route::get('/president-of-piu',function(){
+  return view('user.about.president');
+});
+
 Route::get('/pravicy-policy',function(){
   return view('user.pravicy.index');
 });
