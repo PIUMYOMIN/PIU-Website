@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
