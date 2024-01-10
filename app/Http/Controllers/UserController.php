@@ -112,6 +112,8 @@ class UserController extends Controller
             'password' => 'required',
         ]);
 
+        dd($validatedData);
+
         $user = User::where('email', $validatedData['email'])->first();
 
         if ($user && Hash::check($validatedData['password'], $user->password)) {
