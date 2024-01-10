@@ -213,6 +213,8 @@ class UserController extends Controller
     {
         $user = Socialite::driver('google')->user();
 
+        dd($user);
+
         $exitingUser = User::where('email',$user->email)->first();
 
         if($exitingUser){
