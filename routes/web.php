@@ -46,7 +46,7 @@ use App\Http\Controllers\User\EventController;
 Route::get('/', [HomeController::class,'index']);
 
 Route::get('/login',[UserController::class,'login'])->middleware('guest');
-Route::post('/admin/auth/login',[UserController::class,'user_login'])->name('admin.auth.login.submit');
+Route::post('/user/login/form/submit',[UserController::class,'user_login'])->name('user.login.form.submit');
 
 Route::get('/register',[UserController::class,'register'])->middleware('guest')->name('admin.auth.register');
 Route::post('/user/register/form/submit',[UserController::class,'store'])->name('user.register.form.submit');

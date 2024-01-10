@@ -21,7 +21,7 @@
                     </a>
                     <h4>Login</h4>
                     <p>Don't have an account? Create your account. It's take less then a minutes</p>
-                    <form action="{{ route('admin.auth.login.submit') }}" method="POST" class="s12">
+                    <form action="{{ route('user.login.form.submit') }}" method="POST" class="s12">
                         @csrf
                         @method('POST')
                         <div>
