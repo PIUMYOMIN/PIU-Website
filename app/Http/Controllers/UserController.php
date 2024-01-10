@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -106,19 +107,27 @@ class UserController extends Controller
 
     public function user_login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        // Attempt to authenticate the user
-        if (Auth::attempt($credentials, $request->has('remember'))) {
-            // Authentication passed
-            return redirect()->intended('/'); // Redirect to a specific page after successful login
+        $user = User::where('email', $validatedData['email'])->first();
+
+        if ($user && Hash::check($validatedData['password'], $user->password)) {
+            // Password hash validation passed
+            if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']], $request->has('remember'))) {
+                // Authentication passed
+                return redirect()->intended('/'); // Redirect to a specific page after successful login
+            }
         }
 
         // Authentication failed
-        return back()->withInput($request->only('email', 'remember'))->withErrors([
-            'email' => 'Invalid email or password.',
-        ]);
+        throw ValidationException::withMessages([
+            'email' => ['Invalid email or password.'],
+        ])->redirectTo('/login');
     }
+
 
     public function assignRole(Request $request, User $user)
     {
