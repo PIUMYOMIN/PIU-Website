@@ -14,9 +14,7 @@ class HomeController extends Controller
     public function index()
     {
        return view('index',[
-        'slides' => Slide::where('is_active', 1)
-                    ->take(3)
-                    ->get(),
+        'slides' => Slide::all(),
         'galleries' => Gallery::take(12)
                     ->get(),
         'courses' => Course::latest()->get(),
