@@ -9,7 +9,7 @@
                     <div class="carousel-caption slider-con">
                         <h2><span>{{ $slide->title }}</span></h2>
                         <p>{{ $slide->description }}</p>
-                        <a href="/courses" class="bann-btn-1">All Courses</a><a href="#" class="bann-btn-2">Read More</a>
+                        <a href="/courses" class="bann-btn-1">All Courses</a><a href="/courses" class="bann-btn-2">Read More</a>
                     </div>
                 </div>
                 @endforeach

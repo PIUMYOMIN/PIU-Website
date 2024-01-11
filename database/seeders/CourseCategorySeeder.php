@@ -15,19 +15,37 @@ class CourseCategorySeeder extends Seeder
     {
         CourseCategory::Insert([
             [
-                'name' => 'Master Degree',
+                'name' => 'Ph.D Degree Course',
                 'description' => '',
                 'user_id' => 1,
                 'created_at' => now(),
             ],
             [
-                'name' => 'Post-graduate',
+                'name' => 'Master Degree Course',
                 'description' => '',
                 'user_id' => 1,
                 'created_at' => now(),
             ],
             [
-                'name' => 'Bachelor Degree',
+                'name' => 'Bachelor Degree Course',
+                'description' => '',
+                'user_id' => 1,
+                'created_at' => now(),
+            ],
+            [
+                'name' => 'Diploma Degree Course',
+                'description' => '',
+                'user_id' => 1,
+                'created_at' => now(),
+            ],
+            [
+                'name' => 'Short Course',
+                'description' => '',
+                'user_id' => 1,
+                'created_at' => now(),
+            ],
+            [
+                'name' => 'Other',
                 'description' => '',
                 'user_id' => 1,
                 'created_at' => now(),

@@ -15,12 +15,27 @@ class DepartmentSeeder extends Seeder
     {
         Department::insert([
             [
-                'name' => 'Department of University of Admission',
+                'name' => 'PIU Management Team',
                 'description' => '',
                 'created_at' => now(),
             ],
             [
-                'name' => 'Department of University of Student Affairs',
+                'name' => 'PIU Division of Academic Affairs',
+                'description' => '',
+                'created_at' => now(),
+            ],
+            [
+                'name' => 'PIU Student Affairs',
+                'description' => '',
+                'created_at' => now(),
+            ],
+            [
+                'name' => 'PIU School of Education',
+                'description' => '',
+                'created_at' => now(),
+            ],
+            [
+                'name' => 'PIU School of Foreign Languages',
                 'description' => '',
                 'created_at' => now(),
             ],
