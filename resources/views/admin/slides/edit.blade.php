@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="box-inn-sp admin-form">
                     <div class="inn-title">
-                        <h4>Add Seminar</h4>
+                        <h4>Edit Slide</h4>
                         <p>Here you can edit your website basic details URL, Phone, Email, Address, User and
                             password and more</p>
                     </div>
@@ -35,6 +35,18 @@
                                 @error('title')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" value="{{ $slide->image_tag }}" class="validate"
+                                        name="image_tag" required>
+                                    <label class="">Image Tag</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input type="text" class="validate" value="{{ $slide->text }}"
+                                        name="tag_link">
+                                    <label class="">Tag Link</label>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
@@ -58,7 +70,6 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <img src="{{ asset('storage/'. $slide->slide_image) }}" alt="" width="200">
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">

@@ -28,7 +28,7 @@ class AdminSlideController extends Controller
        $formData = request()->validate([
         'title' => 'required',
         'image_tag' => 'required',
-        'tag_link' => 'nullable',
+        'tag_link' => 'nullable|url',
         'description' => 'nullable',
         'slide_image' => 'required',
        ]);
@@ -58,8 +58,8 @@ class AdminSlideController extends Controller
         $data = request()->validate([
             'title' => ['required', Rule::unique('slides','title')->ignore($slide->id)],
             'image_tag' => 'required',
-            'tag_link' => 'required',
-            'description' => 'required',
+            'tag_link' => 'required|url',
+            'description' => 'nullable',
             'slide_image' => 'required|image|mimes:png,jpg,jpeg'
         ]);
 
