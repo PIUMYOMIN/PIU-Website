@@ -35,7 +35,7 @@
                                                     <th>End Date</th>
                                                     <th>Total Seats</th>
                                                     <th>Created By</th>
-													<th>Status</th>
+													<th>Active</th>
 													<th>View</th>
                                                 </tr>
                                             </thead>
@@ -69,7 +69,7 @@
                                                             id="isActive_{{ $course->id }}" role="switch"
                                                             {{ $course->is_active ? 'checked' : '' }}
                                                             onchange="this.form.submit()">
-                                                        <label class="form-check-label"for="isActive_{{ $course->id }}">Active/Inactive</label>
+                                                        <label class="form-check-label"for="isActive_{{ $course->id }}"></label>
                                                     </div>
                                                 </form>
                                             </td>
