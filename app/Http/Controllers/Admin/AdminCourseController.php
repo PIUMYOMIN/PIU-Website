@@ -118,4 +118,11 @@ class AdminCourseController extends Controller
 
         return redirect()->back();
     }
+
+    public function application(Request $request, Course $course)
+    {
+        $course->update(['application_sts' => !$course->application_sts]);
+
+        return redirect()->back();
+    }
 }

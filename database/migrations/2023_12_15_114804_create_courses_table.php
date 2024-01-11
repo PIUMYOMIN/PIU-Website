@@ -29,6 +29,8 @@ return new class extends Migration
             $table->unsignedBigInteger('course_category_id');
             $table->string('user_id');
             $table->boolean('is_active')->default(false);
+$table->boolean('application_sts')->default(false);
+
             $table->string('image');
             $table->timestamps();
         });

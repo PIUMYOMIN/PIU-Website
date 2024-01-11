@@ -6,11 +6,11 @@
                 @foreach ($slides as $slide)
                 <div class="item{{ $loop->first ? ' active' : '' }}">
                     <img src="{{ asset('storage/' . $slide->slide_image) }}" alt="">
-                    <div class="carousel-caption slider-con">
+                    {{-- <div class="carousel-caption slider-con">
                         <h2><span>{{ $slide->title }}</span></h2>
                         <p>{{ $slide->description }}</p>
                         <a href="/courses" class="bann-btn-1">All Courses</a><a href="{{ $slide->tag_link }}" class="bann-btn-2">Read More</a>
-                    </div>
+                    </div> --}}
                 </div>
                 @endforeach
             </div>

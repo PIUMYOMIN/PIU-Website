@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminEventRegisterController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
+
 use App\Http\Controllers\RoleController;
 
 //User Controllers
@@ -31,6 +32,8 @@ use App\Http\Controllers\User\NewsController;
 use App\Http\Controllers\User\CourseController;
 use App\Http\Controllers\User\SeminarController;
 use App\Http\Controllers\User\EventController;
+use App\Http\Controllers\User\AdmissionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -185,6 +188,7 @@ Route::middleware(['auth','role:admin|manager|staff'])->name('admin.')->prefix('
       Route::get('/course/{course:id}/edit', [AdminCourseController::class,'edit'])->name('course.edit');
       Route::patch('/course/{course:id}/update', [AdminCourseController::class,'update'])->name('course.update');
       Route::patch('/course/{course:id}/isActive', [AdminCourseController::class,'isActive'])->name('course.isActive');
+      Route::patch('/course/{course:id}/application', [AdminCourseController::class,'application'])->name('course.application');
 
       //department
       Route::get('/departments', [AdminDepartmentController::class,'index'])->name('department.index');
@@ -220,6 +224,13 @@ Route::get('/events/{slug}/register', [EventController::class, 'register'])->nam
 //Contact Form
 Route::get('/contact',[ContactController::class,'index']);
 Route::post('/contact/form/submit',[ContactController::class,'store'])->name('contact.form.submit');
+
+//Admission
+Route::get('/piu/admission/application-form', [AdmissionController::class, 'create']);
+Route::post('/piu/application/first-form', [AdmissionController::class, 'storeFirst'])->name('piu.application.first-form');
+Route::get('/piu/application/second-form', [AdmissionController::class, 'second']);
+Route::post('/piu/application/second-form', [AdmissionController::class, 'storeSecond'])->name('piu.application.second-form');
+Route::get('/piu/admission/application-form-successfully-submited/{token}', [AdmissionController::class, 'success']);
 
 //api
 Route::get('/data',function(){
