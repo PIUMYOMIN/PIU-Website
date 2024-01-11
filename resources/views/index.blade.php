@@ -152,38 +152,6 @@
                                     <span>Location: New York</span>
                                 </div>
                             </li>
-                            <li>
-                                <div class="ho-ev-img"><img src="images/event/2.jpg" alt="">
-                                </div>
-                                <div class="ho-ev-link">
-                                    <a href="#">
-                                        <h4>Then came the night of the first falling star.</h4>
-                                    </a>
-                                    <p>Vestibulum sollicitudin sem arcu</p>
-                                    <span>Location: Los Angeles</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="ho-ev-img"><img src="images/event/3.jpg" alt="">
-                                </div>
-                                <div class="ho-ev-link">
-                                    <a href="#">
-                                        <h4>Educate to Empower NYE Party</h4>
-                                    </a>
-                                    <p>Vestibulum sollicitudin sem arcu, eget ullamcorper purus hendrerit</p>
-                                    <span>Location: Chennai</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="ho-ev-img"><img src="images/event/4.jpg" alt=""></div>
-                                <div class="ho-ev-link">
-                                    <a href="#">
-                                        <h4>Then came the night of the first falling star.</h4>
-                                    </a>
-                                    <p>Venenatis lacus lectus.</p>
-                                    <span>Location: Chicago</span>
-                                </div>
-                            </li>
                         </ul>
                     </div>
                 </div>
@@ -216,7 +184,7 @@
                 <div class="col-md-4">
                     <div class="bot-gal h-vid ho-event-mob-bot-sp">
                         <h4>Video Gallery</h4>
-                        <iframe src="https://www.youtube.com/embed/2WqFtiR4-F4?autoplay=0&amp;showinfo=0&amp;controls=0" allowfullscreen></iframe>
+                        {{-- <iframe src="https://www.youtube.com/embed/2WqFtiR4-F4?autoplay=0&amp;showinfo=0&amp;controls=0" allowfullscreen></iframe> --}}
                         <h5>Maecenas sollicitudin lacinia</h5>
                         <p>Maecenas finibus neque a tellus auctor mattis. Aliquam tempor varius ornare. Maecenas dignissim leo leo, nec posuere purus finibus vitae.</p>
                         <p>Quisque vitae neque at tellus malesuada convallis. Phasellus in lectus vitae ex euismod interdum non a lorem. Nulla bibendum. Curabitur mi odio, tempus quis risus cursus.</p>

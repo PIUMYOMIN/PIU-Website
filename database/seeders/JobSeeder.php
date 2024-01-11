@@ -22,7 +22,7 @@ class JobSeeder extends Seeder
             'expire_time' => '09:20:00',
             'city' => 'Mandalay',
             'country' => 'Myanmar',
-            'image' => 'images/user.jpg',
+            'image' => 'images/test.jpg',
             'user_id' => 1
         ]);
     }
