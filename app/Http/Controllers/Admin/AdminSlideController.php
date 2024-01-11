@@ -85,4 +85,5 @@ class AdminSlideController extends Controller
 
         return redirect()->back();
     }
+
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('image_tag');
             $table->string('tag_link')->nullable();
             $table->string('slide_image');
-            $table->string('is_active')->default(false);
+            $table->boolean('is_active')->default(false);
             $table->string('user_id');
             $table->timestamps();
         });

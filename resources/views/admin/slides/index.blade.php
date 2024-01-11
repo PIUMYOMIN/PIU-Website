@@ -51,10 +51,7 @@
                                                     @csrf
                                                     @method('PATCH')
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" name="is_active"
-                                                            id="isActive_{{ $slide->id }}" role="switch"
-                                                            {{ $slide->is_active ? 'checked' : '' }}
-                                                            onchange="this.form.submit()">
+                                                        <input class="form-check-input" type="checkbox" name="is_active" id="isActive_{{ $slide->id }}" role="switch" {{ $slide->is_active ? 'checked' : '' }} onchange="this.form.submit()">
                                                         <label class="form-check-label"for="isActive_{{ $slide->id }}">Active/Inactive</label>
                                                     </div>
                                                 </form>
