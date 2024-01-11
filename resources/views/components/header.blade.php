@@ -78,7 +78,7 @@
                                             <div class="m-menu-inn">
                                                 <div class="mm1-com mm1-s1">
                                                     <div class="ed-course-in">
-                                                        <a class="course-overlay menu-about" href="admission.html">
+                                                        <a class="course-overlay menu-about" href="/piu/admission/application-form">
                                                             <img src="images/h-about.jpg" alt="">
                                                             <span>Academics</span>
                                                         </a>
@@ -110,7 +110,7 @@
                                     </div>
                                 </li>
                                 <li class="admi-menu">
-                                    <a href="/admission" class="mm-arr">Admission</a>
+                                    <a href="/piu/admission/application-form" class="mm-arr">Admission</a>
                                     <!-- MEGA MENU 1 -->
                                     <div class="mm-pos">
                                         <div class="admi-mm m-menu">
@@ -127,13 +127,13 @@
                                                 </div>
                                                 <div class="mm2-com mm1-com mm1-s1">
                                                     <div class="ed-course-in">
-                                                        <a class="course-overlay" href="admission.html">
+                                                        <a class="course-overlay" href="/piu/admission/application-form">
                                                             <img src="images/h-adm1.jpg" alt="">
                                                             <span>Admission</span>
                                                         </a>
                                                     </div>
                                                     <p>Donec lacus libero, rutrum ac sollicitudin sed, mattis non eros. Vestibulum congue nec eros quis lacinia. Mauris non tincidunt lectus. Nulla mollis, orci vitae accumsan rhoncus.</p>
-                                                    <a href="admission.html" class="mm-r-m-btn">Read more</a>
+                                                    <a href="/piu/admission/application-form" class="mm-r-m-btn">Read more</a>
                                                 </div>
                                                 <div class="mm2-com mm1-com mm1-s1">
                                                     <div class="ed-course-in">

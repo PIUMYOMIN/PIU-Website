@@ -24,7 +24,7 @@ class AdmissionController extends Controller
     public function create(Course $courses)
     {
         return view('admissions.create', [
-            'courses' => Course::where('is_active', 1)->get(),
+            'courses' => Course::where('application_sts', 1)->get(),
             'selected_course' => $courses,
         ]);
     }
