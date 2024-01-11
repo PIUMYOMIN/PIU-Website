@@ -184,6 +184,7 @@ Route::middleware(['auth','role:admin|manager|staff'])->name('admin.')->prefix('
       Route::post('/course/store', [AdminCourseController::class,'store'])->name('course.store');
       Route::get('/course/{course:id}/edit', [AdminCourseController::class,'edit'])->name('course.edit');
       Route::patch('/course/{course:id}/update', [AdminCourseController::class,'update'])->name('course.update');
+      Route::patch('/course/{course:id}/isActive', [AdminCourseController::class,'isActive'])->name('course.isActive');
 
       //department
       Route::get('/departments', [AdminDepartmentController::class,'index'])->name('department.index');

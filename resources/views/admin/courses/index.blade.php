@@ -60,8 +60,19 @@
 													<td>{{ $course->total_seat }}</td>
 													<td>{{ $course->user->name }}</td>
                                                     <td>
-                                                        <span class="label label-success">Active</span>
-                                                    </td>
+                                                <form method="POST"
+                                                    action="/admin/course/{{ $course->id }}/isActive">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" name="is_active"
+                                                            id="isActive_{{ $course->id }}" role="switch"
+                                                            {{ $course->is_active ? 'checked' : '' }}
+                                                            onchange="this.form.submit()">
+                                                        <label class="form-check-label"for="isActive_{{ $course->id }}">Active/Inactive</label>
+                                                    </div>
+                                                </form>
+                                            </td>
 													<td>
                                                         <a href="{{ route('admin.course.edit',[$course->id]) }}" class="ad-st-view">Edit</a>
                                                         <form action="{{ route('admin.course.delete',[$course->id]) }}" method="POST">

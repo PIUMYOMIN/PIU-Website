@@ -111,4 +111,11 @@ class AdminCourseController extends Controller
 
         return redirect()->back();
     }
+
+    public function isActive(Request $request, Course $course)
+    {
+        $course->update(['is_active' => !$course->is_active]);
+
+        return redirect()->back();
+    }
 }
