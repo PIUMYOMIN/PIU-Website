@@ -15,7 +15,7 @@ class CourseController extends Controller
     public function index()
     {
        return view('user.courses.index',[
-        'courses' => Course::all(),
+        'courses' => Course::where('is_active',1)->latest()->get(),
         'categories' => CourseCategory::all(),
        ]);
     }

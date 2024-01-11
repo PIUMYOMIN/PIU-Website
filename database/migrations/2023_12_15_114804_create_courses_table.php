@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('ic_phone');
             $table->unsignedBigInteger('course_category_id');
             $table->string('user_id');
-            $table->string('is_active')->default(false);
+            $table->boolean('is_active')->default(false);
             $table->string('image');
             $table->timestamps();
         });
