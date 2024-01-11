@@ -114,7 +114,7 @@ Route::middleware(['auth','role:admin|writer|user'])->name('admin.')->prefix('ad
   Route::post('/slides/store', [AdminSlideController::class,'store'])->name('slides.store');
   Route::get('/slides/{slide:id}/edit', [AdminSlideController::class,'edit'])->name('slides.edit');
   Route::patch('/slides/{slide:id}/update', [AdminSlideController::class,'update'])->name('slides.update');
-  Route::patch('/slides/{slide:id}/isActive', [AdminSlideController::class,'isActive'])->name('slides.isActive');
+  Route::patch('/slide/{slide:id}/isActive', [AdminSlideController::class,'isActive'])->name('slide.isActive');
   Route::delete('/slides/{slide:id}/delete', [AdminSlideController::class,'delete'])->name('slides.delete');
 
   //course category

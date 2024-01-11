@@ -81,6 +81,7 @@ class AdminSlideController extends Controller
 
     public function isActive(Request $request, Slide $slide)
     {
+
         $slide->update(['is_active' => !$slide->is_active]);
 
         return redirect()->back();

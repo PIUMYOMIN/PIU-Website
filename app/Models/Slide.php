@@ -9,7 +9,7 @@ class Slide extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'image_tag', 'tag_link', 'description', 'slide_image', 'user_id'];
+    protected $fillable = ['title', 'image_tag', 'tag_link', 'description', 'slide_image', 'user_id', 'is_active'];
 
     public function user()
     {
