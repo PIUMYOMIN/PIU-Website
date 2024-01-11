@@ -14,7 +14,8 @@
                             @method('POST')
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input type="text" name="title" value="" class="validate" required>
+                                    <input type="text" name="title" value="{{ old('title') }}" class="validate"
+                                        required>
                                     <label class="">Title</label>
                                 </div>
                                 @error('title')
@@ -22,18 +23,20 @@
                                 @enderror
                             </div>
                             <div class="row">
-                                            <div class="input-field col s6">
-                                                <input type="text" value="" class="validate" name="image_tag" required>
-                                                <label class="">Image Tag</label>
-                                            </div>
-                                            <div class="input-field col s6">
-                                                <input type="text" class="validate" value="" name="tag_link">
-                                                <label class="">Tag Link</label>
-                                            </div>
-                                        </div>
+                                <div class="input-field col s6">
+                                    <input type="text" value="{{ old('image_tag') }}" class="validate"
+                                        name="image_tag" required>
+                                    <label class="">Image Tag</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input type="text" class="validate" value="{{ old('tag_link') }}"
+                                        name="tag_link">
+                                    <label class="">Tag Link</label>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="description"></textarea>
+                                    <textarea name="description">{{ old('description') }}</textarea>
                                     <label class="">Description</label>
                                     @error('description')
                                         <span class="text-danger">{{ $message }}</span>

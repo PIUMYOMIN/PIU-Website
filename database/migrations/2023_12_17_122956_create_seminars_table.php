@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('slug');
             $table->text('description');
             $table->string('date');
-            $table->string('time');
+            $table->string('start_time');
+            $table->string('end_time');
             $table->string('location');
             $table->string('seat');
             $table->string('city');

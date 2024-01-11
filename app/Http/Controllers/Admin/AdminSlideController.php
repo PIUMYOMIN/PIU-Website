@@ -24,22 +24,23 @@ class AdminSlideController extends Controller
 
     public function store(Request $request)
     {
-       $data = request()->validate([
-            'title' => 'required|unique:slides,title',
-            'image_tag' => 'required',
-            'tag_link' => 'nullable|url',
-            'description' => 'nullable',
-            'slide_image' => 'required|image|mimes:png,jpg,jpeg'
+       $formData = request()->validate([
+        'title' => 'required',
+        'image_tag' => 'required',
+        'tag_link' => 'nullable',
+        'description' => 'nullable',
+        'slide_image' => 'required',
        ]);
 
        if($request->hasFile('slide_image')){
-            $filePatch = $request->file('slide_image')->store('slide_images','public');
-            $data['slide_image'] = $filePatch;
+            $filePath = $request->file('slide_image')->store('slide_images', 'public');
+
+            $formData['slide_image'] = $filePath;
        }
 
-       $data['user_id'] = auth()->user()->id;
+       $formData['user_id'] = auth()->user()->id;
 
-       Slide::create($data);
+        Slide::create($formData);
 
        return redirect('admin/slides');
     }

@@ -51,11 +51,20 @@
                                                 @enderror
                                             </div>
                                             <div class="input-field col s6">
-                                                <input type="text" name="time" class="validate" value="" required>
-                                                <label class="">Time</label>
-                                                @error('time')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                                <div class="col s6">
+                                                    <input type="time" name="start_time" class="validate" value="" required>
+                                                    <label class="">Start Time</label>
+                                                    @error('start_time')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col s6">
+                                                    <input type="time" name="end_time" class="validate" value="" required>
+                                                    <label class="">End Time</label>
+                                                    @error('end_time')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">
