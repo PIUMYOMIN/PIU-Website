@@ -45,7 +45,7 @@ class UserController extends Controller
         'provider_id' => 'nullable',
     ]);
 
-    $data['password'] = bcrypt($data['password']);
+    $data['password'] = Hash::make($data['password']); // Hash the password
 
     if ($request->hasFile('picture')) {
         $imagePath = $request->file('picture')->store('user_profiles', 'public');
@@ -106,27 +106,26 @@ class UserController extends Controller
     }
 
     public function user_login(Request $request)
-    {
-        $validatedData = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+{
+    $validatedData = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        $user = User::where('email', $validatedData['email'])->first();
+    $credentials = [
+        'email' => $validatedData['email'],
+        'password' => $validatedData['password'],
+    ];
 
-        if ($user && Hash::check($validatedData['password'], $user->password)) {
-            // Password hash validation passed
-            if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']], $request->has('remember'))) {
-                // Authentication passed
-                return redirect()->intended('/'); // Redirect to a specific page after successful login
-            }
-        }
-
-        // Authentication failed
-        throw ValidationException::withMessages([
-            'email' => ['Invalid email or password.'],
-        ])->redirectTo('/login');
+    if (Auth::attempt($credentials, $request->has('remember'))) {
+        // Authentication passed
+        return redirect()->intended('/'); // Redirect to a specific page after successful login
     }
+
+    // Authentication failed
+    return redirect('/login')->withErrors(['email' => 'Invalid email or password.']);
+}
+
 
 
     public function assignRole(Request $request, User $user)
