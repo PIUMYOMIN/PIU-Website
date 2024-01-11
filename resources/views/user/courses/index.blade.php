@@ -4,8 +4,6 @@
             <div class="container">
                 <div class="head-2-inn head-2-inn-padd-top">
                     <h1>List of College Facilities</h1>
-                    <p>Fusce id sem at ligula laoreet hendrerit venenatis sed purus. Ut pellentesque maximus lacus, nec
-                        pharetra augue.</p>
                     <div class="event-head-sub">
                         <ul>
                             <li>Topic: Global warming</li>
