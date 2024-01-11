@@ -49,10 +49,7 @@ Route::get('/login',[UserController::class,'login'])->middleware('guest');
 Route::post('/user/login/form/submit',[UserController::class,'user_login'])->name('user.login.form.submit');
 
 Route::get('/register',[UserController::class,'register'])->middleware('guest')->name('admin.auth.register');
-// Route::post('/user/register/form/submit',[UserController::class,'store'])->name('user.register.form.submit');
-Route::post('/user/register/form/submit',function(){
-  return ('hello');
-});
+Route::post('/user/register/form/submit',[UserController::class,'store'])->name('user.register.form.submit');
 
 Route::post('/admin/auth/logout',[UserController::class,'logout'])->name('admin.auth.logout');
 

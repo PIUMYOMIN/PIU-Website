@@ -81,7 +81,6 @@
                     <p>Don't have an account? Create your account. It's take less then a minutes</p>
                     <form action="{{ route('user.register.form.submit') }}" method="POST" class="s12" enctype="multipart/form-data">
                         @csrf
-                        @method('POST')
                         <div>
                             <div class="input-field s12">
                                 <input type="text" name="name" data-ng-model="name1" class="validate">
