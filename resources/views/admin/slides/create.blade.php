@@ -27,7 +27,7 @@
                                                 <label class="">Image Tag</label>
                                             </div>
                                             <div class="input-field col s6">
-                                                <input type="text" class="validate" value="" name="tag_link" required>
+                                                <input type="text" class="validate" value="" name="tag_link">
                                                 <label class="">Tag Link</label>
                                             </div>
                                         </div>

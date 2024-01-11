@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('image_tag');
-            $table->string('tag_link');
+            $table->string('tag_link')->nullable();
             $table->string('slide_image');
             $table->string('is_active')->default(false);
             $table->string('user_id');

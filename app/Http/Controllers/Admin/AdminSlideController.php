@@ -27,8 +27,8 @@ class AdminSlideController extends Controller
        $data = request()->validate([
             'title' => 'required|unique:slides,title',
             'image_tag' => 'required',
-            'tag_link' => 'required',
-            'description' => 'required',
+            'tag_link' => 'nullable|url',
+            'description' => 'nullable',
             'slide_image' => 'required|image|mimes:png,jpg,jpeg'
        ]);
 
