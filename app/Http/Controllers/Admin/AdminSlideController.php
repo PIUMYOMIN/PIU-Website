@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Slide;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class AdminSlideController extends Controller
 {
