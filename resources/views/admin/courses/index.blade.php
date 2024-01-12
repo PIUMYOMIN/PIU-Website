@@ -102,11 +102,13 @@
                                             </td>
                                             @endif
                                             <td>
+                                                @if (auth()->user()->can('Read and Write') ||
+                                                    auth()->user()->can('Write') ||
+                                                    auth()->user()->can('Manager'))
                                                 <a href="{{ route('admin.course.edit', [$course->id]) }}"
                                                     class="ad-st-view">Edit</a>
-                                                @if (auth()->user()->can('Read and Write') ||
-                                                        auth()->user()->can('Write') ||
-                                                        auth()->user()->can('Manager'))
+                                                    @endif
+                                                @if (auth()->user()->can('Read and Write'))
                                                     <form action="{{ route('admin.course.delete', [$course->id]) }}"
                                                         method="POST">
                                                         @csrf
