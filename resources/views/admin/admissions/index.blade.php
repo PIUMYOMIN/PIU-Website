@@ -1,8 +1,5 @@
 <x-admin_layout>
-    <x-slot name="title">Admission Form List</x-slot>
-    <!--== BODY INNER CONTAINER ==-->
-    <div class="sb2-2">
-        <!--== breadcrumbs ==-->
+            <!--== breadcrumbs ==-->
         <div class="sb2-2-2">
             <ul>
                 <li><a href="/admin"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
@@ -87,63 +84,25 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    </div>
-    </div>
 
     <script>
         function filterAdmissions(event) {
-            const selectedCourseId = event.target.value;
-            fetch(`/admin/admissions/${selectedCourseId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Course not found or not active');
-                    }
-                    return response.json();
-                })
-                .then(data => displayAdmissions(data))
-                .catch(error => {
-                    console.error(error);
-                    // Handle the error, e.g., display a message to the user
-                });
-        }
+    const selectedCourseId = event.target.value;
 
+    fetch(`/admin/admissions/filter/${selectedCourseId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Course not found or not active');
+            }
+            return response.json();
+        })
+        .then(data => displayAdmissions(data))
+        .catch(error => {
+            console.error(error);
+            // Handle the error, e.g., display a message to the user
+        });
+}
 
-        function displayAdmissions(admissions) {
-            const tableBody = document.getElementById('admissionsTableBody');
-            tableBody.innerHTML = '';
-            let iteration = 0;
-
-            admissions.forEach(admission => {
-                iteration++;
-                const row = document.createElement('tr');
-                row.innerHTML = `
-        <td>${iteration}</td>
-        <td>${admission.name}</td>
-        <td>${admission.course ? admission.course.title : 'N/A'}</td>
-        <td>
-            ${admission.education_certificate
-              ? `<a href="${admission.education_certificate}" download>Download Education Certificate</a>`
-              : 'No document found.'}
-        </td>
-        <td>
-            ${admission.personal_statement
-              ? `<a href="${admission.personal_statement}" download>Download Personal Statement</a>`
-              : 'No document found.'}
-        </td>
-        <td>
-            ${admission.other_document
-              ? `<a href="${admission.other_document}" download>Download Other Document</a>`
-              : 'No document found.'}
-        </td>
-        <td>
-            <a href="/admin/admissions/${admission.id}/details" class="ad-st-view">View</a>
-        </td>
-    `;
-                tableBody.appendChild(row);
-            });
-        }
     </script>
 
 </x-admin_layout>

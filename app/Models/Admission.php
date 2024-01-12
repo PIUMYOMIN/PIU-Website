@@ -10,4 +10,9 @@ class Admission extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id', 'id');
+    }
 }

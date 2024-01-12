@@ -1,10 +1,5 @@
 <x-admin_layout>
-    <x-slot name="title">Add New Student</x-slot>
-    {{-- @dd($admission) --}}
-    <!--== BODY INNER CONTAINER ==-->
-    <div class="sb2-2">
-        <!--== breadcrumbs ==-->
-        <div class="sb2-2-2">
+    <div class="sb2-2-2">
             <ul>
                 <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
                 </li>

@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-md-3 col-sm-4 col-xs-12">
                         <div class="ed-course-in">
-                            <a class="course-overlay" href="admission.html">
+                            <a class="course-overlay" href="/piu/admission/application-form">
                                 <img src="images/h-adm1.jpg" alt="">
                                 <span>Admission</span>
                             </a>

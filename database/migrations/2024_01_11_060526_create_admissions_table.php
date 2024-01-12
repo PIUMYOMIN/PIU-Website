@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('admissions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+$table->string('email');
+
             $table->string('phone');
             $table->string('country');
             $table->string('city');

@@ -20,6 +20,8 @@ use App\Http\Controllers\Admin\SeminarEnrollController;
 use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminTeamController;
 use App\Http\Controllers\Admin\AdminGalleryController;
+use App\Http\Controllers\Admin\AdminAdmissionController;
+
 use App\Http\Controllers\Admin\AdminEventRegisterController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
@@ -170,6 +172,10 @@ Route::middleware(['auth','role:admin|writer|user'])->name('admin.')->prefix('ad
   //contact
   Route::get('/contact-mails',[AdminContactController::class,'index'])->name('contact.index');
 
+//admission
+Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
+Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
+
 });
 
 //all user
@@ -231,6 +237,8 @@ Route::post('/piu/application/first-form', [AdmissionController::class, 'storeFi
 Route::get('/piu/application/second-form', [AdmissionController::class, 'second']);
 Route::post('/piu/application/second-form', [AdmissionController::class, 'storeSecond'])->name('piu.application.second-form');
 Route::get('/piu/admission/application-form-successfully-submited/{token}', [AdmissionController::class, 'success']);
+Route::get('/admin/admissions/{admission:id}/details', [AdmissionController::class, 'show']);
+
 
 //api
 Route::get('/data',function(){

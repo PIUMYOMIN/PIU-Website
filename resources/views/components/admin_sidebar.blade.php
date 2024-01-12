@@ -46,6 +46,20 @@
                     </div>
                 </li>
             @endif
+            @if (auth()->user()->can('Read and Write'))
+                <li>
+                    <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-book"
+                            aria-hidden="true"></i>
+                        Admission</a>
+                    <div class="collapsible-body left-sub-menu">
+                        <ul>
+                            <li>
+                                <a href="/admin/admission/application-forms">Application Forms</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
             @if (auth()->user()->can('Read and Write') ||
                     auth()->user()->can('Read') ||
                     auth()->user()->can('Write') ||

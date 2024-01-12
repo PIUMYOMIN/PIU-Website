@@ -23,7 +23,7 @@
     <p><strong>New (or) Old student:</strong> {{ htmlspecialchars($formData['alumni_sts'], ENT_QUOTES) }}</p>
     <p><strong>Date Of Birth:</strong> {{ htmlspecialchars($formData['dob'], ENT_QUOTES) }}</p>
     <p><strong>Apply Course:</strong> {{ $formData['course']->name }}</p>
-    <p>Please use admin panel to see more information about&nbsp;<b>{{ htmlspecialchars($formData['name']) }}</b>
+        <p>Click <a href="{{ $url }}">here</a> to view the admission forms.</p>
     </p>
 </body>
 

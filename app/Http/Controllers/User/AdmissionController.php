@@ -3,24 +3,18 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-// use App\Mail\NewAdmissionFormSubmitted;
+use App\Mail\NewAdmissionFormSubmitted;
+
 use App\Models\Admission;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Mail;
+
 
 class AdmissionController extends Controller
 {
-    public function index()
-    {
-        $activeCourses = Course::where('is_active', true)->get();
-        return view('admin.admissions.index', [
-            'admissions' => Admission::latest()->get(),
-            'courses' => $activeCourses,
-        ]);
-    }
-
     public function create(Course $courses)
     {
         return view('user.admission.create', [
@@ -33,7 +27,7 @@ class AdmissionController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:admissions,email|max:255',
+            'email' => 'required|string|email',
             'phone' => 'required|string|max:11',
             'address' => 'required|string',
             'country' => 'required|string',
@@ -48,6 +42,24 @@ class AdmissionController extends Controller
 
         // Redirect to the second page with the validated data
         return redirect('/piu/application/second-form')->with('validatedData', $validatedData);
+    }
+
+    protected function getFacultyEmail($courseId)
+    {
+        // Implement your logic to determine faculty email based on the $courseId
+        // For example:
+        switch ($courseId) {
+            case 4:
+                return 'myominthu819@gmail.com';
+            case 7:
+                return 'lwinmarkhaing27@gmail.com';
+            case 8:
+                return 'mgmyomin819g@gmail.com';
+            case 9:
+                return 'infinitylearn44g@gmail.com';
+            default:
+                return 'piu.webdeveloper@gmail.com';
+        }
     }
 
     public function storeSecond(Request $request, Admission $admission)
@@ -119,34 +131,45 @@ class AdmissionController extends Controller
         $admission->save();
 
         $courseId = $request->input('course_id');
-        $adminEmail = '';
+$adminEmail = $this->getFacultyEmail($courseId);
 
-        // Determine the admin email based on the course id
-        // if ($courseId == 9) {
-        //     $adminEmail = 'oketama020@gmail.com';
-        // } elseif ($courseId == 16) {
-        //     $adminEmail = 'moet.khaing@gmail.com';
-        // } elseif ($courseId == 3) {
-        //     $adminEmail = 'ohmar.mme@gmail.com';
-        // } elseif ($courseId == 4) {
-        //     $adminEmail = 'wint.wtun@gmail.com';
-        // } elseif ($courseId == 6) {
-        //     $adminEmail = 'mayyimyint.pdopiu@gmail.com';
-        // } elseif ($courseId == 10) {
-        //     $adminEmail = 'intellay@gmail.com';
-        // } elseif ($courseId == 17) {
-        //     $adminEmail = 'wint.wtun@gmail.com';
-        // } elseif ($courseId == 19) {
-        //     $adminEmail = 'wint.wtun@gmail.com';
-        // }
+//Determine the admin email based on the course id
+if ($courseId == 4) {
+    $adminEmail = 'oketama020@gmail.com';
+
+} elseif ($courseId == 9) {
+    $adminEmail = 'moet.khaing@gmail.com';
+} elseif ($courseId == 3) {
+    $adminEmail = 'ohmar.mme@gmail.com';
+
+} elseif ($courseId == 8) {
+    $adminEmail = 'wint.wtun@gmail.com';
+
+} elseif ($courseId == 7) {
+    $adminEmail = 'mayyimyint.pdopiu@gmail.com';
+
+} elseif ($courseId == 3) {
+    $adminEmail = 'intellay@gmail.com';
+
+} elseif ($courseId == 1) {
+    $adminEmail = 'wint.wtun@gmail.com';
+
+} elseif ($courseId == 1) {
+    $adminEmail = 'wint.wtun@gmail.com';
+}
+
+
 
         // Send notification email to admin with CC
-        // Mail::to($adminEmail)
-        //     ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com'])
-        //     ->send(new NewAdmissionFormSubmitted($admission));
+// Mail::to($adminEmail)
+//     ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com'])
+//     ->send(new NewAdmissionFormSubmitted($admission));
 
-        // Send email verification notification to user
-        // $admission->sendEmailVerificationNotification();
+Mail::to($adminEmail)
+    ->cc('piu.webdeveloper@gmail.com')
+    ->send(new NewAdmissionFormSubmitted($admission));
+
+
 
         return redirect("/piu/admission/application-form-successfully-submited/{$verificationToken}")
             ->with('status', 'Your application has been submitted. Please check your email to verify your email address.');
