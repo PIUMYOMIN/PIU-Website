@@ -65,7 +65,7 @@ Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admi
 
 Route::get('/admin', [AdminController::class, 'index'])->middleware('auth', 'role:admin|manager')->name('index');
 
-Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin|manager|staff|registerer'])->name('admin.')->prefix('admin')->group(function () {
 //admission
     Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
     Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
