@@ -165,7 +165,6 @@
             <div class="row">
                 <div class="con-title">
                     <h2>News and <span>Events</span></h2>
-                    <p>Fusce id sem at ligula laoreet hendrerit venenatis sed purus. Ut pellentesque maximus lacus, nec pharetra augue.</p>
                 </div>
             </div>
             <div class="row">

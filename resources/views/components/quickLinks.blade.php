@@ -5,7 +5,7 @@
                 <div class="wed-hom-ser">
                     <ul>
                         <li>
-                            <a href="/about" class="waves-effect waves-light btn-large wed-pop-ser-btn"><img src="images/icon/h-ic1.png" alt=""> About</a>
+                            <a href="/about-us" class="waves-effect waves-light btn-large wed-pop-ser-btn"><img src="images/icon/h-ic1.png" alt=""> About</a>
                         </li>
                         <li>
                             <a href="/piu/admission/application-form" class="waves-effect waves-light btn-large wed-pop-ser-btn"><img src="images/icon/h-ic2.png" alt=""> Admission</a>

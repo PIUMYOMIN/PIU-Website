@@ -16,7 +16,8 @@
                     <div class="pg-contact">
                         <div class="col-md-3 col-sm-6 col-xs-12 new-con new-con1">
                             <h2>Phaugn Daw Oo <span>International University</span></h2>
-                            <p>We Provide Outsourced Software Development Services To Over 50 Clients From 21 Countries.</p>
+                            <p>We Provide Better Eudcation To Over 2500 students around the Countries.
+                            </p>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12 new-con new-con1"> <img src="img/contact/1.html"
                                 alt="">

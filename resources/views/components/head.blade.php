@@ -3,9 +3,14 @@
     <!-- META TAGS -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Education master is one of the best educational html template, it's suitable for all education websites like university,college,school,online education,tution center,distance education,computer education">
-    <meta name="keyword" content="education html template, university template, college template, school template, online education template, tution center template">
+    <meta property="og:url" content="https://piueducation.org">
+    <meta property="og:type" content="piueducation.org">
+    <meta property="og:title" content="Phaung Daw Oo International University">
+    <meta property="og:description"
+        content="Phaung Daw Oo University is providing the best education for all students in Myanmar and students from oversea.">
+    <meta property="og:image" content="{{ asset('images/PIU-logo.png') }}">
+    <meta name="keyword"
+        content="Phaung Daw Oo International University, PIU Myanmar, Phaung Daw Oo, PIU Buddhist Studies, Education for all">
     <!-- FAV ICON(BROWSER TAB ICON) -->
     <link rel="shortcut icon" href="{{ asset('images/fav.ico') }}" type="image/x-icon">
     <!-- GOOGLE FONT -->
