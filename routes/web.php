@@ -13,12 +13,14 @@ use App\Http\Controllers\Admin\AdminCourseCommentController;
 use App\Http\Controllers\Admin\AdminCourseController;
 
 use App\Http\Controllers\Admin\AdminDepartmentController;
+use App\Http\Controllers\Admin\AdminEventController;
+
 use App\Http\Controllers\Admin\AdminNewsController;
 
 use App\Http\Controllers\Admin\AdminPositionController;
 use App\Http\Controllers\Admin\AdminSeminarController;
 use App\Http\Controllers\Admin\AdminTeamController;
-use App\Http\Controllers\Admin\AdminEventController;
+
 
 
 use App\Http\Controllers\Admin\SeminarEnrollController;
@@ -59,13 +61,15 @@ Route::post('/user/register/form/submit', [UserController::class, 'store'])->nam
 
 Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admin.auth.logout');
 
+Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.index');
+
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('index');
 
 //user details/delete
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/user/{user:id}/details', [UserController::class, 'show'])->name('user.details');
 Route::delete('/user/{user:id}', [UserController::class, 'destroy'])->name('user.destroy');
+
 
 //user role
 
@@ -181,12 +185,14 @@ Route::post('/gallery/store', [AdminGalleryController::class, 'store'])->name('g
 Route::get('/gallery/{gallery:id}/edit', [AdminGalleryController::class, 'edit'])->name('gallery.edit');
 Route::patch('/gallery/{gallery:id}/update', [AdminGalleryController::class, 'update'])->name('gallery.update');
 
+
 //seminars
 Route::get('/seminars', [AdminSeminarController::class, 'index'])->name('seminar.index');
 Route::get('/seminar/create', [AdminSeminarController::class, 'create'])->name('seminar.create');
 Route::post('/seminar/store', [AdminSeminarController::class, 'store'])->name('seminar.store');
 Route::get('/seminar/{seminar:id}/edit', [AdminSeminarController::class, 'edit'])->name('seminar.edit');
 Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'update'])->name('seminar.update');
+
 
 //slide
 Route::get('/slides', [AdminSlideController::class, 'index'])->name('slide');
@@ -195,6 +201,7 @@ Route::post('/slides/store', [AdminSlideController::class, 'store'])->name('slid
 Route::get('/slides/{slide:id}/edit', [AdminSlideController::class, 'edit'])->name('slides.edit');
 Route::patch('/slides/{slide:id}/update', [AdminSlideController::class, 'update'])->name('slides.update');
 Route::patch('/slide/{slide:id}/isActive', [AdminSlideController::class, 'isActive'])->name('slide.isActive');
+
 
 //course category
 Route::get('/course-categories', [AdminCourseCategoryController::class, 'index'])->name('category');
@@ -212,7 +219,6 @@ Route::get('/event/{event:id}/edit', [AdminEventController::class, 'edit'])->nam
 Route::patch('/event/{event:id}/update', [AdminEventController::class, 'update'])->name('event.update');
 
 
-
 });
 
 //admin, manager, staff, registrar
@@ -225,15 +231,6 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.'
 
 Route::middleware(['auth', 'role:admin|manager|staff|faculty|registrar|user'])->name('admin.')->prefix('admin')->group(function () {
 // User Routes
-
-
-
-
-
-
-
-
-
 
     Route::get('/user/{user:id}/update', [UserController::class, 'update'])->name('user.update');
 

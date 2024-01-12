@@ -119,13 +119,15 @@ class UserController extends Controller
 
     if (Auth::attempt($credentials, $request->has('remember'))) {
         // Authentication passed
-return redirect()->route('admin');
+return redirect('/');
+
 
     }
 
     // Authentication failed
     return redirect('/login')->withErrors(['email' => 'Invalid email or password.']);
 }
+
 
 
 
