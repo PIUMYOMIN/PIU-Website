@@ -266,8 +266,8 @@ return redirect()->route('admin');
     }
 
 
-    // twitter redirect 
-    // twitter login redirect 
+// twitter redirect
+
     public function redirectToTwitter()
     {
         return Socialite::driver('twitter')->redirect();
