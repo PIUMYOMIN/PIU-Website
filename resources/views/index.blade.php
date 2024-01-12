@@ -183,10 +183,17 @@
                 <div class="col-md-4">
                     <div class="bot-gal h-vid ho-event-mob-bot-sp">
                         <h4>Video Gallery</h4>
-                        {{-- <iframe src="https://www.youtube.com/embed/2WqFtiR4-F4?autoplay=0&amp;showinfo=0&amp;controls=0" allowfullscreen></iframe> --}}
-                        <h5>Maecenas sollicitudin lacinia</h5>
-                        <p>Maecenas finibus neque a tellus auctor mattis. Aliquam tempor varius ornare. Maecenas dignissim leo leo, nec posuere purus finibus vitae.</p>
-                        <p>Quisque vitae neque at tellus malesuada convallis. Phasellus in lectus vitae ex euismod interdum non a lorem. Nulla bibendum. Curabitur mi odio, tempus quis risus cursus.</p>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/6fHnGiyImAA"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
+                        <h5>Bachelor of Arts in Social Studies</h5>
+                        <p>
+                            Phaung Daw Oo International University (PIU) provides a Bachelor of Arts degree program in
+                            Pāli and Sanskrit Language and Literature in collaboration with the International Buddhist
+                            College (IBC), Thailand. Under this program, students from Myanmar will attend the first two
+                            years at PIU in Myanmar and another two years at IBC in Thailand.
+                        </p>
                     </div>
                 </div>
                 <div class="col-md-4">

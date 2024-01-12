@@ -14,7 +14,7 @@
                             <a href="/courses" class="waves-effect waves-light btn-large wed-pop-ser-btn"><img src="images/icon/h-ic4.png" alt=""> Courses</a>
                         </li>
                         <li>
-                            <a href="/seminars" class="waves-effect waves-light btn-large wed-pop-ser-btn"><img src="images/icon/h-ic3.png" alt=""> Seminar</a>
+                            <a href="/events" class="waves-effect waves-light btn-large wed-pop-ser-btn"><img src="images/icon/h-ic3.png" alt=""> Events</a>
                         </li>
                     </ul>
                 </div>
