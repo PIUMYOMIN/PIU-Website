@@ -60,7 +60,8 @@ Route::post('/admin/auth/logout',[UserController::class,'logout'])->name('admin.
 
 
 
-Route::get('/admin',[AdminController::class,'index'])->middleware('auth')->name('index');
+Route::get('/admin', [AdminController::class, 'index'])->middleware('auth', 'role:admin|writer')->name('index');
+
 
 Route::middleware(['auth','role:admin|writer|user'])->name('admin.')->prefix('admin')->group(function(){
   // User Routes

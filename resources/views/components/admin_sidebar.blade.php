@@ -15,7 +15,7 @@
     <!--== LEFT MENU ==-->
     <div class="sb2-13">
         <ul class="collapsible" data-collapsible="accordion">
-            <li><a href="admin.html" class="menu-active"><i class="fa fa-bar-chart" aria-hidden="true"></i> Dashboard</a>
+            <li><a href="/admin" class="menu-active"><i class="fa fa-bar-chart" aria-hidden="true"></i> Dashboard</a>
             </li>
             <li>
                 <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}"><i class="fa fa-cogs"
