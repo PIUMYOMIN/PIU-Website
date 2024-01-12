@@ -7,13 +7,11 @@
                     <div class="ed-about-tit">
                         <div class="con-title">
                             <h2>University <span> News</span></h2>
-                            <p>Fusce id sem at ligula laoreet hendrerit venenatis sed purus. Ut pellentesque maximus
-                                lacus, nec pharetra augue.</p>
                         </div>
                         <div>
                             <div class="ho-event pg-eve-main pg-blog">
                                 <ul>
-                                  @foreach ($news as $new)
+                                  @forelse ($news as $new)
                                     <li>
                                         <div class="ho-ev-date pg-eve-date"><span>07</span><span>jan,2018</span>
                                         </div>
@@ -49,7 +47,9 @@
                                             <a href="/news/{{ $new->title }}">Read more</a>
                                         </div>
                                     </li>
-                                    @endforeach
+                                    @empty
+                                    <p class="text-center">No news found.</p>
+                                    @endforelse
                                 </ul>
                             </div>
                         </div>
