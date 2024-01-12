@@ -42,8 +42,8 @@
                                             auth()->user()->can('Manager'))
                                         <th>Active</th>
                                         <th>Application on/off</th>
-                                        @endif
                                         <th>View</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
