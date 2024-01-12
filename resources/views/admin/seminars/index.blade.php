@@ -54,11 +54,13 @@
                                                       </td>
   													                          <td>
                                                         <a href="{{ route('admin.seminar.edit',[$seminar->id]) }}" class="ad-st-view">Edit</a>
+                                                        @if (auth()->user()->can('Read and Write'))
                                                         <form action="{{ route('admin.seminar.delete',[$seminar->id]) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="ad-st-view">Delete</button>
                                                         </form>
+                                                        @endif
                                                       </td>
                                                   </tr>
                                                 @endforeach

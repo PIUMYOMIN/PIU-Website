@@ -128,7 +128,8 @@
                     <a href="/admin/slides"><i class="fa fa-image" aria-hidden="true"></i> Slider</a>
                 </li>
                 @if (auth()->user()->can('Read and Write') ||
-                        auth()->user()->can('Manager'))
+                    auth()->user()->can('Read') ||
+                    auth()->user()->can('Write'))
                 <li>
                     <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-calendar"
                             aria-hidden="true"></i> Events</a>

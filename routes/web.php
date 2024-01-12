@@ -18,6 +18,8 @@ use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminPositionController;
 use App\Http\Controllers\Admin\AdminSeminarController;
 use App\Http\Controllers\Admin\AdminTeamController;
+use App\Http\Controllers\Admin\AdminEventController;
+
 
 use App\Http\Controllers\Admin\SeminarEnrollController;
 use App\Http\Controllers\HomeController;
@@ -60,6 +62,11 @@ Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admi
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('index');
 
+//user details/delete
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/user/{user:id}/details', [UserController::class, 'show'])->name('user.details');
+Route::delete('/user/{user:id}', [UserController::class, 'destroy'])->name('user.destroy');
+
 //user role
 
 Route::post('/user/{user:id}/roles', [UserController::class, 'assignRole'])->name('user.roles');
@@ -96,13 +103,8 @@ Route::delete('/permissions/{permission:id}/role/{role:id}', [PermissionControll
 
 // News Routes
 
-
-Route::get('/news', [AdminNewsController::class, 'index'])->name('news.index');
-Route::get('/news/create', [AdminNewsController::class, 'create'])->name('news.create');
-Route::post('/news/form/submit', [AdminNewsController::class, 'store'])->name('news.form.submit');
-Route::get('/news/{new:slug}/edit', [AdminNewsController::class, 'edit'])->name('news.edit');
-Route::patch('/news/form/{new:slug}/update', [AdminNewsController::class, 'update'])->name('news.form.update');
 Route::delete('/news/{new:slug}/delete', [AdminNewsController::class, 'destroy'])->name('news.delete');
+
 
 // teams Routes
 
@@ -113,23 +115,11 @@ Route::get('/team/{team:id}/edit', [AdminTeamController::class, 'edit'])->name('
 Route::patch('/team/form/{team:id}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
 Route::delete('/team/{team:id}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
 
+
 //Slider
 
-Route::get('/slides', [AdminSlideController::class, 'index'])->name('slide');
-Route::get('/slides/create', [AdminSlideController::class, 'create'])->name('slides.create');
-Route::post('/slides/store', [AdminSlideController::class, 'store'])->name('slides.store');
-Route::get('/slides/{slide:id}/edit', [AdminSlideController::class, 'edit'])->name('slides.edit');
-Route::patch('/slides/{slide:id}/update', [AdminSlideController::class, 'update'])->name('slides.update');
-Route::patch('/slide/{slide:id}/isActive', [AdminSlideController::class, 'isActive'])->name('slide.isActive');
 Route::delete('/slides/{slide:id}/delete', [AdminSlideController::class, 'delete'])->name('slides.delete');
 
-//course category
-
-Route::get('/course-categories', [AdminCourseCategoryController::class, 'index'])->name('category');
-Route::get('/course-category/create', [AdminCourseCategoryController::class, 'create'])->name('course-category.create');
-Route::post('/course/category/create', [AdminCourseCategoryController::class, 'store'])->name('course.category.create');
-Route::get('/course/category/{category:id}/edit', [AdminCourseCategoryController::class, 'edit'])->name('course.category.edit');
-Route::patch('/course/category/{category:id}/update', [AdminCourseCategoryController::class, 'update'])->name('course.category.update');
 
 //course comment
 
@@ -137,52 +127,95 @@ Route::post('/course/comment/create', [AdminCourseCommentController::class, 'sto
 Route::get('/course/category/{category:id}/edit', [AdminCourseCommentController::class, 'edit'])->name('course.comment.edit');
 Route::patch('/course/category/{comment:id}/update', [AdminCourseCommentController::class, 'update'])->name('course.comment.update');
 
+
 //courses
 
 Route::delete('/course/{course:id}/delete', [AdminCourseController::class, 'delete'])->name('course.delete');
 
+
 //seminar
 
-Route::get('/seminars', [AdminSeminarController::class, 'index'])->name('seminar.index');
-Route::get('/seminar/create', [AdminSeminarController::class, 'create'])->name('seminar.create');
-Route::post('/seminar/store', [AdminSeminarController::class, 'store'])->name('seminar.store');
-Route::get('/seminar/{seminar:id}/edit', [AdminSeminarController::class, 'edit'])->name('seminar.edit');
-Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'update'])->name('seminar.update');
 Route::delete('/seminar/{seminar:id}/delete', [AdminSeminarController::class, 'delete'])->name('seminar.delete');
+
 
 //seminar enroll
 
 Route::get('/seminar-enquiry', [SeminarEnrollController::class, 'index'])->name('seminar.enroll.index');
 Route::post('/seminar/enroll/submit', [SeminarEnrollController::class, 'store'])->name('seminar.enroll.submit');
 
+
 //event
 
-Route::get('/events', [AdminEventController::class, 'index'])->name('event.index');
-Route::get('/event/create', [AdminEventController::class, 'create'])->name('event.create');
-Route::post('/event/store', [AdminEventController::class, 'store'])->name('event.store');
-Route::get('/event/{event:id}/edit', [AdminEventController::class, 'edit'])->name('event.edit');
-Route::patch('/event/{event:id}/update', [AdminEventController::class, 'update'])->name('event.update');
 Route::delete('/event/{event:id}/delete', [AdminEventController::class, 'delete'])->name('event.delete');
+
 
 //event register
 
 Route::get('/event-enquiry', [AdminEventRegisterController::class, 'index'])->name('event.register.index');
 Route::post('/event/register/submit', [AdminEventRegisterController::class, 'store'])->name('event.register.submit');
 
+
 //galleries
 
+    Route::delete('/gallery/{gallery:id}/delete', [AdminGalleryController::class, 'delete'])->name('gallery.delete');
+
+//contact
+    Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
+
+});
+
+//Admin, Manager and Staff
+Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix('admin')->group(function () {
+
+    //news
+    Route::get('/news', [AdminNewsController::class, 'index'])->name('news.index');
+    Route::get('/news/create', [AdminNewsController::class, 'create'])->name('news.create');
+    Route::post('/news/form/submit', [AdminNewsController::class, 'store'])->name('news.form.submit');
+    Route::get('/news/{new:slug}/edit', [AdminNewsController::class, 'edit'])->name('news.edit');
+    Route::patch('/news/form/{new:slug}/update', [AdminNewsController::class, 'update'])->name('news.form.update');
+
+    //galleries
 Route::get('/galleries', [AdminGalleryController::class, 'index'])->name('gallery.index');
 Route::get('/gallery/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
 Route::post('/gallery/store', [AdminGalleryController::class, 'store'])->name('gallery.store');
 Route::get('/gallery/{gallery:id}/edit', [AdminGalleryController::class, 'edit'])->name('gallery.edit');
 Route::patch('/gallery/{gallery:id}/update', [AdminGalleryController::class, 'update'])->name('gallery.update');
-Route::delete('/gallery/{gallery:id}/delete', [AdminGalleryController::class, 'delete'])->name('gallery.delete');
 
-//contact
-Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
+//seminars
+Route::get('/seminars', [AdminSeminarController::class, 'index'])->name('seminar.index');
+Route::get('/seminar/create', [AdminSeminarController::class, 'create'])->name('seminar.create');
+Route::post('/seminar/store', [AdminSeminarController::class, 'store'])->name('seminar.store');
+Route::get('/seminar/{seminar:id}/edit', [AdminSeminarController::class, 'edit'])->name('seminar.edit');
+Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'update'])->name('seminar.update');
+
+//slide
+Route::get('/slides', [AdminSlideController::class, 'index'])->name('slide');
+Route::get('/slides/create', [AdminSlideController::class, 'create'])->name('slides.create');
+Route::post('/slides/store', [AdminSlideController::class, 'store'])->name('slides.store');
+Route::get('/slides/{slide:id}/edit', [AdminSlideController::class, 'edit'])->name('slides.edit');
+Route::patch('/slides/{slide:id}/update', [AdminSlideController::class, 'update'])->name('slides.update');
+Route::patch('/slide/{slide:id}/isActive', [AdminSlideController::class, 'isActive'])->name('slide.isActive');
+
+//course category
+Route::get('/course-categories', [AdminCourseCategoryController::class, 'index'])->name('category');
+Route::get('/course-category/create', [AdminCourseCategoryController::class, 'create'])->name('course-category.create');
+Route::post('/course/category/create', [AdminCourseCategoryController::class, 'store'])->name('course.category.create');
+Route::get('/course/category/{category:id}/edit', [AdminCourseCategoryController::class, 'edit'])->name('course.category.edit');
+Route::patch('/course/category/{category:id}/update', [AdminCourseCategoryController::class, 'update'])->name('course.category.update');
+
+
+//event
+Route::get('/events', [AdminEventController::class, 'index'])->name('event.index');
+Route::get('/event/create', [AdminEventController::class, 'create'])->name('event.create');
+Route::post('/event/store', [AdminEventController::class, 'store'])->name('event.store');
+Route::get('/event/{event:id}/edit', [AdminEventController::class, 'edit'])->name('event.edit');
+Route::patch('/event/{event:id}/update', [AdminEventController::class, 'update'])->name('event.update');
+
 
 
 });
+
+//admin, manager, staff, registrar
 
 Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
 //admission
@@ -191,19 +224,24 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.'
 });
 
 Route::middleware(['auth', 'role:admin|manager|staff|faculty|registrar|user'])->name('admin.')->prefix('admin')->group(function () {
-    // User Routes
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/user/{user:id}/details', [UserController::class, 'show'])->name('user.details');
+// User Routes
+
+
+
+
+
+
+
+
+
+
     Route::get('/user/{user:id}/update', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/user/{user:id}', [UserController::class, 'destroy'])->name('user.destroy');
+
     Route::get('/user/password-change/{user:id}', [UserController::class, 'passwordChange'])->name('user.password-change');
     Route::post('/user/passwordUpdate/{user:id}', [UserController::class, 'passwordUpdate'])->name('user.passwordUpdate');
 
-});
-
-//all user
-Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/user/profile/{user}/edit', [UserController::class, 'editUserProfile'])->name('user.profile.edit');
+
 Route::patch('/user/{user:id}/edit/form/submit', [UserController::class, 'update'])->name('user.edit.form.submit');
 
 

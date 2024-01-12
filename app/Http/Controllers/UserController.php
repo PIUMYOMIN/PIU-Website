@@ -119,7 +119,8 @@ class UserController extends Controller
 
     if (Auth::attempt($credentials, $request->has('remember'))) {
         // Authentication passed
-        return redirect()->intended('/'); // Redirect to a specific page after successful login
+return redirect()->route('admin');
+
     }
 
     // Authentication failed
