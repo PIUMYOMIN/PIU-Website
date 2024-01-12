@@ -22,7 +22,8 @@
                         aria-hidden="true"></i> Profile Setting</a>
             </li>
             <li>
-                <a href="{{ route('admin.user.password-change',['user' => auth()->user()->id]) }}"><i class="fa fa-key" aria-hidden="true"></i> Change Password</a>
+                <a href="{{ route('admin.user.password-change', ['user' => auth()->user()->id]) }}"><i class="fa fa-key"
+                        aria-hidden="true"></i> Change Password</a>
             </li>
             @if (auth()->user()->can('Read and Write'))
                 <li>
@@ -46,8 +47,9 @@
                     </div>
                 </li>
             @endif
-            @if (auth()->user()->can('Read and Write')||
-                auth()->user()->can('Read'))
+            @if (auth()->user()->can('Read and Write') ||
+                    auth()->user()->can('Read') ||
+                    auth()->user()->can('Registrar'))
                 <li>
                     <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-book"
                             aria-hidden="true"></i>
@@ -86,24 +88,31 @@
                         </ul>
                     </div>
                 </li>
-                <li>
-                    <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-bookmark-o"
-                            aria-hidden="true"></i>All News</a>
-                    <div class="collapsible-body left-sub-menu">
-                        <ul>
-                            <li>
-                                <a href="/admin/news">News</a>
-                            </li>
-                            @if (auth()->user()->can('Read and Write') ||
-                                    auth()->user()->can('Write') ||
-                                    auth()->user()->can('Manager'))
+                @if (auth()->user()->can('Read and Write') ||
+                        auth()->user()->can('Write') ||
+                        auth()->user()->can('Read') ||
+                        auth()->user()->can('Manager'))
+                    <li>
+                        <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-bookmark-o"
+                                aria-hidden="true"></i>All News</a>
+                        <div class="collapsible-body left-sub-menu">
+                            <ul>
                                 <li>
-                                    <a href="/admin/news/create">Create News</a>
+                                    <a href="/admin/news">News</a>
                                 </li>
-                            @endif
-                        </ul>
-                    </div>
-                </li>
+                                @if (auth()->user()->can('Read and Write') ||
+                                        auth()->user()->can('Write') ||
+                                        auth()->user()->can('Manager'))
+                                    <li>
+                                        <a href="/admin/news/create">Create News</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+                @endif
+                @if (auth()->user()->can('Read and Write') ||
+                        auth()->user()->can('Manager'))
                 <li><a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-users"
                             aria-hidden="true"></i>
                         Teams</a>
@@ -114,9 +123,12 @@
                         </ul>
                     </div>
                 </li>
+                @endif
                 <li>
                     <a href="/admin/slides"><i class="fa fa-image" aria-hidden="true"></i> Slider</a>
                 </li>
+                @if (auth()->user()->can('Read and Write') ||
+                        auth()->user()->can('Manager'))
                 <li>
                     <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-calendar"
                             aria-hidden="true"></i> Events</a>
@@ -133,17 +145,7 @@
                         </ul>
                     </div>
                 </li>
-                <li><a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-cloud-download"
-                            aria-hidden="true"></i> Import & Export</a>
-                    <div class="collapsible-body left-sub-menu">
-                        <ul>
-                            <li><a href="admin-export-data.html">Export all datas</a>
-                            </li>
-                            <li><a href="admin-import-data.html">Import all datas</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                @endif
             @endif
             @if (auth()->user()->can('Read and Write') ||
                     auth()->user()->can('Read') ||
@@ -193,11 +195,10 @@
                     </div>
                 </li>
             @endif
-            @if (auth()->user()->can('Read and Write') || 
-            auth()->user()->can('Read') ||
-            auth()->user()->can('Write') ||
-            auth()->user()->can('Manager'))
-            <li><a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-bullhorn"
+            @if (auth()->user()->can('Read and Write') ||
+                    auth()->user()->can('Read') ||
+                    auth()->user()->can('Write'))
+                <li><a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-bullhorn"
                             aria-hidden="true"></i> Seminar</a>
                     <div class="collapsible-body left-sub-menu">
                         <ul>
@@ -213,10 +214,10 @@
                         </ul>
                     </div>
                 </li>
-                @endif
-            @if (auth()->user()->can('Read and Write') || 
-            auth()->user()->can('Manager'))
-            <li><a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-pencil"
+            @endif
+            @if (auth()->user()->can('Read and Write') ||
+                    auth()->user()->can('Manager'))
+                <li><a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-pencil"
                             aria-hidden="true"></i>
                         Exam time table</a>
                     <div class="collapsible-body left-sub-menu">
@@ -228,7 +229,7 @@
                         </ul>
                     </div>
                 </li>
-                @endif
+            @endif
             @if (auth()->user()->can('Read and Write'))
                 <li>
                     <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-commenting-o"
