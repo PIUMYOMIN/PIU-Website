@@ -160,15 +160,11 @@ if ($courseId == 4) {
 
 
 
-        // Send notification email to admin with CC
-// Mail::to($adminEmail)
-//     ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com'])
-//     ->send(new NewAdmissionFormSubmitted($admission));
+// Send notification email to admin with CC
 
 Mail::to($adminEmail)
-    ->cc('piu.webdeveloper@gmail.com')
+    ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com'])
     ->send(new NewAdmissionFormSubmitted($admission));
-
 
 
         return redirect("/piu/admission/application-form-successfully-submited/{$verificationToken}")
