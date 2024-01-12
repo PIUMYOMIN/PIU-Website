@@ -62,6 +62,12 @@ Route::post('/admin/auth/logout',[UserController::class,'logout'])->name('admin.
 
 Route::get('/admin', [AdminController::class, 'index'])->middleware('auth', 'role:admin|manager')->name('index');
 
+Route::middleware(['auth', 'role:admin|manager'])->name('admin.')->prefix('admin')->group(function () {
+//admission
+    Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
+    Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
+});
+
 
 
 Route::middleware(['auth','role:admin|writer|user'])->name('admin.')->prefix('admin')->group(function(){
@@ -172,11 +178,9 @@ Route::middleware(['auth','role:admin|writer|user'])->name('admin.')->prefix('ad
   Route::delete('/gallery/{gallery:id}/delete', [AdminGalleryController::class,'delete'])->name('gallery.delete');
 
   //contact
-  Route::get('/contact-mails',[AdminContactController::class,'index'])->name('contact.index');
+Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
 
-//admission
-Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
-Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
+
 
 });
 

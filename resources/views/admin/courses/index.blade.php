@@ -83,7 +83,8 @@
                                                     @csrf
                                                     @method('PATCH')
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" name="application_sts"
+                                                        <input class="form-check-input" type="checkbox"
+                                                            name="application_sts"
                                                             id="application_sts_{{ $course->id }}" role="switch"
                                                             {{ $course->application_sts ? 'checked' : '' }}
                                                             onchange="this.form.submit()">
@@ -95,12 +96,16 @@
                                             <td>
                                                 <a href="{{ route('admin.course.edit', [$course->id]) }}"
                                                     class="ad-st-view">Edit</a>
-                                                <form action="{{ route('admin.course.delete', [$course->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="ad-st-view">Delete</button>
-                                                </form>
+                                                @if (auth()->user()->can('Read and Write') ||
+                                                        auth()->user()->can('Write') ||
+                                                        auth()->user()->can('Manager'))
+                                                    <form action="{{ route('admin.course.delete', [$course->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="ad-st-view">Delete</button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
