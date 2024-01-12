@@ -37,8 +37,12 @@
                                         <th>End Date</th>
                                         <th>Total Seats</th>
                                         <th>Created By</th>
+                                        @if (auth()->user()->can('Read and Write') ||
+                                            auth()->user()->can('Write') ||
+                                            auth()->user()->can('Manager'))
                                         <th>Active</th>
                                         <th>Application on/off</th>
+                                        @endif
                                         <th>View</th>
                                     </tr>
                                 </thead>
@@ -62,6 +66,9 @@
                                             <td>{{ $course->end_date }}</td>
                                             <td>{{ $course->total_seat }}</td>
                                             <td>{{ $course->user->name }}</td>
+                                            @if (auth()->user()->can('Read and Write') ||
+                                            auth()->user()->can('Write') ||
+                                            auth()->user()->can('Manager'))
                                             <td>
                                                 <form method="POST"
                                                     action="/admin/course/{{ $course->id }}/isActive">
@@ -93,6 +100,7 @@
                                                     </div>
                                                 </form>
                                             </td>
+                                            @endif
                                             <td>
                                                 <a href="{{ route('admin.course.edit', [$course->id]) }}"
                                                     class="ad-st-view">Edit</a>
