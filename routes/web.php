@@ -28,7 +28,6 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\User\CourseController;
 
-
 //User Controllers
 use App\Http\Controllers\User\EventController;
 
@@ -36,7 +35,6 @@ use App\Http\Controllers\User\NewsController;
 
 use App\Http\Controllers\User\SeminarController;
 use Spatie\Analytics\Period;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -51,35 +49,16 @@ use Spatie\Analytics\Period;
 
 Route::get('/', [HomeController::class, 'index']);
 
-
 Route::get('/login', [UserController::class, 'login'])->middleware('guest');
 Route::post('/user/login/form/submit', [UserController::class, 'user_login'])->name('user.login.form.submit');
-
 
 Route::get('/register', [UserController::class, 'register'])->middleware('guest')->name('admin.auth.register');
 Route::post('/user/register/form/submit', [UserController::class, 'store'])->name('user.register.form.submit');
 
-
 Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admin.auth.logout');
 
-
-Route::get('/admin', [AdminController::class, 'index'])->middleware('auth', 'role:admin|manager')->name('index');
-
-Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
-//admission
-    Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
-    Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
-});
-
-Route::middleware(['auth', 'role:admin|writer|user'])->name('admin.')->prefix('admin')->group(function () {
-    // User Routes
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/user/{user:id}/details', [UserController::class, 'show'])->name('user.details');
-Route::get('/user/{user:id}/update', [UserController::class, 'update'])->name('user.update');
-Route::delete('/user/{user:id}', [UserController::class, 'destroy'])->name('user.destroy');
-Route::get('/user/password-change/{user:id}', [UserController::class, 'passwordChange'])->name('user.password-change');
-Route::post('/user/passwordUpdate/{user:id}', [UserController::class, 'passwordUpdate'])->name('user.passwordUpdate');
-
+Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('index');
 
 //user role
 
@@ -117,13 +96,13 @@ Route::delete('/permissions/{permission:id}/role/{role:id}', [PermissionControll
 
 // News Routes
 
+
 Route::get('/news', [AdminNewsController::class, 'index'])->name('news.index');
 Route::get('/news/create', [AdminNewsController::class, 'create'])->name('news.create');
 Route::post('/news/form/submit', [AdminNewsController::class, 'store'])->name('news.form.submit');
 Route::get('/news/{new:slug}/edit', [AdminNewsController::class, 'edit'])->name('news.edit');
 Route::patch('/news/form/{new:slug}/update', [AdminNewsController::class, 'update'])->name('news.form.update');
 Route::delete('/news/{new:slug}/delete', [AdminNewsController::class, 'destroy'])->name('news.delete');
-
 
 // teams Routes
 
@@ -133,7 +112,6 @@ Route::post('/team/form/submit', [AdminTeamController::class, 'store'])->name('t
 Route::get('/team/{team:id}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
 Route::patch('/team/form/{team:id}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
 Route::delete('/team/{team:id}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
-
 
 //Slider
 
@@ -145,7 +123,6 @@ Route::patch('/slides/{slide:id}/update', [AdminSlideController::class, 'update'
 Route::patch('/slide/{slide:id}/isActive', [AdminSlideController::class, 'isActive'])->name('slide.isActive');
 Route::delete('/slides/{slide:id}/delete', [AdminSlideController::class, 'delete'])->name('slides.delete');
 
-
 //course category
 
 Route::get('/course-categories', [AdminCourseCategoryController::class, 'index'])->name('category');
@@ -154,18 +131,15 @@ Route::post('/course/category/create', [AdminCourseCategoryController::class, 's
 Route::get('/course/category/{category:id}/edit', [AdminCourseCategoryController::class, 'edit'])->name('course.category.edit');
 Route::patch('/course/category/{category:id}/update', [AdminCourseCategoryController::class, 'update'])->name('course.category.update');
 
-
 //course comment
 
 Route::post('/course/comment/create', [AdminCourseCommentController::class, 'store'])->name('course.comment.create');
 Route::get('/course/category/{category:id}/edit', [AdminCourseCommentController::class, 'edit'])->name('course.comment.edit');
 Route::patch('/course/category/{comment:id}/update', [AdminCourseCommentController::class, 'update'])->name('course.comment.update');
 
-
 //courses
 
 Route::delete('/course/{course:id}/delete', [AdminCourseController::class, 'delete'])->name('course.delete');
-
 
 //seminar
 
@@ -176,11 +150,10 @@ Route::get('/seminar/{seminar:id}/edit', [AdminSeminarController::class, 'edit']
 Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'update'])->name('seminar.update');
 Route::delete('/seminar/{seminar:id}/delete', [AdminSeminarController::class, 'delete'])->name('seminar.delete');
 
+//seminar enroll
 
-    //seminar enroll
 Route::get('/seminar-enquiry', [SeminarEnrollController::class, 'index'])->name('seminar.enroll.index');
 Route::post('/seminar/enroll/submit', [SeminarEnrollController::class, 'store'])->name('seminar.enroll.submit');
-
 
 //event
 
@@ -191,14 +164,13 @@ Route::get('/event/{event:id}/edit', [AdminEventController::class, 'edit'])->nam
 Route::patch('/event/{event:id}/update', [AdminEventController::class, 'update'])->name('event.update');
 Route::delete('/event/{event:id}/delete', [AdminEventController::class, 'delete'])->name('event.delete');
 
-
 //event register
 
 Route::get('/event-enquiry', [AdminEventRegisterController::class, 'index'])->name('event.register.index');
 Route::post('/event/register/submit', [AdminEventRegisterController::class, 'store'])->name('event.register.submit');
 
+//galleries
 
-    //galleries
 Route::get('/galleries', [AdminGalleryController::class, 'index'])->name('gallery.index');
 Route::get('/gallery/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
 Route::post('/gallery/store', [AdminGalleryController::class, 'store'])->name('gallery.store');
@@ -206,10 +178,26 @@ Route::get('/gallery/{gallery:id}/edit', [AdminGalleryController::class, 'edit']
 Route::patch('/gallery/{gallery:id}/update', [AdminGalleryController::class, 'update'])->name('gallery.update');
 Route::delete('/gallery/{gallery:id}/delete', [AdminGalleryController::class, 'delete'])->name('gallery.delete');
 
-
 //contact
 Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
 
+
+});
+
+Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
+//admission
+    Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
+    Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
+});
+
+Route::middleware(['auth', 'role:admin|manager|staff|faculty|registrar|user'])->name('admin.')->prefix('admin')->group(function () {
+    // User Routes
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/user/{user:id}/details', [UserController::class, 'show'])->name('user.details');
+    Route::get('/user/{user:id}/update', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/user/{user:id}', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::get('/user/password-change/{user:id}', [UserController::class, 'passwordChange'])->name('user.password-change');
+    Route::post('/user/passwordUpdate/{user:id}', [UserController::class, 'passwordUpdate'])->name('user.passwordUpdate');
 
 });
 
@@ -217,6 +205,7 @@ Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('co
 Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/user/profile/{user}/edit', [UserController::class, 'editUserProfile'])->name('user.profile.edit');
 Route::patch('/user/{user:id}/edit/form/submit', [UserController::class, 'update'])->name('user.edit.form.submit');
+
 
 });
 
@@ -251,6 +240,7 @@ Route::post('/position/store', [AdminPositionController::class, 'store'])->name(
 Route::get('/position/{position:id}/edit', [AdminPositionController::class, 'edit'])->name('position.edit');
 Route::patch('/position/{position:id}/update', [AdminPositionController::class, 'update'])->name('position.update');
 
+
 //seminar
 Route::get('/seminars', [AdminSeminarController::class, 'index'])->name('seminar.index');
 Route::get('/seminar/create', [AdminSeminarController::class, 'create'])->name('seminar.create');
@@ -258,21 +248,19 @@ Route::post('/seminar/store', [AdminSeminarController::class, 'store'])->name('s
 Route::get('/seminar/{seminar:id}/edit', [AdminSeminarController::class, 'edit'])->name('seminar.edit');
 Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'update'])->name('seminar.update');
 
+
 });
 
 //course
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{slug}', [CourseController::class, 'show'])->name('courses.show');
 
-
 //news
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 
-
 //seminar
 Route::get('/seminars/{seminar:slug}', [SeminarController::class, 'show'])->name('seminar.show');
-
 
 //event
 Route::get('/events', [EventController::class, 'index'])->name('event.index');
@@ -283,7 +271,6 @@ Route::get('/events/{slug}/register', [EventController::class, 'register'])->nam
 //Contact Form
 Route::get('/contact', [ContactController::class, 'index']);
 Route::post('/contact/form/submit', [ContactController::class, 'store'])->name('contact.form.submit');
-
 
 //Admission
 Route::get('/piu/admission/application-form', [AdmissionController::class, 'create']);
@@ -303,27 +290,24 @@ Route::get('/data', function () {
 Route::get('/auth/google/user/redirect', [UserController::class, 'redirectToGoogle'])->name('auth.google.user.redirect');
 Route::get('/auth/google/user/callback', [UserController::class, 'googleCallback'])->name('googleCallback');
 
-
 //facebook login
 Route::get('/auth/facebook/user/redirect', [UserController::class, 'redirectToFacebook'])->name('auth.facebook.user.redirect');
 Route::get('/auth/facebook/user/callback', [UserController::class, 'facebookCallback'])->name('facebookCallback');
-
 
 //twitter login
 Route::get('/auth/twitter/user/redirect', [UserController::class, 'redirectToTwitter'])->name('auth.twitter.user.redirect');
 Route::get('/auth/twitter/user/callback', [UserController::class, 'twitterCallback'])->name('twitterCallback');
 
-
 Route::get('/about-us', function () {
     return view('user.about.index');
 });
 
-Route::get('/president-of-piu',function(){
-return view('user.about.president');
+Route::get('/president-of-piu',function () {
+    return view('user.about.president');
 
 });
 
-Route::get('/pravicy-policy',function(){
-return view('user.pravicy.index');
+Route::get('/pravicy-policy',function () {
+    return view('user.pravicy.index');
 
 });
