@@ -29,15 +29,15 @@
                     </div>
                     <div class="col-md-3 col-sm-4 col-xs-12">
                         <div class="ed-course-in">
-                            <a class="course-overlay" href="dashboard.html">
+                            <a class="course-overlay" href="/our-alumni">
                                 <img src="images/h-cam.jpg" alt="">
-                                <span>Students profile</span>
+                                <span>Our Alumni</span>
                             </a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-4 col-xs-12">
                         <div class="ed-course-in">
-                            <a class="course-overlay" href="research.html">
+                            <a class="course-overlay" href="/courses/postgraduate-diploma-in-education">
                                 <img src="images/h-res.jpg" alt="">
                                 <span>Research & Education</span>
                             </a>
@@ -53,17 +53,17 @@
                     </div>
                     <div class="col-md-3 col-sm-4 col-xs-12">
                         <div class="ed-course-in">
-                            <a class="course-overlay" href="db-time-line.html">
+                            <a class="course-overlay" href="/president-of-piu">
                                 <img src="images/h-adm.jpg" alt="">
-                                <span>Exam Time Line</span>
+                                <span>University President</span>
                             </a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-4 col-xs-12">
                         <div class="ed-course-in">
-                            <a class="course-overlay" href="seminar.html">
+                            <a class="course-overlay" href="/events">
                                 <img src="images/h-cam1.jpg" alt="">
-                                <span>Seminar 2018</span>
+                                <span>Events 2024</span>
                             </a>
                         </div>
                     </div>
