@@ -27,7 +27,7 @@
                                       @method('PATCH')
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input type="text" name="name" value="" class="validate" disabled>
+                                                <input type="text" name="name" value="" class="validate">
                                                 <label class="">{{ $role->name }}</label>
                                             </div>
                                         </div>
