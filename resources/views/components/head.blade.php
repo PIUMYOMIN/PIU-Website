@@ -23,5 +23,4 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <!-- RESPONSIVE.CSS ONLY FOR MOBILE AND TABLET VIEWS -->
     <link href="{{ asset('css/style-mob.css') }}" rel="stylesheet" />
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>

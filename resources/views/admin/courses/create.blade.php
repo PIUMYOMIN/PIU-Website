@@ -35,7 +35,7 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="description" placeholder="Course Description">{{ old('description') }}</textarea>
+                                    <textarea name="description" id="content" placeholder="Course Description">{{ old('description') }}</textarea>
                                     @error('description')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
