@@ -60,7 +60,7 @@
                             </div>
                             <div class="cor-p4">
                                 <h3>Course Details:</h3>
-                                <p>{{ $course->description }}</p>
+                                <p>{!! $course->description !!}</p>
                             </div>
                             <div class="cor-p5">
                                 <h3>Course Syllabus</h3>
@@ -75,16 +75,16 @@
 
                                 <div class="tab-content">
                                     <div id="home" class="tab-pane fade in active">
-                                        <p>{{ $course->eligibility }}</p>
+                                        <p>{!! $course->eligibility !!}</p>
                                     </div>
                                     <div id="menu1" class="tab-pane fade in active">
-                                        <p>{{ $course->requirement }}</p>
+                                        <p>{!! $course->requirement !!}</p>
                                     </div>
                                     <div id="menu2" class="tab-pane fade">
-                                        <p>{{ $course->fees }}</p>
+                                        <p>{!! $course->fees !!}</p>
                                     </div>
                                     <div id="menu3" class="tab-pane fade">
-                                        <p>{{ $course->apply }}</p>
+                                        <p>{!! $course->apply !!}</p>
                                     </div>
                                 </div>
                             </div>

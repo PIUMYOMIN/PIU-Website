@@ -16,7 +16,7 @@
             <div class="col-md-12">
                 <div class="box-inn-sp admin-form">
                     <div class="inn-title">
-                        <h4>Add Course</h4>
+                        <h4>Edit Course</h4>
                         <p>Here you can edit your website basic details URL, Phone, Email, Address, User and password
                             and more</p>
                     </div>
@@ -34,14 +34,16 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s12">
                                     <textarea name="description">{{ $course->description }}</textarea>
                                     <label class="">Course Descriptions</label>
                                     @error('description')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="input-field col s6">
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
                                     <textarea name="requirement">{{ $course->requirement }}</textarea>
                                     <label class="">Course Requirements</label>
                                     @error('requirement')
@@ -59,14 +61,16 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s12">
                                     <textarea name="fees">{{ $course->fees }}</textarea>
                                     <label class="">Course Fees</label>
                                     @error('fees')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="input-field col s6">
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
                                     <textarea name="apply">{{ $course->apply }}</textarea>
                                     <label class="">Application Process</label>
                                     @error('apply')

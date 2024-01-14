@@ -34,16 +34,16 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s6">
-                                    <textarea name="description">{{ old('description') }}</textarea>
-                                    <label class="">Course Descriptions</label>
+                                <div class="input-field col s12">
+                                    <textarea name="description" placeholder="Course Description">{{ old('description') }}</textarea>
                                     @error('description')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="input-field col s6">
-                                    <textarea name="requirement">{{ old('requirement') }}</textarea>
-                                    <label class="">Course Requirements</label>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <textarea name="requirement" placeholder="Course Requirements">{{ old('requirement') }}</textarea>
                                     @error('requirement')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
@@ -51,24 +51,23 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="eligibility">{{ old('eligibility') }}</textarea>
-                                    <label class="">Eligibility</label>
+                                    <textarea name="eligibility" placeholder="Eligibility">{{ old('eligibility') }}</textarea>
                                     @error('eligibility')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s6">
-                                    <textarea name="fees">{{ old('fees') }}</textarea>
-                                    <label class="">Course Fees</label>
+                                <div class="input-field col s12">
+                                    <textarea name="fees" placeholder="Course Fees">{{ old('fees') }}</textarea>
                                     @error('fees')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="input-field col s6">
-                                    <textarea name="apply">{{ old('apply') }}</textarea>
-                                    <label class="">Application Process</label>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <textarea name="apply" placeholder="Application Process">{{ old('apply') }}</textarea>
                                     @error('apply')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
