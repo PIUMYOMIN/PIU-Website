@@ -7,6 +7,8 @@ use App\Models\Course;
 use App\Models\CourseCategory;
 use App\Models\CourseComment;
 use App\Models\Event;
+use App\Models\Curriculum;
+
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -27,7 +29,8 @@ class CourseController extends Controller
                 'course' => $course,
                 'categories' => CourseCategory::all(),
                 'comments' => CourseComment::all(),
-                'events' => Event::all()
+                'events' => Event::all(),
+                'curriculums' => Curriculum::all(),
             ]);
     }
 }

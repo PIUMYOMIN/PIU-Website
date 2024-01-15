@@ -95,12 +95,13 @@
                                     <li>
                                         <div class="collapsible-header active">1st year</div>
                                         <div class="collapsible-body cor-tim-tab">
-                                            <h4>First Year Courses</h4>
+                                            <h4>First Year Curriculum</h4>
                                             <ul>
-                                                <li>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour</li>
-                                                <li>Anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary</li>
-                                                <li>Combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem</li>
-                                                <li>Nullam tincidunt urna non porttitor luctus. Suspendisse sem urna, auctor ac commodo eu, bibendum sed nulla.</li>
+                                                @foreach ($curriculums as $curriculum) 
+                                                    @if ($curriculum->year_id==1) 
+                                                        <li>{{$curriculum->title}}</li>
+                                                    @endif
+                                                @endforeach
                                             </ul>
                                             <h4>Assessment</h4>
                                             <ul>
@@ -112,11 +113,13 @@
                                     <li>
                                         <div class="collapsible-header">2st year</div>
                                         <div class="collapsible-body cor-tim-tab">
-                                            <h4>Second Year Courses</h4>
+                                            <h4>Second Year Curriculum</h4>
                                             <ul>
-                                                <li>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour</li>
-                                                <li>Anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary</li>
-                                                <li>Combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem</li>
+                                                @foreach ($curriculums as $curriculum) 
+                                                    @if ($curriculum->year_id==2) 
+                                                        <li>{{$curriculum->title}}</li>
+                                                    @endif
+                                                @endforeach
                                             </ul>
                                             <h4>Assessment</h4>
                                             <ul>
@@ -129,10 +132,13 @@
                                     <li>
                                         <div class="collapsible-header">3st year</div>
                                         <div class="collapsible-body cor-tim-tab">
-                                            <h4>Third Year Courses</h4>
+                                            <h4>Third Year Curriculum</h4>
                                             <ul>
-                                                <li>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour</li>
-                                                <li>Anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary</li>
+                                                @foreach ($curriculums as $curriculum) 
+                                                    @if ($curriculum->year_id==3) 
+                                                        <li>{{$curriculum->title}}</li>
+                                                    @endif
+                                                @endforeach
                                             </ul>
                                             <h4>Assessment</h4>
                                             <ul>

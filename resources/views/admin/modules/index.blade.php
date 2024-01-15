@@ -1,0 +1,59 @@
+<x-admin_layout>
+    <div class="sb2-2-2">
+        <ul>
+            <li><a href="index-2.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+            </li>
+            <li class="active-bre"><a href="#"> Modules</a>
+            </li>
+            <li class="page-back">
+                <a href="#!"><i class="fa fa-plus" aria-hidden="true"></i> Add module</a>
+            </li>
+        </ul>
+    </div>
+    <div class="sb2-2-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box-inn-sp">
+                    <div class="inn-title">
+                        <h4>Modules</h4>
+                        <p>All about students like name, student id, phone, email, country, city and more</p>
+                    </div>
+                    <div class="tab-inn">
+                        <div class="table-responsive table-desi">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Module Code</th>
+                                        <th>Credit</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($modules as $module)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $module->name }}</td>
+                                            <td>{{ $module->module_code }}</td>
+                                            <td>{{ $module->credit }}</td>
+                                            <td>
+                                                <a href="modules/{{ $module->id }}/edit" class="ad-st-view">Edit</a>
+                                                <form action="modules/{{ $module->id }}/delete" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="ad-st-view">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</x-admin_layout>

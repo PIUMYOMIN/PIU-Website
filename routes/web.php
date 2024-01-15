@@ -20,6 +20,9 @@ use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminPositionController;
 use App\Http\Controllers\Admin\AdminSeminarController;
 use App\Http\Controllers\Admin\AdminTeamController;
+use App\Http\Controllers\Admin\AdminModuleController;
+use App\Http\Controllers\Admin\AdminCurriculumController;
+
 
 
 
@@ -217,6 +220,17 @@ Route::get('/event/create', [AdminEventController::class, 'create'])->name('even
 Route::post('/event/store', [AdminEventController::class, 'store'])->name('event.store');
 Route::get('/event/{event:id}/edit', [AdminEventController::class, 'edit'])->name('event.edit');
 Route::patch('/event/{event:id}/update', [AdminEventController::class, 'update'])->name('event.update');
+
+//module
+Route::get('/modules', [AdminModuleController::class, 'index'])->name('modules.index');
+
+//curriculums
+Route::get('/curriculums', [AdminCurriculumController::class, 'index'])->name('curriculum.index');
+Route::get('/curriculum/create', [AdminCurriculumController::class, 'create'])->name('curriculum.create');
+Route::post('/curriculum/store', [AdminCurriculumController::class, 'store'])->name('curriculum.store');
+Route::get('/curriculum/{curriculum:id}/edit', [AdminCurriculumController::class, 'edit'])->name('curriculum.edit');
+Route::patch('/curriculum/{curriculum:id}/update', [AdminCurriculumController::class, 'index'])->name('curriculum.update');
+Route::delete('/curriculum/{curriculum:id}/delete', [AdminCurriculumController::class, 'delete'])->name('curriculum.delete');
 
 
 });
