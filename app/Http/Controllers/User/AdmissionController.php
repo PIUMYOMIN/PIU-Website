@@ -168,7 +168,7 @@ Mail::to($adminEmail)
 
 
         return redirect("/piu/admission/application-form-successfully-submited/{$verificationToken}")
-            ->with('status', 'Your application has been submitted. Please check your email to verify your email address.');
+            ->with('status', 'Your application has been submitted. Your application form is in progress. We will contact you after considering your application.');
 
     }
 
