@@ -108,14 +108,14 @@
                                                 <a href="{{ route('admin.course.edit', [$course->id]) }}"
                                                     class="ad-st-view">Edit</a>
                                                     @endif
-                                                @if (auth()->user()->can('Read and Write'))
+                                                {{-- @if (auth()->user()->can('Read and Write'))
                                                     <form action="{{ route('admin.course.delete', [$course->id]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="ad-st-view">Delete</button>
                                                     </form>
-                                                @endif
+                                                @endif --}}
                                             </td>
                                         </tr>
                                     @endforeach

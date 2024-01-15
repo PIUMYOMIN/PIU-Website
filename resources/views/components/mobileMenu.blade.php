@@ -26,6 +26,7 @@
                                 <li><a href="/news">News</a></li>
                                 <li><a href="/evebts">Events</a></li>
                                 <li><a href="/seminars">Seminars</a></li>
+                                <li><a href="/contact-us">Contact</a></li>
                             </ul>
 
                             @auth

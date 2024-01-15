@@ -311,7 +311,7 @@ Route::get('/events/{event:slug}', [EventController::class, 'show'])->name('even
 Route::get('/events/{slug}/register', [EventController::class, 'register'])->name('events.register');
 
 //Contact Form
-Route::get('/contact', [ContactController::class, 'index']);
+Route::get('/contact-us', [ContactController::class, 'index']);
 Route::post('/contact/form/submit', [ContactController::class, 'store'])->name('contact.form.submit');
 
 //Admission

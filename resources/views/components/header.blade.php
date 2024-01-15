@@ -161,7 +161,7 @@
                                     </div>
                                 </li>
                                 </li>
-                                <li><a href="/contact">Contact us</a>
+                                <li><a href="/contact-us">Contact us</a>
                                 </li>
                             </ul>
                         </div>
