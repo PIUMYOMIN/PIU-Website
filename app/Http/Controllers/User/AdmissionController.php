@@ -131,39 +131,39 @@ class AdmissionController extends Controller
         $admission->save();
 
         $courseId = $request->input('course_id');
-$adminEmail = $this->getFacultyEmail($courseId);
+        $adminEmail = '';
 
-//Determine the admin email based on the course id
-if ($courseId == 4) {
-    $adminEmail = 'oketama020@gmail.com';
+    //Determine the admin email based on the course id
+    if ($courseId == 4) {
+        $adminEmail = 'oketama020@gmail.com';
 
-} elseif ($courseId == 9) {
-    $adminEmail = 'moet.khaing@gmail.com';
-} elseif ($courseId == 3) {
-    $adminEmail = 'ohmar.mme@gmail.com';
+    } elseif ($courseId == 9) {
+        $adminEmail = 'moet.khaing@gmail.com';
+    } elseif ($courseId == 3) {
+        $adminEmail = 'ohmar.mme@gmail.com';
 
-} elseif ($courseId == 8) {
-    $adminEmail = 'wint.wtun@gmail.com';
+    } elseif ($courseId == 8) {
+        $adminEmail = 'thantarhlaing.piu@gmail.com';
 
-} elseif ($courseId == 7) {
-    $adminEmail = 'mayyimyint.pdopiu@gmail.com';
+    } elseif ($courseId == 7) {
+        $adminEmail = 'mayyimyint.pdopiu@gmail.com';
 
-} elseif ($courseId == 3) {
-    $adminEmail = 'intellay@gmail.com';
+    } elseif ($courseId == 3) {
+        $adminEmail = 'intellay@gmail.com';
 
-} elseif ($courseId == 1) {
-    $adminEmail = 'wint.wtun@gmail.com';
+    } elseif ($courseId == 1) {
+        $adminEmail = 'thantarhlaing.piu@gmail.com';
 
-} elseif ($courseId == 1) {
-    $adminEmail = 'wint.wtun@gmail.com';
-}
+    } elseif ($courseId == 1) {
+        $adminEmail = 'thantarhlaing.piu@gmail.com';
+    }
 
 
 
 // Send notification email to admin with CC
 
 Mail::to($adminEmail)
-    ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com'])
+    ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com','thantarhlaing.piu@gmail.com'])
     ->send(new NewAdmissionFormSubmitted($admission));
 
 

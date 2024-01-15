@@ -43,6 +43,9 @@ class UserController extends Controller
         'password' => 'required|min:8|max:25|confirmed',
         'picture' => 'image|mimes:jpg,jpeg,png',
         'provider_id' => 'nullable',
+    ]);
+
+    $request->validate([
         'g-recaptcha-response' => 'required|captcha',
     ]);
 
