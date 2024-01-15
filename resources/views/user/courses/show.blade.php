@@ -123,9 +123,7 @@
                                             </ul>
                                             <h4>Assessment</h4>
                                             <ul>
-                                                <li>Three written papers form the First University Examination, together with a submitted portfolio of two exam essays of 2,000 words for Introduction to English Language and Literature.</li>
-                                                <li>All exams must be passed, but marks do not count towards the final degree.</li>
-                                                <li>Combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem</li>
+                                                {{-- <li>Combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem</li> --}}
                                             </ul>
                                         </div>
                                     </li>
@@ -142,8 +140,7 @@
                                             </ul>
                                             <h4>Assessment</h4>
                                             <ul>
-                                                <li>Three written papers form the First University Examination, together with a submitted portfolio of two exam essays of 2,000 words for Introduction to English Language and Literature.</li>
-                                                <li>All exams must be passed, but marks do not count towards the final degree.</li>
+                                                {{-- <li>Three written papers form the First University Examination, together with a submitted portfolio of two exam essays of 2,000 words for Introduction to English Language and Literature.</li> --}}
                                             </ul>
                                         </div>
                                     </li>

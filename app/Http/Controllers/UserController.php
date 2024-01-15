@@ -49,7 +49,7 @@ class UserController extends Controller
         'g-recaptcha-response' => 'required|captcha',
     ]);
 
-    $data['password'] = Hash::make($data['password']); // Hash the password
+    $data['password'] = Hash::make($data['password']);
 
     if ($request->hasFile('picture')) {
         $imagePath = $request->file('picture')->store('user_profiles', 'public');

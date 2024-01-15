@@ -10,22 +10,11 @@
                                     </div>
                                     <div class="sf-list">
                                         <ul>
-                                            <li><a href="course-details.html">Accounting/Finance</a></li>
-                                            <li><a href="course-details.html">civil engineering</a></li>
-                                            <li><a href="course-details.html">Art/Design</a></li>
-                                            <li><a href="course-details.html">Marine Engineering</a></li>
-                                            <li><a href="course-details.html">Business Management</a></li>
-                                            <li><a href="course-details.html">Journalism/Writing</a></li>
-                                            <li><a href="course-details.html">Physical Education</a></li>
-                                            <li><a href="course-details.html">Political Science</a></li>
-                                            <li><a href="course-details.html">Sciences</a></li>
-                                            <li><a href="course-details.html">Statistics</a></li>
-                                            <li><a href="course-details.html">Web Design/Development</a></li>
-                                            <li><a href="course-details.html">SEO</a></li>
-                                            <li><a href="course-details.html">Google Business</a></li>
-                                            <li><a href="course-details.html">Graphics Design</a></li>
-                                            <li><a href="course-details.html">Networking Courses</a></li>
-                                            <li><a href="course-details.html">Information technology</a></li>
+                                            {{-- @foreach ($courses as $course) 
+                                                <li>
+                                                    <a href="/courses/{{ $course->title }}">{{ $course->title }}</a>
+                                                </li>
+                                            @endforeach --}}
                                         </ul>
                                     </div>
                                 </div>

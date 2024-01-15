@@ -127,7 +127,30 @@
                                         auth()->user()->can('Write') ||
                                         auth()->user()->can('Manager'))
                                     <li>
-                                        <a href="/admin/create/create">Add New Module</a>
+                                        <a href="/admin/module/create">Add New Module</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+                @endif
+                @if (auth()->user()->can('Read and Write') ||
+                        auth()->user()->can('Write') ||
+                        auth()->user()->can('Read') ||
+                        auth()->user()->can('Manager'))
+                    <li>
+                        <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-bookmark-o"
+                                aria-hidden="true"></i>Curriculums</a>
+                        <div class="collapsible-body left-sub-menu">
+                            <ul>
+                                <li>
+                                    <a href="/admin/curriculums">Modules</a>
+                                </li>
+                                @if (auth()->user()->can('Read and Write') ||
+                                        auth()->user()->can('Write') ||
+                                        auth()->user()->can('Manager'))
+                                    <li>
+                                        <a href="/admin/curriculum/create">Add New Curriculum</a>
                                     </li>
                                 @endif
                             </ul>
