@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\AdminPositionController;
 use App\Http\Controllers\Admin\AdminSeminarController;
 use App\Http\Controllers\Admin\AdminTeamController;
 use App\Http\Controllers\Admin\AdminModuleController;
+use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminCurriculumController;
 use App\Http\Controllers\Admin\SeminarEnrollController;
 use App\Http\Controllers\HomeController;
