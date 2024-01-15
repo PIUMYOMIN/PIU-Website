@@ -11,37 +11,26 @@ use App\Http\Controllers\Admin\AdminCourseCategoryController;
 
 use App\Http\Controllers\Admin\AdminCourseCommentController;
 use App\Http\Controllers\Admin\AdminCourseController;
-
 use App\Http\Controllers\Admin\AdminDepartmentController;
 use App\Http\Controllers\Admin\AdminEventController;
-
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminSlideController;
-
-
 use App\Http\Controllers\Admin\AdminPositionController;
 use App\Http\Controllers\Admin\AdminSeminarController;
 use App\Http\Controllers\Admin\AdminTeamController;
 use App\Http\Controllers\Admin\AdminModuleController;
 use App\Http\Controllers\Admin\AdminCurriculumController;
-
-
-
-
 use App\Http\Controllers\Admin\SeminarEnrollController;
 use App\Http\Controllers\HomeController;
-
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 
+//User Controllers
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\User\CourseController;
-
-//User Controllers
+use App\Http\Controllers\User\AdmissionController;
 use App\Http\Controllers\User\EventController;
-
 use App\Http\Controllers\User\NewsController;
-
 use App\Http\Controllers\User\SeminarController;
 use Spatie\Analytics\Period;
 
