@@ -35,14 +35,14 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-4 col-xs-12">
+                    <!-- <div class="col-md-3 col-sm-4 col-xs-12">
                         <div class="ed-course-in">
                             <a class="course-overlay" href="/courses/postgraduate-diploma-in-education">
                                 <img src="images/h-res.jpg" alt="">
                                 <span>Research & Education</span>
                             </a>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-3 col-sm-4 col-xs-12">
                         <div class="ed-course-in">
                             <a class="course-overlay" href="/courses">
