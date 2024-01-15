@@ -45,17 +45,11 @@
                             <div>
                                 <p class="text-center">(OR)</p>
                             </div>
-                            <div class="">
-                                <div class="col s4" style="margin: 5px 0px !important;">
-                                    <a href="{{ route('auth.facebook.user.redirect') }}" class="btn btn-light btn-outline-light" style="color: white; !important"><i class="fa fa-facebook"></i> Login with Facebook</a>
+                            <div class="col s4" style="margin: 0px 0px !important;">
+                                    <a href="{{ route('auth.facebook.user.redirect') }}" class="btn btn-light btn-outline-light" style="color: white !important; margin: 3px 0px !important;"><i class="fa fa-facebook"></i> Login with Facebook</a>
+                                    <a href="{{ route('auth.google.user.redirect') }}" class="btn btn-danger btn-outline-danger" style="color: white !important; margin: 3px 0px !important;"><i class="fa fa-google"></i> Login with Google</a>
+                                    <a href="{{ route('auth.twitter.user.redirect') }}" class="btn btn-info btn-outline-info" style="color: white !important; margin: 3px 0px !important;"><i class="fa fa-twitter"></i> Login with Twitter</a>
                                 </div>
-                                <div class="col s4" style="margin: 5px 0px !important;">
-                                    <a href="{{ route('auth.google.user.redirect') }}" class="btn btn-danger btn-outline-danger" style="color: white; !important"><i class="fa fa-google"></i> Login with Google</a>
-                                </div>
-                                <div class="col s4" style="margin: 5px 0px !important;">
-                                    <a href="{{ route('auth.twitter.user.redirect') }}" class="btn btn-info btn-outline-info" style="color: white; !important"><i class="fa fa-twitter"></i> Login with Twitter</a>
-                                </div>
-                            </div>
                             <div>
                                 <div class="input-field s12"> <a href="admin-forgot.html">Forgot password</a> | <a
                                         href="/register">Create a new account</a> </div>

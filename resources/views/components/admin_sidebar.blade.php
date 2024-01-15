@@ -290,9 +290,9 @@
                             aria-hidden="true"></i> Job Vacants</a>
                     <div class="collapsible-body left-sub-menu">
                         <ul>
-                            <li><a href="admin-job-all.html">All Jobs</a>
+                            <li><a href="#!">All Jobs</a>
                             </li>
-                            <li><a href="admin-job-add.html">Create New Job</a>
+                            <li><a href="#!">Create New Job</a>
                             </li>
                         </ul>
                     </div>

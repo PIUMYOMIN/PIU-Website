@@ -32,6 +32,7 @@ use App\Http\Controllers\User\CourseController;
 use App\Http\Controllers\User\AdmissionController;
 use App\Http\Controllers\User\EventController;
 use App\Http\Controllers\User\NewsController;
+use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\SeminarController;
 use Spatie\Analytics\Period;
 

@@ -106,6 +106,14 @@
                             </div>
                         </div>
                         <div>
+                            <div class="input-field 12">
+                                {!! NoCaptcha::display() !!}
+                                @error('g-recaptcha-response')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div>
                             <div class="input-field s4">
                                 <input type="submit" value="Register" class="waves-effect waves-light log-in-btn"> </div>
                         </div>

@@ -43,6 +43,7 @@ class UserController extends Controller
         'password' => 'required|min:8|max:25|confirmed',
         'picture' => 'image|mimes:jpg,jpeg,png',
         'provider_id' => 'nullable',
+        'g-recaptcha-response' => 'required|captcha',
     ]);
 
     $data['password'] = Hash::make($data['password']); // Hash the password
@@ -199,7 +200,7 @@ return redirect('/');
     public function logout()
     {
         auth()->logout();
-        return redirect()->back();
+        return redirect('/');
     }
 
     // Google redirect link
