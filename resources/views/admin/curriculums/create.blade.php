@@ -32,7 +32,7 @@
                             <div class="row">
                                 <div class="input-field col s6">
                                     <select name="course_id">
-                                        <option value="" disabled selected>Choose Course Code</option>
+                                        <option value="" disabled selected>Choose Course</option>
                                         @foreach ($courses as $course)
                                             <option {{ $course->id == old('course_id') ? 'selected' : '' }}
                                                 value="{{ $course->id }}">{{ $course->title }}</option>
