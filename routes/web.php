@@ -234,7 +234,7 @@ Route::middleware(['auth','role:admin|manager|staff|faculty|user|registrar'])->n
 
 //admin, manager, staff, registrar
 
-Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin|manager|staff|faculty|writer|registrar'])->name('admin.')->prefix('admin')->group(function () {
 //admission
     Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
     Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
