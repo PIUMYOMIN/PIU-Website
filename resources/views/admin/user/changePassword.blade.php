@@ -25,13 +25,16 @@
                             @csrf
                             @method('POST')
                             <div class="row">
-                                <div class="input-field col s6">
-                                    <input type="password" value="" name="old_password" class="validate" required>
-                                    <label class="">Old Password</label>
-                                    @error('old_password')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                                @if (!$user->provider_id)
+    <div class="input-field col s6">
+        <input type="password" value="" name="old_password" class="validate" required>
+        <label class="">Old Password</label>
+        @error('old_password')
+            <p class="text-danger">{{ $message }}</p>
+        @enderror
+    </div>
+@endif
+
                             </div>
                             <div class="row">
                                 <div class="input-field col s6">

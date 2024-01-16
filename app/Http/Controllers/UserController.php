@@ -112,27 +112,24 @@ class UserController extends Controller
     }
 
     public function user_login(Request $request)
-{
-    $validatedData = $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    {
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    $credentials = [
-        'email' => $validatedData['email'],
-        'password' => $validatedData['password'],
-    ];
+        $credentials = [
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],
+        ];
 
-    if (Auth::attempt($credentials, $request->has('remember'))) {
-        // Authentication passed
-return redirect('/');
-    }else{
-        return redirect('/login');
+        if (Auth::attempt($credentials, $request->has('remember'))) {
+            // Authentication passed
+            return redirect('/');
+        }else{
+            return redirect('/login')->withErrors(['email' => 'Invalid email or password.']);
+        }
     }
-
-    // Authentication failed
-    return redirect('/login')->withErrors(['email' => 'Invalid email or password.']);
-}
 
 
 
@@ -322,23 +319,32 @@ return redirect('/');
     public function passwordUpdate(User $user)
     {
         $data = request()->validate([
-            'old_password' => 'required',
             'new_password' => 'required|min:8',
             'confirm_password' => 'required|same:new_password',
         ]);
 
-        // Check if the old password matches the current password in the database
-        if (!Hash::check($data['old_password'], $user->password)) {
+        // If the user is registered through social media, update the password directly
+        if ($user->provider_id) {
+            $user->password = Hash::make($data['new_password']);
+            $user->save();
+
+            return redirect()->route('admin.user.profile.edit', ['user' => $user->id])  ->with('success', 'Password updated successfully!');
+        }
+
+        // For users with a traditional password, check the old password
+        $oldPassword = request('old_password');
+        if (!Hash::check($oldPassword, $user->password)) {
             return back()->withErrors(['old_password' => 'The old password is incorrect.']);
         }
 
         // Update the user's password
-        $user->password = bcrypt($data['new_password']);
+        $user->password = Hash::make($data['new_password']);
         $user->save();
 
         // Redirect the user with a success message
-        return redirect()->route('admin.user.profile.edit', ['user' => auth()->user()->id])->with('success', 'Password updated successfully!');
+        return redirect()->route('admin.user.profile.edit', ['user' => $user->id])->with('success', 'Password updated successfully!');
     }
+
 
     public function profile()
     {
