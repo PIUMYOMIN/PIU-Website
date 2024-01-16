@@ -6,7 +6,7 @@
                             <form>
                                 <div class="sf-type">
                                     <div class="sf-input">
-                                        <input type="text" id="sf-box" placeholder="Search course and discount courses">
+                                        <input type="text" id="sf-box" placeholder="Search course">
                                     </div>
                                     <div class="sf-list">
                                         <ul>

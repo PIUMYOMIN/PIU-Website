@@ -209,7 +209,7 @@
                                             </div>
                                         </form>
                                         @else
-                                        <p>Please <a class="text-danger" href="/login">(login here)</a> to leave the comment.</p>
+                                        <p>Please <a class="text-danger" href="#!" data-toggle="modal" data-target="#modal1">(login here)</a> to leave the comment.</p>
                                     @endauth
                                 </div>
                             </div>
