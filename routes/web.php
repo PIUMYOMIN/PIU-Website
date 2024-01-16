@@ -233,6 +233,7 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::patch('/user/{user:id}/edit/form/submit', [UserController::class, 'update'])->name('user.edit.form.submit');
     Route::get('/user/password-change/{user:id}', [UserController::class, 'passwordChange'])->name('user.password-change');
     Route::post('/user/passwordUpdate/{user:id}', [UserController::class, 'passwordUpdate'])->name('user.passwordUpdate');
+    Route::get('/user/{user:id}/update', [UserController::class, 'update'])->name('user.update');
 });
 
 //admin, manager, staff, registrar
@@ -241,12 +242,6 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.'
 //admission
     Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
     Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
-});
-
-Route::middleware(['auth', 'role:admin|manager|staff|faculty|registrar|user'])->name('admin.')->prefix('admin')->group(function () {
-// User Routes
-
-    Route::get('/user/{user:id}/update', [UserController::class, 'update'])->name('user.update');
 });
 
 //admin, manager, staff

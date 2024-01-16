@@ -28,5 +28,10 @@ class AppServiceProvider extends ServiceProvider
         View::composer('components.footer', function ($view) {
             $view->with('courses', Course::latest()->take(2)->get());
         });
+
+        View::composer('components.search_box', function ($view) {
+            $courses = Course::where('status_id', true)->take(6)->get();
+            $view->with('courses', $courses);
+        });
     }
 }

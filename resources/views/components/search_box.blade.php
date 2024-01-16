@@ -10,11 +10,11 @@
                                     </div>
                                     <div class="sf-list">
                                         <ul>
-                                            {{-- @foreach ($courses as $course) 
+                                            @foreach ($courses as $course) 
                                                 <li>
-                                                    <a href="/courses/{{ $course->title }}">{{ $course->title }}</a>
+                                                    <a href="/courses/{{ $course->slug }}">{{ $course->title }}</a>
                                                 </li>
-                                            @endforeach --}}
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
