@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('components.search_box', function ($view) {
-            $courses = Course::where('status_id', true)->take(6)->get();
+            $courses = Course::where('is_active', true)->take(6)->get();
             $view->with('courses', $courses);
         });
     }
