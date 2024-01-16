@@ -32,7 +32,7 @@ class AdminCourseController extends Controller
     {
 
        $data = request()->validate([
-        'title' => 'required',
+        'title' => ['required',Rule::unique('courses','title')],
         'description' => 'required',
         'eligibility' => 'required',
         'requirement' => 'required',

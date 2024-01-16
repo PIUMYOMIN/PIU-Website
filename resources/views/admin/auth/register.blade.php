@@ -12,31 +12,43 @@
 			<div class="log-in-pop-right" style="width:100% !important;">
                     <h4>Register</h4>
                     <p>Don't have an account? Create your account. It's take less then a minutes</p>
-                    <form action="{{ route('user.register.form.submit') }}" method="POST" class="s12">
+                    <form action="{{ route('user.register.form.submit') }}" method="POST" class="s12" enctype="multipart/form-data">
                         @csrf
                         @method('POST')
                         <div>
                             <div class="input-field s12">
                                 <input type="text" name="name" data-ng-model="name1" class="validate">
                                 <label>User name</label>
+                                @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div>
                             <div class="input-field s12">
                                 <input type="email" name="email" class="validate">
                                 <label>Email id</label>
+                                @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div>
                             <div class="input-field s12">
                                 <input type="password" name="password" class="validate">
                                 <label>Password</label>
+                                @error('password')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div>
                             <div class="input-field s12">
                                 <input type="password" name="password_confirmation" class="validate">
                                 <label>Confirm password</label>
+                                @error('password_confirmation')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="div input-field s12">

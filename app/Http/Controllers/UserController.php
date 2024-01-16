@@ -35,9 +35,10 @@ class UserController extends Controller
 
     public function store(Request $request)
 {
+
     $data = $request->validate([
         'name' => 'required',
-        'email' => 'required|email|unique:users,email',
+        'email' => ['required','email',Rule::unique('users','email')],
         'phone' => 'nullable',
         'address' => 'nullable',
         'password' => 'required|min:8|max:25|confirmed',
@@ -50,6 +51,7 @@ class UserController extends Controller
     ]);
 
     $data['password'] = Hash::make($data['password']);
+
 
     if ($request->hasFile('picture')) {
         $imagePath = $request->file('picture')->store('user_profiles', 'public');
@@ -124,8 +126,8 @@ class UserController extends Controller
     if (Auth::attempt($credentials, $request->has('remember'))) {
         // Authentication passed
 return redirect('/');
-
-
+    }else{
+        return redirect('/login');
     }
 
     // Authentication failed
