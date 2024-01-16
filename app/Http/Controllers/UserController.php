@@ -125,14 +125,11 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
             // Authentication passed
-            return redirect('/');
+            return redirect()->back()->with('message','Login Successfully.');
         }else{
             return redirect('/login')->withErrors(['email' => 'Invalid email or password.']);
         }
     }
-
-
-
 
     public function assignRole(Request $request, User $user)
     {
