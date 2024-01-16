@@ -76,12 +76,12 @@
 									<div class="file-field input-field col s12">
 										<div class="btn admin-upload-btn">
 											<span>File</span>
-											<input type="file" name="profile">
+											<input type="file" name="picture">
 										</div>
 										<div class="file-path-wrapper">
 											<input class="file-path validate" type="text" placeholder="Profile Image">
 										</div>
-                                        <img src="{{ $user->picture }}" alt="{{ $user->picture }}" width="200">
+                                        <img src="{{ asset('storage/'.$user->picture) }}" alt="{{ $user->picture }}" width="200">
 									</div>
                                     @error('picture')
                                         <p class="text-danger">{{ $message }}</p>
