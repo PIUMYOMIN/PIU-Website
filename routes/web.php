@@ -230,6 +230,7 @@ Route::delete('/curriculum/{curriculum:id}/delete', [AdminCurriculumController::
 
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/user/profile/{user}/edit', [UserController::class, 'editUserProfile'])->name('user.profile.edit');
+    Route::patch('/user/{user:id}/edit/form/submit', [UserController::class, 'update'])->name('user.edit.form.submit');
 });
 
 //admin, manager, staff, registrar
@@ -247,10 +248,6 @@ Route::middleware(['auth', 'role:admin|manager|staff|faculty|registrar|user'])->
 
     Route::get('/user/password-change/{user:id}', [UserController::class, 'passwordChange'])->name('user.password-change');
     Route::post('/user/passwordUpdate/{user:id}', [UserController::class, 'passwordUpdate'])->name('user.passwordUpdate');
-
-Route::patch('/user/{user:id}/edit/form/submit', [UserController::class, 'update'])->name('user.edit.form.submit');
-
-
 });
 
 //admin, manager, staff
