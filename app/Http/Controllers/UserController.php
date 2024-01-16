@@ -64,7 +64,7 @@ class UserController extends Controller
 
     Auth::login($user);
 
-    return redirect('/')->with('success', 'Registration successful! Please Login');
+    return redirect()->back()->with('success', 'Registration successful! Please Login');
 }
 
 
