@@ -34,7 +34,7 @@
                         <div class="cor-con-mid">
                             <div class="cor-p1">
                                 <h2>{{ $course->title }}</h2>
-                                <span>Category: {{ $course->category->name }}</span>
+                                <span>Category: {{ optional($course->category)->name }}</span>
                                 <div class="share-btn">
                                     <ul>
                                                     <li>
