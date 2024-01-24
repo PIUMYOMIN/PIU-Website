@@ -60,12 +60,16 @@
                                                     <span class="list-enq-city">Mandalay, Myanmar</span>
                                                 </a>
                                             </td>
-                                            <td>{{ $course->category->name }}</td>
+                                            <td>
+                                                {{ optional($course->category)->name }}
+                                            </td>
                                             <td>{{ $course->duration }}</td>
                                             <td>{{ $course->start_date }}</td>
                                             <td>{{ $course->end_date }}</td>
                                             <td>{{ $course->total_seat }}</td>
-                                            <td>{{ $course->user->name }}</td>
+                                            <td>
+                                                {{ optional($course->user)->name }}
+                                            </td>
                                             @if (auth()->user()->can('Read and Write') ||
                                             auth()->user()->can('Write') ||
                                             auth()->user()->can('Manager'))

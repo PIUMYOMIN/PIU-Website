@@ -17,7 +17,7 @@
                             @method('POST')
                             <div>
                                 <div class="input-field s12">
-                                    <input type="email" name="email" data-ng-model="name" class="validate">
+                                    <input type="text" name="identifier" data-ng-model="name" class="validate" autofocus>
                                     <label class="">User name</label>
                                 </div>
                             </div>

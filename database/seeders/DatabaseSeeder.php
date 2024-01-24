@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PositionSeeder::class);
         $this->call(CourseCategorySeeder::class);
         $this->call(JobSeeder::class);
-$this->call(YearSeeder::class);
+        $this->call(YearSeeder::class);
+        $this->call(SemesterSeeder::class);
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

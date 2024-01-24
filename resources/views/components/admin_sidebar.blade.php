@@ -15,7 +15,8 @@
     <!--== LEFT MENU ==-->
     <div class="sb2-13">
         <ul class="collapsible" data-collapsible="accordion">
-            <li><a href="/admin" class="menu-active"><i class="fa fa-bar-chart" aria-hidden="true"></i> Dashboard</a>
+            <li>
+                <a href="/admin" class="menu-active"><i class="fa fa-bar-chart" aria-hidden="true"></i> Dashboard</a>
             </li>
             <li>
                 <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}"><i class="fa fa-cogs"
@@ -277,17 +278,6 @@
                     </div>
                 </li>
             @endif
-            @if (auth()->user()->can('Read and Write'))
-                <li>
-                    <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-commenting-o"
-                            aria-hidden="true"></i> Mail Box</a>
-                    <div class="collapsible-body left-sub-menu">
-                        <ul>
-                            <li><a href="/admin/contact-mails">All Contacts</a></li>
-                        </ul>
-                    </div>
-                </li>
-            @endif
             @if (auth()->user()->can('Read and Write') ||
                     auth()->user()->can('Read') ||
                     auth()->user()->can('Write'))
@@ -322,6 +312,22 @@
                 </li>
             @endif
             @if (auth()->user()->can('Read and Write') ||
+                    auth()->user()->can('Read') ||
+                    auth()->user()->can('Write') ||
+                    auth()->user()->can('Registrar'))
+                <li><a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-graduation-cap"
+                            aria-hidden="true"></i> Assignments</a>
+                    <div class="collapsible-body left-sub-menu">
+                        <ul>
+                            <li><a href="/admin/assignments">All Assignments</a>
+                            </li>
+                            <li><a href="/admin/assignment/create">New Assignment</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
+            @if (auth()->user()->can('Read and Write') ||
                     auth()->user()->can('Registrar'))
                 <li>
                     <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-users"
@@ -329,10 +335,29 @@
                         Students</a>
                     <div class="collapsible-body left-sub-menu">
                         <ul>
-                            <li><a href="admin-user-all.html">All Students</a>
+                            <li>
+                                <a href="/admin/students">All Students</a>
                             </li>
-                            <li><a href="admin-user-add.html">Add New Students</a>
+                            <li>
+                                <a href="/admin/students/create">Add New Students</a>
                             </li>
+                            <li>
+                                <a href="{{ route('admin.students.grading.create') }}">Add Student Grading</a>
+                            </li>
+                            <li>
+                                <a href="/admin/students/grading/check">Student Grading</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
+            @if (auth()->user()->can('Read and Write'))
+                <li>
+                    <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-commenting-o"
+                            aria-hidden="true"></i> Mail Box</a>
+                    <div class="collapsible-body left-sub-menu">
+                        <ul>
+                            <li><a href="/admin/contact-mails">All Contacts</a></li>
                         </ul>
                     </div>
                 </li>

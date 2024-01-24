@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Student;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
@@ -113,22 +114,56 @@ class UserController extends Controller
 
     public function user_login(Request $request)
     {
-        $validatedData = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+
+        $identifier = $request->input('identifier');
+        $password = $request->input('password');
+
+        $user = User::where('email', $identifier)->first();
+        $student = Student::where('student_id', $identifier)->first();
+
+        // dd($user,$student,$password);
 
         $credentials = [
-            'email' => $validatedData['email'],
-            'password' => $validatedData['password'],
+            'student_id' => $identifier,
+            'password' => $password,
         ];
 
-        if (Auth::attempt($credentials, $request->has('remember'))) {
-            // Authentication passed
-            return redirect()->back()->with('message','Login Successfully.');
-        }else{
-            return redirect('/login')->withErrors(['email' => 'Invalid email or password.']);
+        if ($user && Auth::attempt(['email' => $identifier, 'password' => $password])) {
+
+            Auth::login($user);
+
+            if ($user->hasRole('admin')) {
+            return redirect('/admin')->with('success', 'Welcome back');
+            } else {
+            return redirect('/')->with('success', 'Welcome back');
+            }
+
+        } elseif ($student && Auth::guard('student')->attempt(['student_id' => $credentials, 'password' => $password])) {
+            Auth::guard('student')->login($student);
+            // dd('Student login successful');
+            // return redirect()->route('admin.profile', ['student' => $student->student_id]);
+            return redirect()->intended(route('admin.profile'));
+        } else {
+            return redirect('/login')->withErrors(['login' => 'Invalid login credentials.']);
         }
+
+
+        // $validatedData = $request->validate([
+        //     'email' => 'required|email',
+        //     'password' => 'required',
+        // ]);
+
+        // $credentials = [
+        //     'email' => $validatedData['email'],
+        //     'password' => $validatedData['password'],
+        // ];
+
+        // if (Auth::attempt($credentials, $request->has('remember'))) {
+        //     // Authentication passed
+        //     return redirect()->back()->with('message','Login Successfully.');
+        // }else{
+        //     return redirect('/login')->withErrors(['email' => 'Invalid email or password.']);
+        // }
     }
 
     public function assignRole(Request $request, User $user)

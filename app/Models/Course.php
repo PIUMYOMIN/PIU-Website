@@ -23,6 +23,13 @@ class Course extends Model
 
     public function category()
     {
-        return $this->belongsTo(CourseCategory::class, 'course_category_id');
+        return $this->belongsTo(CourseCategory::class);
+    }
+
+    public function years()
+    {
+        return $this->belongsToMany(Year::class, 'student_course_years')
+            ->withPivot('student_id')
+            ->withTimestamps();
     }
 }

@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminCourseCommentController;
 use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminDepartmentController;
 use App\Http\Controllers\Admin\AdminEventController;
+use App\Http\Controllers\Admin\AdminEventRegisterController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminSlideController;
 use App\Http\Controllers\Admin\AdminPositionController;
@@ -20,8 +21,11 @@ use App\Http\Controllers\Admin\AdminSeminarController;
 use App\Http\Controllers\Admin\AdminTeamController;
 use App\Http\Controllers\Admin\AdminModuleController;
 use App\Http\Controllers\Admin\AdminGalleryController;
+use App\Http\Controllers\Admin\AdminStudentController;
 use App\Http\Controllers\Admin\AdminCurriculumController;
+use App\Http\Controllers\Admin\AdminAssignmentController;
 use App\Http\Controllers\Admin\SeminarEnrollController;
+use App\Http\Controllers\Admin\AdminGradingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -34,6 +38,7 @@ use App\Http\Controllers\User\EventController;
 use App\Http\Controllers\User\NewsController;
 use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\SeminarController;
+use App\Http\Controllers\User\StudentController;
 use Spatie\Analytics\Period;
 
 /*
@@ -102,12 +107,9 @@ Route::delete('/permissions/{permission:id}/role/{role:id}', [PermissionControll
 
 
 // News Routes
-
 Route::delete('/news/{new:slug}/delete', [AdminNewsController::class, 'destroy'])->name('news.delete');
 
-
 // teams Routes
-
 Route::get('/teams', [AdminTeamController::class, 'index'])->name('team.index');
 Route::get('/team/create', [AdminTeamController::class, 'create'])->name('team.create');
 Route::post('/team/form/submit', [AdminTeamController::class, 'store'])->name('team.form.submit');
@@ -117,52 +119,65 @@ Route::delete('/team/{team:id}/delete', [AdminTeamController::class, 'destroy'])
 
 
 //Slider
-
 Route::delete('/slides/{slide:id}/delete', [AdminSlideController::class, 'delete'])->name('slides.delete');
 
 
 //course comment
-
 Route::post('/course/comment/create', [AdminCourseCommentController::class, 'store'])->name('course.comment.create');
-Route::get('/course/category/{category:id}/edit', [AdminCourseCommentController::class, 'edit'])->name('course.comment.edit');
-Route::patch('/course/category/{comment:id}/update', [AdminCourseCommentController::class, 'update'])->name('course.comment.update');
+Route::patch('/course/comment/{comment:id}/update', [AdminCourseCommentController::class, 'update'])->name('course.comment.update');
 
 
 //courses
-
 Route::delete('/course/{course:id}/delete', [AdminCourseController::class, 'delete'])->name('course.delete');
 
 
 //seminar
-
 Route::delete('/seminar/{seminar:id}/delete', [AdminSeminarController::class, 'delete'])->name('seminar.delete');
 
 
 //seminar enroll
-
 Route::get('/seminar-enquiry', [SeminarEnrollController::class, 'index'])->name('seminar.enroll.index');
 Route::post('/seminar/enroll/submit', [SeminarEnrollController::class, 'store'])->name('seminar.enroll.submit');
 
 
 //event
-
 Route::delete('/event/{event:id}/delete', [AdminEventController::class, 'delete'])->name('event.delete');
 
 
 //event register
-
 Route::get('/event-enquiry', [AdminEventRegisterController::class, 'index'])->name('event.register.index');
 Route::post('/event/register/submit', [AdminEventRegisterController::class, 'store'])->name('event.register.submit');
 
 
 //galleries
-
-    Route::delete('/gallery/{gallery:id}/delete', [AdminGalleryController::class, 'delete'])->name('gallery.delete');
+Route::delete('/gallery/{gallery:id}/delete', [AdminGalleryController::class, 'delete'])->name('gallery.delete');
 
 //contact
-    Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
+Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
 
 });
+
+Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('admin')->group(function () {
+    //students
+    Route::get('/students', [AdminStudentController::class, 'index'])->name('students.index');
+    Route::get('/students/create', [AdminStudentController::class, 'create'])->name('students.create');
+    Route::post('/students/store', [AdminStudentController::class, 'store'])->name('students.store');
+    Route::get('/students/{student:id}/details', [AdminStudentController::class, 'show'])->name('students.details');
+    Route::get('/students/{student:id}/edit', [AdminStudentController::class, 'edit'])->name('students.edit');
+    Route::patch('/students/{student:id}/update', [AdminStudentController::class, 'update'])->name('students.update');
+    Route::post('/students/{student:id}/add_course', [AdminStudentController::class, 'addCourse'])->name('students.addCourse');
+    Route::delete('/students/{student}/course/{year}/year/delete', [AdminStudentController::class, 'deleteCourse'])
+    ->name('students.course.year.delete');
+});
+
+
+//Student profile
+Route::middleware('auth:student')->name('admin.')->prefix('admin')->group(function () {
+    Route::get('/profile', [StudentController::class, 'index'])->name('profile');
+});
+
+// Route::get('/admin/profile/{student}', [StudentController::class, 'index'])->name('admin.profile');
+
 
 //Admin, Manager and Staff
 Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix('admin')->group(function () {
@@ -175,55 +190,64 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
     Route::patch('/news/form/{new:slug}/update', [AdminNewsController::class, 'update'])->name('news.form.update');
 
     //galleries
-Route::get('/galleries', [AdminGalleryController::class, 'index'])->name('gallery.index');
-Route::get('/gallery/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
-Route::post('/gallery/store', [AdminGalleryController::class, 'store'])->name('gallery.store');
-Route::get('/gallery/{gallery:id}/edit', [AdminGalleryController::class, 'edit'])->name('gallery.edit');
-Route::patch('/gallery/{gallery:id}/update', [AdminGalleryController::class, 'update'])->name('gallery.update');
+    Route::get('/galleries', [AdminGalleryController::class, 'index'])->name('gallery.index');
+    Route::get('/gallery/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
+    Route::post('/gallery/store', [AdminGalleryController::class, 'store'])->name('gallery.store');
+    Route::get('/gallery/{gallery:id}/edit', [AdminGalleryController::class, 'edit'])->name('gallery.edit');
+    Route::patch('/gallery/{gallery:id}/update', [AdminGalleryController::class, 'update'])->name('gallery.update');
 
 
-//seminars
-Route::get('/seminars', [AdminSeminarController::class, 'index'])->name('seminar.index');
-Route::get('/seminar/create', [AdminSeminarController::class, 'create'])->name('seminar.create');
-Route::post('/seminar/store', [AdminSeminarController::class, 'store'])->name('seminar.store');
-Route::get('/seminar/{seminar:id}/edit', [AdminSeminarController::class, 'edit'])->name('seminar.edit');
-Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'update'])->name('seminar.update');
+    //seminars
+    Route::get('/seminars', [AdminSeminarController::class, 'index'])->name('seminar.index');
+    Route::get('/seminar/create', [AdminSeminarController::class, 'create'])->name('seminar.create');
+    Route::post('/seminar/store', [AdminSeminarController::class, 'store'])->name('seminar.store');
+    Route::get('/seminar/{seminar:id}/edit', [AdminSeminarController::class, 'edit'])->name('seminar.edit');
+    Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'update'])->name('seminar.update');
 
 
-//slide
-Route::get('/slides', [AdminSlideController::class, 'index'])->name('slide');
-Route::get('/slides/create', [AdminSlideController::class, 'create'])->name('slides.create');
-Route::post('/slides/store', [AdminSlideController::class, 'store'])->name('slides.store');
-Route::get('/slides/{slide:id}/edit', [AdminSlideController::class, 'edit'])->name('slides.edit');
-Route::patch('/slides/{slide:id}/update', [AdminSlideController::class, 'update'])->name('slides.update');
-Route::patch('/slide/{slide:id}/isActive', [AdminSlideController::class, 'isActive'])->name('slide.isActive');
+    //slide
+    Route::get('/slides', [AdminSlideController::class, 'index'])->name('slide');
+    Route::get('/slides/create', [AdminSlideController::class, 'create'])->name('slides.create');
+    Route::post('/slides/store', [AdminSlideController::class, 'store'])->name('slides.store');
+    Route::get('/slides/{slide:id}/edit', [AdminSlideController::class, 'edit'])->name('slides.edit');
+    Route::patch('/slides/{slide:id}/update', [AdminSlideController::class, 'update'])->name('slides.update');
+    Route::patch('/slide/{slide:id}/isActive', [AdminSlideController::class, 'isActive'])->name('slide.isActive');
 
 
-//course category
-Route::get('/course-categories', [AdminCourseCategoryController::class, 'index'])->name('category');
-Route::get('/course-category/create', [AdminCourseCategoryController::class, 'create'])->name('course-category.create');
-Route::post('/course/category/create', [AdminCourseCategoryController::class, 'store'])->name('course.category.create');
-Route::get('/course/category/{category:id}/edit', [AdminCourseCategoryController::class, 'edit'])->name('course.category.edit');
-Route::patch('/course/category/{category:id}/update', [AdminCourseCategoryController::class, 'update'])->name('course.category.update');
+    //course category
+    Route::get('/course-categories', [AdminCourseCategoryController::class, 'index'])->name('category');
+    Route::get('/course-category/create', [AdminCourseCategoryController::class, 'create'])->name('course-category.create');
+    Route::post('/course/category/create', [AdminCourseCategoryController::class, 'store'])->name('course.category.create');
+    Route::get('/course/category/{category:id}/edit', [AdminCourseCategoryController::class, 'edit'])->name('course.category.edit');
+    Route::patch('/course/category/{category:id}/update', [AdminCourseCategoryController::class, 'update'])->name('course.category.update');
+    Route::get('/course/category/{category:id}/edit', [AdminCourseCategoryController::class, 'edit'])->name('course.category.edit');
 
 
-//event
-Route::get('/events', [AdminEventController::class, 'index'])->name('event.index');
-Route::get('/event/create', [AdminEventController::class, 'create'])->name('event.create');
-Route::post('/event/store', [AdminEventController::class, 'store'])->name('event.store');
-Route::get('/event/{event:id}/edit', [AdminEventController::class, 'edit'])->name('event.edit');
-Route::patch('/event/{event:id}/update', [AdminEventController::class, 'update'])->name('event.update');
+    //event
+    Route::get('/events', [AdminEventController::class, 'index'])->name('event.index');
+    Route::get('/event/create', [AdminEventController::class, 'create'])->name('event.create');
+    Route::post('/event/store', [AdminEventController::class, 'store'])->name('event.store');
+    Route::get('/event/{event:id}/edit', [AdminEventController::class, 'edit'])->name('event.edit');
+    Route::patch('/event/{event:id}/update', [AdminEventController::class, 'update'])->name('event.update');
 
-//module
-Route::get('/modules', [AdminModuleController::class, 'index'])->name('modules.index');
+    //module
+    Route::get('/modules', [AdminModuleController::class, 'index'])->name('modules.index');
 
-//curriculums
-Route::get('/curriculums', [AdminCurriculumController::class, 'index'])->name('curriculum.index');
-Route::get('/curriculum/create', [AdminCurriculumController::class, 'create'])->name('curriculum.create');
-Route::post('/curriculum/store', [AdminCurriculumController::class, 'store'])->name('curriculum.store');
-Route::get('/curriculum/{curriculum:id}/edit', [AdminCurriculumController::class, 'edit'])->name('curriculum.edit');
-Route::patch('/curriculum/{curriculum:id}/update', [AdminCurriculumController::class, 'index'])->name('curriculum.update');
-Route::delete('/curriculum/{curriculum:id}/delete', [AdminCurriculumController::class, 'delete'])->name('curriculum.delete');
+    //curriculums
+    Route::get('/curriculums', [AdminCurriculumController::class, 'index'])->name('curriculum.index');
+    Route::get('/curriculum/create', [AdminCurriculumController::class, 'create'])->name('curriculum.create');
+    Route::post('/curriculum/store', [AdminCurriculumController::class, 'store'])->name('curriculum.store');
+    Route::get('/curriculum/{curriculum:id}/edit', [AdminCurriculumController::class, 'edit'])->name('curriculum.edit');
+    Route::patch('/curriculum/{curriculum:id}/update', [AdminCurriculumController::class, 'index'])->name('curriculum.update');
+    Route::delete('/curriculum/{curriculum:id}/delete', [AdminCurriculumController::class, 'delete'])->name('curriculum.delete');
+
+    // assignment
+    Route::get('/assignments', [AdminAssignmentController::class, 'index'])->name('assignment.index');
+    Route::get('/assignment/create', [AdminAssignmentController::class, 'create'])->name('assignment.create');
+    Route::post('/assignment/store', [AdminAssignmentController::class, 'store'])->name('assignment.form.submit');
+    Route::get('/assignment/{assignment:slug}/edit', [AdminAssignmentController::class, 'edit'])->name('assignment.edit');
+    Route::patch('/assignment/{assignment:slug}/update', [AdminAssignmentController::class, 'index'])->name('assignment.update');
+    Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::class, 'delete'])->name('assignment.delete');
 
 
 });
@@ -239,9 +263,23 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
 //admin, manager, staff, registrar
 
 Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
-//admission
+    //admission
     Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
     Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
+
+    // student grading
+    Route::get('students/grading/create', [AdminGradingController::class, 'index'])->name('students.grading.create');
+    Route::get('students/grading/check', [AdminGradingController::class, 'viewGrading']);
+
+    //first semester
+    Route::get('students/first_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'firstSemesterGradingAdd'])->name('students.first_semester.grading.add');
+    Route::post('students/first_semester/grading/create/{student}/{semester_id}', [AdminGradingController::class, 'storeFirstSemester'])->name('students.grades.storeFirstSemester');
+    Route::get('students/first_semester/grading/view/{student:id}/{semester}', [AdminGradingController::class, 'firstSemesterGrading'])->name('students.first_semester.grading.view');
+
+    //second semester
+    Route::get('students/second_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'secondSemesterGradingAdd'])->name('students.second_semester.grading.add');
+    Route::post('students/second_semester/grading/create/{student}/{semester_id}', [AdminGradingController::class, 'storeSecondSemester'])->name('students.grades.storeSeconodSemester');
+    Route::get('students/second_semester/grading/view/{student:id}/{semester}', [AdminGradingController::class, 'secondSemesterGrading'])->name('students.second_semester.grading.view');
 });
 
 //admin, manager, staff

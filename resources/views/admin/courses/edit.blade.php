@@ -44,7 +44,7 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="requirement">{{ $course->requirement }}</textarea>
+                                    <textarea name="requirement" value="{{ $course->requirement }}">{{ $course->requirement }}</textarea>
                                     <label class="">Course Requirements</label>
                                     @error('requirement')
                                         <p class="text-danger">{{ $message }}</p>
@@ -53,7 +53,7 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="eligibility">{{ $course->eligibility }}</textarea>
+                                    <textarea name="eligibility" value="{{ $course->eligibility }}">{{ $course->eligibility }}</textarea>
                                     <label class="">Eligibility</label>
                                     @error('eligibility')
                                         <p class="text-danger">{{ $message }}</p>
@@ -81,14 +81,14 @@
                             <div class="row">
                                 <div class="input-field col s6">
                                     <input type="date" name="start_date" value="{{ $course->start_date }}" />
-                                    <label class="" style="margin-left:15%;">Start Date</label>
+                                    <label class="" style="margin-left:18%;">Start Date</label>
                                     @error('start_date')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
                                 <div class="input-field col s6">
                                     <input type="date" name="end_date" value="{{$course->end_date}}" />
-                                    <label class="" style="margin-left:15%;">End Date</label>
+                                    <label class="" style="margin-left:18%;">End Date</label>
                                     @error('end_date')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror

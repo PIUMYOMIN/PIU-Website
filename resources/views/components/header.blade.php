@@ -32,9 +32,19 @@
                         @auth
                             <div class="ed-com-t1-right">
                                 <ul>
-                                    <li><a
-                                            href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}">Profile</a>
+                                    @if (auth()->check())
+                                        <li>
+                                        <a
+                                            href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}">Profile
+                                        </a>
                                     </li>
+                                    @elseif(auth()->guard('student')->check())
+                                    <ul>
+                                        <li>
+                                            <a href="{{ route('admin.profile', ['student' => auth()->user()->student_id]) }}">Profile</a>
+                                        </li>
+                                    </ul>
+                                    @endif
                                     <li>
                                         <form action="{{ route('admin.auth.logout') }}" method="POST">
                                             @csrf

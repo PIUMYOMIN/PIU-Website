@@ -37,4 +37,9 @@ class AdminCourseCommentController extends Controller
 
         return redirect()->back()->with('message','Your comment is successfully sent. Thank you for your comment.');
     }
+
+    public function update()
+    {
+       dd('hit');
+    }
 }
