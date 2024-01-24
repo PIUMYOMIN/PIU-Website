@@ -240,7 +240,7 @@
                                                             <a href="/courses/{{ $course->slug }}"><span class="list-enq-name">{{ $course->title }}</span><span class="list-enq-city">Mandalay, Myanmar</span>
                                                             </a>
                                                         </td>
-                                                        <td>{{ $course->category->name }}</td>
+                                                        <td>{{ optional($course->category)->name }}</td>
                                                         <td>{{ $course->duration }}</td>
                                                         <td>{{ $course->start_date }}</td>
                                                         <td>{{ $course->end_date }}</td>
