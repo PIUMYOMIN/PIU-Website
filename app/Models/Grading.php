@@ -36,6 +36,11 @@ class Grading extends Model
         return $this->belongsTo(Semester::class);
     }
 
+    public function semesters()
+    {
+        return $this->belongsTo(Semester::class);
+    }
+
     public function assignment()
     {
         return $this->belongsTo(Assignment::class);

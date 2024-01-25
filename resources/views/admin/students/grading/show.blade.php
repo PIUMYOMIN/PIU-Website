@@ -1,59 +1,97 @@
 <x-admin_layout>
     <div class="sb2-2-2">
-            <ul>
-                <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
-                </li>
-                <li class="active-bre"><a href="#"> Student GPA Dashboard</a>
-                </li>
-                <li class="page-back"><a href="/admin"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
-                </li>
-            </ul>
-        </div>
+        <ul>
+            <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+            </li>
+            <li class="active-bre"><a href="#"> Student GPA Dashboard</a>
+            </li>
+            <li class="page-back"><a href="/admin"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
+            </li>
+        </ul>
+    </div>
 
-        <!--== User Details ==-->
-        <div class="sb2-2-3">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box-inn-sp">
-                        <div class="inn-title">
-                            <h4>Enquiry</h4>
-                            <p>All about students like name, student id, phone, email, country, city and more</p>
-                        </div>
-                        <div class="tab-inn">
-                            <div class="table-responsive table-desi">
-                                <table class="table table-hover">
-                                    <thead>
+    <!--== User Details ==-->
+    <div class="sb2-2-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box-inn-sp">
+                    <div class="inn-title">
+                        <h4>Enquiry</h4>
+                        <p>All about students like name, student id, phone, email, country, city and more</p>
+                    </div>
+                    <div class="tab-inn">
+                        <div class="table-responsive table-desi">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Student Name</th>
+                                        <th>Study Program</th>
+                                        <th>Semester</th>
+                                        <th>Assignment</th>
+                                        <th>Module Code</th>
+                                        <th>Credit</th>
+                                        <th>Grade Point</th>
+                                        <th>Grade Value</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $totalGpaValue = 0;
+                                    $totalCredits = 0;
+                                    ?>
+                                    @foreach ($gradings as $grading)
                                         <tr>
-                                            <th>#</th>
-                                            <th>Student Name</th>
-                                            <th>Study Program</th>
-                                            <th>Semester</th>
-                                            <th>Assignment</th>
-                                            <th>Module Code</th>
-                                            <th>Grade Point</th>
-                                            <th>Grade Value</th>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $grading->student->fname }} {{ $grading->student->lname }}</td>
+                                            <td>{{ $grading->course->title }}</td>
+                                            <td>{{ $grading->semester->name }}</td>
+                                            <td>{{ $grading->assignment->name }}</td>
+                                            <td>{{ $grading->module->module_code }}</td>
+                                            <td>{{ $grading->module->credit }}</td>
+                                            <td>{{ $grading->grade_point }}</td>
+                                            <td>{{ $grading->grade_value }}</td>
+                                            <td>
+                                                <a
+                                                    href="{{ route('admin.student.grading.edit', [
+                                                        'student' => $grading->student,
+                                                        'grading' => $grading,
+                                                        'semester' => $grading->semester,
+                                                    ]) }}">Edit</a>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($gradings as $grading)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $grading->student->fname }} {{ $grading->student->lname }}</td>
-                                                <td>{{ $grading->course->title }}</td>
-                                                <td>{{ $grading->semester->name }}</td>
-                                                <td>{{ $grading->assignment->name }}</td>
-                                                <td>{{ $grading->module->module_code }}</td>
-                                                <td>{{ $grading->grade_point }}</td>
-                                                <td>{{ $grading->grade_value }}</td>
+                                        <?php
+                                        $totalGpaForOneAssignment = $grading->grade_point * $grading->module->credit;
+                                        $totalGpaValue += $totalGpaForOneAssignment;
+                                        $totalCredits += $grading->module->credit;
+                                        ?>
+                                    @endforeach
+                                    @if ($gradings->count() > 0)
+                                        <tr>
+                                            <td colspan="6"></td>
+                                            <td>Total Credits: <strong class="text-danger">{{ $totalCredits }}</strong></td>
+                                            <td>
+                                                Total Grade Points: <strong class="text-success">
+                                                    {{ number_format($totalGpaValue, 2) }}</strong>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                $gpa = 0;
+                                                if ($totalCredits > 0) {
+                                                    $gpa = $totalGpaValue / $totalCredits;
+                                                }
+                                                ?>
+                                                GPA: <strong class="text-info">{{ number_format($gpa, 2) }}</strong>
+                                            </td>
                                         </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
-                            </div>
+                                    @endif
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </x-admin_layout>

@@ -285,6 +285,11 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.'
     Route::get('students/second_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'secondSemesterGradingAdd'])->name('students.second_semester.grading.add');
     Route::post('students/second_semester/grading/create/{student}/{semester_id}', [AdminGradingController::class, 'storeSecondSemester'])->name('students.grades.storeSeconodSemester');
     Route::get('students/second_semester/grading/view/{student:id}/{semester}', [AdminGradingController::class, 'secondSemesterGrading'])->name('students.second_semester.grading.view');
+
+    //grading edit
+    Route::get('student/{student}/grading/{grading}/semester/{semester}/edit',[AdminGradingController::class,'edit'])->name('student.grading.edit');
+    Route::put('student/{student}/grading/{grading}/semester/{semester}', [AdminGradingController::class, 'update'])->name('student.grading.update');
+
 });
 
 //admin, manager, staff

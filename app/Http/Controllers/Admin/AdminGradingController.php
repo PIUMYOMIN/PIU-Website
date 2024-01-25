@@ -51,8 +51,8 @@ class AdminGradingController extends Controller
             'module_id' => 'required',
             'year_id' => 'required',
             'assignment_id' => 'required',
-            'mark' => 'required',
-            'grade_point' => 'required',
+            'mark' => 'required|numeric',
+            'grade_point' => 'required|numeric',
             'grade_value' => 'required',
         ]);
 
@@ -86,8 +86,8 @@ class AdminGradingController extends Controller
             'module_id' => 'required',
             'year_id' => 'required',
             'assignment_id' => 'required',
-            'mark' => 'required',
-            'grade_point' => 'required',
+            'mark' => 'required|numeric',
+            'grade_point' => 'required|numeric',
             'grade_value' => 'required',
         ]);
 
@@ -134,4 +134,38 @@ class AdminGradingController extends Controller
             ])->get()
        ]);
     }
+
+    public function edit(Request $request, Student $student, Grading $grading, Semester $semester)
+    {
+        return view('admin.students.grading.edit', [
+            'grading' => $grading,
+            'student' => $grading->student,
+            'semester' => $grading->semester,
+            'courses' => Course::all(),
+            'modules' => Module::all(),
+            'assignments' => Assignment::all(),
+            'years' => Year::latest()->get(),
+        ]);
+    }
+
+    public function update(Request $request, Student $student, Grading $grading, Semester $semester)
+    {
+        $formData = request()->validate([
+            "student_id" => 'required',
+            "semester_id" => 'required',
+            "user_id" => 'required',
+            "course_id" => 'required',
+            "year_id" => 'required',
+            "module_id" => 'required',
+            "assignment_id" => 'required',
+            'mark' => 'required|numeric',
+            "grade_point" => 'required',
+            "grade_value" => 'required',
+        ]);
+
+        $grading->update($formData);
+
+        return redirect('admin/students/grading/check');
+    }
+
 }
