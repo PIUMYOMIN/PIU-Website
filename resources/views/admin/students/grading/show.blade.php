@@ -70,10 +70,7 @@
                                     @if ($gradings->count() > 0)
                                         <tr>
                                             <td colspan="6"></td>
-                                            <td>Total Credits: <strong class="text-danger">{{ $totalCredits }}</strong></td>
-                                            <td>
-                                                Total Grade Points: <strong class="text-success">
-                                                    {{ number_format($totalGpaValue, 2) }}</strong>
+                                            <td>Total Credits: <strong class="text-danger">{{ $totalCredits }}</strong>
                                             </td>
                                             <td>
                                                 <?php
@@ -82,9 +79,31 @@
                                                     $gpa = $totalGpaValue / $totalCredits;
                                                 }
                                                 ?>
-                                                GPA: <strong class="text-info">{{ number_format($gpa, 2) }}</strong>
+                                                Total Grade Point Average: <strong class="text-info">{{ number_format($gpa, 2) }}</strong>
+                                            </td>
+                                            <td>
+                                                @if (number_format($gpa, 2) >= 4) 
+                                                Total Grade Value: <strong class="text-success">A</strong>
+                                                @elseif (number_format($gpa, 2) >= 3) 
+                                                Total Grade Value: <strong class="text-success">B</strong>
+                                                @elseif (number_format($gpa, 2) >= 2) 
+                                                Total Grade Value: <strong class="text-success">C</strong>
+                                                @elseif (number_format($gpa, 2) >= 1) 
+                                                Total Grade Value: <strong class="text-warning">D</strong>
+                                                @elseif (number_format($gpa, 2) >= 0.7)
+                                                Total Grade Value: <strong class="text-danger">E</strong>
+                                                @elseif (number_format($gpa, 2) >= 0) 
+                                                Total Grade Value: <strong class="text-danger">F</strong>
+                                                @endif
                                             </td>
                                         </tr>
+                                        {{-- <tr>
+                                            <td colspan="8"></td>
+                                            <td>
+                                                Total Grade Points: <strong class="text-success">
+                                                    {{ number_format($totalGpaValue, 2) }}</strong>
+                                            </td>
+                                        </tr> --}}
                                     @endif
                                 </tbody>
                             </table>
