@@ -38,12 +38,14 @@
                                             <td>{{ $module->module_code }}</td>
                                             <td>{{ $module->credit }}</td>
                                             <td>
-                                                <a href="modules/{{ $module->id }}/edit" class="ad-st-view">Edit</a>
-                                                <form action="modules/{{ $module->id }}/delete" method="POST">
+                                                <a href="/admin/module/{{ $module->id }}/edit" class="ad-st-view">Edit</a>
+                                                @if (auth()->user()->can('Read and Write'))
+                                                <form action="/admin/module/{{ $module->id }}/delete" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="ad-st-view">Delete</button>
                                                 </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

@@ -232,6 +232,11 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
 
     //module
     Route::get('/modules', [AdminModuleController::class, 'index'])->name('modules.index');
+    Route::get('/module/create', [AdminModuleController::class, 'create'])->name('module.create');
+    Route::post('/module/store', [AdminModuleController::class, 'store'])->name('module.store');
+    Route::get('/module/{module:id}/edit', [AdminModuleController::class, 'edit'])->name('module.edit');
+    Route::patch('/module/{module:id}/update', [AdminModuleController::class, 'update'])->name('module.update');
+    Route::delete('/module/{module:id}/delete', [AdminModuleController::class, 'destroy'])->name('module.delete');
 
     //curriculums
     Route::get('/curriculums', [AdminCurriculumController::class, 'index'])->name('curriculum.index');
