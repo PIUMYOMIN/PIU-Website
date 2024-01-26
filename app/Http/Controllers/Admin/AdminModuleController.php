@@ -24,7 +24,7 @@ class AdminModuleController extends Controller
     {
         $formData = request()->validate([
             'name' => 'required',
-            'module_code' => 'required|unique:modules,module_code',
+            'module_code' => ['required',Rule::unique('modules','module_code')],
             'credit' => 'required'
         ]);
 

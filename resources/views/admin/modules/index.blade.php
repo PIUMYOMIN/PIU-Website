@@ -6,7 +6,7 @@
             <li class="active-bre"><a href="#"> Modules</a>
             </li>
             <li class="page-back">
-                <a href="#!"><i class="fa fa-plus" aria-hidden="true"></i> Add module</a>
+                <a href="/admin/module/create"><i class="fa fa-plus" aria-hidden="true"></i> Add module</a>
             </li>
         </ul>
     </div>
