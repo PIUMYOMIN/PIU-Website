@@ -26,7 +26,7 @@
                                       @method('POST')
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input type="text" name="name" value="" class="validate" required>
+                                                <input type="text" name="name" value="{{ old('name') }}" class="validate" required>
                                                 <label class="">Module Name</label>
                                                 @error('name')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -35,14 +35,14 @@
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s6">
-                                                <input type="text" name="module_code" value="" class="validate">
+                                                <input type="text" name="module_code" value="{{ old('module_code') }}" class="validate">
                                                 <label class="">Module Code</label>
                                                 @error('module_code')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="input-field col s6">
-                                                <input type="text" name="credit" class="validate" value="">
+                                                <input type="text" name="credit" class="validate" value="{{ old('credit') }}">
                                                 <label class="">Credit</label>
                                                 @error('credit')
                                                     <span class="text-danger">{{ $message }}</span>
