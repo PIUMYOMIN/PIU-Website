@@ -29,6 +29,7 @@
                                             <th>Student Id</th>
                                             <th>Study Program</th>
                                             <th>Scademic Year</th>
+                                            <th>Registered By</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -40,6 +41,7 @@
                                                 <td>{{ $student->student_id }}</td>
                                                 <td>{{ $student->course->title }}</td>
                                                 <td>{{ $student->year->name }}</td>
+                                                <td>{{ $student->user->name }}</td>
                                                 <td>
                                                     <a href="{{ route('admin.students.details',$student->id) }}"
                                                         class="ad-st-view">View</a>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Year;
 use App\Models\Course;
+use App\Models\User;
 use App\Models\StudentCourseYear;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,7 @@ class AdminStudentController extends Controller
         'students' => $students,
         'courses' => Course::all(),
         'years' => Year::all(),
+        'users' => User::all(),
        ]);
     }
 
