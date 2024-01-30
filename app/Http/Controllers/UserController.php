@@ -16,15 +16,15 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $users = User::all();
 
-        if(Request::is('api/*')){
+        if($request->is('api/*')){
             return new UserResource($users);
-        }else{
-            return view('admin.user.index',[
-                'users' => User::all(),
+        } else {
+            return view('admin.user.index', [
+                'users' => $users,
                 'roles' => Role::all()
             ]);
         }
