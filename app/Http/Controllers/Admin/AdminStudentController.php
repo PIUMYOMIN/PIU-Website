@@ -51,7 +51,7 @@ class AdminStudentController extends Controller
             'gender_sts' => 'required',
             'year_id' => 'required',
             'profile' => 'nullable|file|mimes:jpg,jpeg,png',
-            'education_certificate' => 'required|file|mimes:pdf,doc,docx',
+            'education_certificate' => 'nullable|file|mimes:pdf,doc,docx',
             'other_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
         ]);
 

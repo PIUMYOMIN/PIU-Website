@@ -18,10 +18,16 @@ class UserController extends Controller
 {
     public function index()
     {
-       return view('admin.user.index',[
-        'users' => User::all(),
-        'roles' => Role::all()
-       ]);
+        $users = User::all();
+
+        if(Request::is('api/*')){
+            return new UserResource($users);
+        }else{
+            return view('admin.user.index',[
+                'users' => User::all(),
+                'roles' => Role::all()
+            ]);
+        }
     }
 
     public function register()

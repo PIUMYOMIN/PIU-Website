@@ -206,12 +206,12 @@
                                     <div class="file-field input-field col s12">
                                         <div class="btn admin-upload-btn">
                                             <span>File</span>
-                                            <input type="file" name="education_certificate" required>
+                                            <input type="file" name="education_certificate">
                                         </div>
                                         <div class="file-path-wrapper">
                                             <input class="file-path validate" type="text"
                                                 value="{{ old('education_certificate') }}"
-                                                placeholder="Education Certificate (Compulsory)">
+                                                placeholder="Education Certificate (Opitional)">
                                         </div>
                                         @error('education_certificate')
                                             <p class="text-danger">{{ $message }}</p>
