@@ -155,6 +155,9 @@ Route::delete('/gallery/{gallery:id}/delete', [AdminGalleryController::class, 'd
 //contact
 Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
 
+//assignments 
+Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::class, 'delete'])->name('assignment.delete');
+
 });
 
 Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('admin')->group(function () {
@@ -168,6 +171,13 @@ Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('adm
     Route::post('/students/{student:id}/add_course', [AdminStudentController::class, 'addCourse'])->name('students.addCourse');
     Route::delete('/students/{student}/course/{year}/year/delete', [AdminStudentController::class, 'deleteCourse'])
     ->name('students.course.year.delete');
+
+    // assignment
+    Route::get('/assignments', [AdminAssignmentController::class, 'index'])->name('assignment.index');
+    Route::get('/assignment/create', [AdminAssignmentController::class, 'create'])->name('assignment.create');
+    Route::post('/assignment/store', [AdminAssignmentController::class, 'store'])->name('assignment.form.submit');
+    Route::get('/assignment/{assignment:slug}/edit', [AdminAssignmentController::class, 'edit'])->name('assignment.edit');
+    Route::patch('/assignment/{assignment:slug}/update', [AdminAssignmentController::class, 'index'])->name('assignment.update');
 });
 
 
@@ -245,15 +255,6 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
     Route::get('/curriculum/{curriculum:id}/edit', [AdminCurriculumController::class, 'edit'])->name('curriculum.edit');
     Route::patch('/curriculum/{curriculum:id}/update', [AdminCurriculumController::class, 'index'])->name('curriculum.update');
     Route::delete('/curriculum/{curriculum:id}/delete', [AdminCurriculumController::class, 'delete'])->name('curriculum.delete');
-
-    // assignment
-    Route::get('/assignments', [AdminAssignmentController::class, 'index'])->name('assignment.index');
-    Route::get('/assignment/create', [AdminAssignmentController::class, 'create'])->name('assignment.create');
-    Route::post('/assignment/store', [AdminAssignmentController::class, 'store'])->name('assignment.form.submit');
-    Route::get('/assignment/{assignment:slug}/edit', [AdminAssignmentController::class, 'edit'])->name('assignment.edit');
-    Route::patch('/assignment/{assignment:slug}/update', [AdminAssignmentController::class, 'index'])->name('assignment.update');
-    Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::class, 'delete'])->name('assignment.delete');
-
 
 });
 
