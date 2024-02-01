@@ -92,7 +92,10 @@
                                                         <td>
                                                             <span class="label label-success">Active</span>
                                                         </td>
-    													<td><a href="admin-student-details.html" class="ad-st-view">View</a></td>
+    													<td>
+                                                            <a href="{{ route('admin.students.details',$student->id) }}"
+                                                        class="ad-st-view">View</a>
+                                                        </td>
                                                     </tr>
                                                     @endforeach
                                             </tbody>
