@@ -183,7 +183,15 @@
                                     <tr>
                                         <td>Education Background</td>
                                         <td>:</td>
-                                        <td><span class="db-done"><a href="{{ asset('storage/'.$student->education_certificate) }}" download>Download</a></span></td>
+                                        <td>
+                                            <span class="db-done">
+                                                @if ($student->education_certificate)
+                                                    <a href="{{ asset('storage/'.$student->education_certificate) }}" download>Download
+                                                </a>
+                                                @else
+                                                No Document Found.
+                                                @endif
+                                            </span></td>
                                     </tr>
                                     {{-- <tr>
                                             <td>First Semester</td>

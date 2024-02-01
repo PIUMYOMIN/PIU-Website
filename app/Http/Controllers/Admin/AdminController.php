@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Course;
+use App\Models\Student;
 
 class AdminController extends Controller
 {
@@ -12,6 +14,8 @@ class AdminController extends Controller
     {
        return view('admin.index',[
         'courses' => Course::latest()->get(),
+        'students' => Student::latest()->take(10)->get(),
+        'users' => User::all(),
        ]);
     }
 }

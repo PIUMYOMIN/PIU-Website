@@ -66,7 +66,7 @@
                                                     <th>Name</th>
                                                     <th>Phone</th>
                                                     <th>Email</th>
-                                                    <th>Country</th>
+                                                    <th>Registered By</th>
                                                     <th>Id</th>
                                                     <th>Date of birth</th>
 													<th>Status</th>
@@ -74,21 +74,27 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach ($students as $student) 
                                                 <tr>
-                                                    <td><span class="list-img"><img src="images/user/1.png" alt=""></span>
-                                                    </td>
-                                                    <td><a href="#"><span class="list-enq-name">Marsha Hogan</span><span class="list-enq-city">Illunois, United States</span></a>
-                                                    </td>
-                                                    <td>+01 3214 6522</td>
-                                                    <td>chadengle@dummy.com</td>
-                                                    <td>united states</td>
-                                                    <td>ST17241</td>
-													<td>03 Jun 1990</td>
-                                                    <td>
-                                                        <span class="label label-success">Active</span>
-                                                    </td>
-													<td><a href="admin-student-details.html" class="ad-st-view">View</a></td>
-                                                </tr>
+                                                        <td>
+                                                            <span class="list-img"><img src="{{ asset('storage/'.$student->profile) }}" alt="">
+                                                            </span>
+                                                        </td>
+                                                        <td><a href="#">
+                                                            <span class="list-enq-name">{{ $student->fname }} {{ $student->lname }}</span>
+                                                            <span class="list-enq-city">{{ $student->city }}, {{ $student->country }}</span></a>
+                                                        </td>
+                                                        <td>{{ $student->phone }}</td>
+                                                        <td>{{ $student->email }}</td>
+                                                        <td>{{ $student->user->name }}</td>
+                                                        <td>{{ $student->student_id }}</td>
+    													<td>{{$student->dob}}</td>
+                                                        <td>
+                                                            <span class="label label-success">Active</span>
+                                                        </td>
+    													<td><a href="admin-student-details.html" class="ad-st-view">View</a></td>
+                                                    </tr>
+                                                    @endforeach
                                             </tbody>
                                         </table>
                                     </div>
