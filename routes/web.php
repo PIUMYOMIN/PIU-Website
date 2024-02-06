@@ -61,6 +61,7 @@ Route::get('/register', [UserController::class, 'register'])->middleware('guest'
 Route::post('/user/register/form/submit', [UserController::class, 'store'])->name('user.register.form.submit');
 
 Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admin.auth.logout');
+Route::post('/admin/student/logout', [UserController::class, 'studentLogout'])->name('admin.student.logout');
 
 Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.index');
 
@@ -162,15 +163,12 @@ Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::
 
 Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('admin')->group(function () {
     //students
-    Route::get('/students', [AdminStudentController::class, 'index'])->name('students.index');
-    Route::get('/students/create', [AdminStudentController::class, 'create'])->name('students.create');
-    Route::post('/students/store', [AdminStudentController::class, 'store'])->name('students.store');
-    Route::get('/students/{student:id}/details', [AdminStudentController::class, 'show'])->name('students.details');
-    Route::get('/students/{student:id}/edit', [AdminStudentController::class, 'edit'])->name('students.edit');
-    Route::patch('/students/{student:id}/update', [AdminStudentController::class, 'update'])->name('students.update');
-    Route::post('/students/{student:id}/add_course', [AdminStudentController::class, 'addCourse'])->name('students.addCourse');
-    Route::delete('/students/{student}/course/{year}/year/delete', [AdminStudentController::class, 'deleteCourse'])
-    ->name('students.course.year.delete');
+    Route::get('/students', [AdminStudentController::class, 'index'])->name('student.index');
+    Route::get('/student/create', [AdminStudentController::class, 'create'])->name('student.create');
+    Route::post('/student/store', [AdminStudentController::class, 'store'])->name('student.store');
+    Route::post('/student/{student:id}/add_course', [AdminStudentController::class, 'addCourse'])->name('student.addCourse');
+    Route::delete('/student/{student}/course/{year}/year/delete', [AdminStudentController::class, 'deleteCourse'])
+    ->name('student.course.year.delete');
 
     // assignment
     Route::get('/assignments', [AdminAssignmentController::class, 'index'])->name('assignment.index');
@@ -182,11 +180,19 @@ Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('adm
 
 
 //Student profile
-Route::middleware('auth:student')->name('admin.')->prefix('admin')->group(function () {
-    Route::get('/profile', [StudentController::class, 'index'])->name('profile');
-});
+// Route::middleware('auth:student')->name('admin.')->prefix('admin')->group(function () {
+//     Route::get('/profile', [StudentController::class, 'index'])->name('profile');
+// });
 
-// Route::get('/admin/profile/{student}', [StudentController::class, 'index'])->name('admin.profile');
+// Route::middleware(['auth','role:admin|registrar'])->name('admin.')->prefix('admin')->group(function () {
+    // });
+Route::get('admin/student/profile/{student:id}/edit', [AdminStudentController::class, 'edit'])->name('admin.student.profile.edit');
+Route::get('admin/student/profile/{student:id}/details', [AdminStudentController::class, 'show'])->name('admin.student.profile.details');
+Route::patch('admin/student/{student:id}/update', [AdminStudentController::class, 'update'])->name('admin.student.update');
+Route::get('admin/student/profile/{identifier}', [StudentController::class, 'index'])->name('admin.student.profile');
+Route::get('/admin/student/profile/{student:id}/edit', [AdminStudentController::class, 'edit'])->name('admin.student.profile.edit');
+Route::get('/admin/student/profile/{student:id}/password-change', [AdminStudentController::class, 'changePassword'])->name('admin.student.profile.password-change');
+Route::patch('/admin/student/profile/{student:id}/passwordUpdate', [AdminStudentController::class, 'passwordUpdate'])->name('admin.student.passwordUpdate');
 
 
 //Admin, Manager and Staff

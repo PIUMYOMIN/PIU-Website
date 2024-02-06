@@ -5,7 +5,7 @@
                 </li>
                 <li class="active-bre"><a href="#"> All Enquiry</a>
                 </li>
-                <li class="page-back"><a href="/admin/students/create"><i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
+                <li class="page-back"><a href="/admin/student/create"><i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
                 </li>
             </ul>
         </div>
@@ -43,7 +43,7 @@
                                                 <td>{{ $student->year->name }}</td>
                                                 <td>{{ $student->user->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('admin.students.details',$student->id) }}"
+                                                    <a href="{{ route('admin.student.profile.details',$student->id) }}"
                                                         class="ad-st-view">View</a>
                                                 </td>
                                             </tr>

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -86,6 +87,12 @@ class UserController extends Controller
 
     public function editUserProfile(User $user)
     {
+        $authenticatedUser = auth()->user();
+
+        if ($authenticatedUser->id !== $user->id) {
+            return redirect()->back()->withErrors(['error' => 'You are not authorized to edit this profile.']);
+        }
+
        return view('admin.user.edit',[
         'user' => $user
        ]);
@@ -118,59 +125,48 @@ class UserController extends Controller
         return back()->with('success', 'User updated successfully');
     }
 
-    public function user_login(Request $request)
-    {
+public function user_login(Request $request)
+{
+    $identifier = $request->input('identifier');
+    $password = $request->input('password');
 
-        $identifier = $request->input('identifier');
-        $password = $request->input('password');
-
+    // Check if the identifier is an email
+    if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+        // Attempt to find a user with the provided email
         $user = User::where('email', $identifier)->first();
-        $student = Student::where('student_id', $identifier)->first();
-
-        // dd($user,$student,$password);
-
-        $credentials = [
-            'student_id' => $identifier,
-            'password' => $password,
-        ];
 
         if ($user && Auth::attempt(['email' => $identifier, 'password' => $password])) {
-
             Auth::login($user);
 
             if ($user->hasRole('admin')) {
-            return redirect('/admin')->with('success', 'Welcome back');
+                return redirect('/admin')->with('success', 'Welcome back');
             } else {
-            return redirect('/')->with('success', 'Welcome back');
+                return redirect('/')->with('success', 'Welcome back');
             }
-
-        } elseif ($student && Auth::guard('student')->attempt(['student_id' => $credentials, 'password' => $password])) {
-            Auth::guard('student')->login($student);
-            // dd('Student login successful');
-            // return redirect()->route('admin.profile', ['student' => $student->student_id]);
-            return redirect()->intended(route('admin.profile'));
-        } else {
-            return redirect('/login')->withErrors(['login' => 'Invalid login credentials.']);
         }
+    } else {
+        // Attempt to find a student with the provided student_id
+        $student = Student::where('student_id', $identifier)->first();
 
+        if ($student && Auth::guard('student')->attempt(['student_id' => $identifier, 'password' => $password])) {
+            Auth::guard('student')->login($student);
 
-        // $validatedData = $request->validate([
-        //     'email' => 'required|email',
-        //     'password' => 'required',
-        // ]);
+            // Generate a random string
+            $randomString = Str::random(15);
 
-        // $credentials = [
-        //     'email' => $validatedData['email'],
-        //     'password' => $validatedData['password'],
-        // ];
+            // Concatenate student ID with random string
+            $mixedIdentifier = $student->student_id . $randomString;
 
-        // if (Auth::attempt($credentials, $request->has('remember'))) {
-        //     // Authentication passed
-        //     return redirect()->back()->with('message','Login Successfully.');
-        // }else{
-        //     return redirect('/login')->withErrors(['email' => 'Invalid email or password.']);
-        // }
+            // Redirect with the mixed identifier appended to the route
+            return redirect()->intended(route('admin.student.profile', ['identifier' => $mixedIdentifier]));
+        }
     }
+
+    // If neither user nor student login is successful, redirect back with an error
+    return redirect('/login')->withErrors(['login' => 'Invalid login credentials.']);
+}
+
+
 
     public function assignRole(Request $request, User $user)
     {
@@ -240,6 +236,12 @@ class UserController extends Controller
     public function logout()
     {
         auth()->logout();
+        return redirect('/');
+    }
+
+    public function studentLogout()
+    {
+        Auth::guard('student')->logout();
         return redirect('/');
     }
 

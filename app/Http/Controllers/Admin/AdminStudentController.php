@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\StudentCourseYear;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AdminStudentController extends Controller
 {
@@ -101,12 +102,20 @@ class AdminStudentController extends Controller
     // student edit page 
     public function edit(Student $student)
     {
-       return view('admin.students.edit',[
-        'student' => $student,
-        'courses' => Course::all(),
-        'years' => Year::all(),
-       ]);
+        $authenticatedUser = Auth::user();
+        $authenticatedStudent = Auth::guard('student')->user();
+
+        if ($authenticatedUser->hasAnyRole(['admin', 'registrar']) || $authenticatedStudent->id === $student->id) {
+            return view('admin.students.edit', [
+                'student' => $student,
+                'courses' => Course::all(),
+                'years' => Year::all(),
+            ]);
+        } else {
+            return redirect()->back()->withErrors(['error' => 'You are not authorized to edit this profile.']);
+        }
     }
+
 
     public function update(Student $student)
     {
@@ -132,7 +141,7 @@ class AdminStudentController extends Controller
             'other_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
         ]);
 
-        $formData['user_id'] = auth()->id();
+        // $formData['user_id'] = auth()->id();
 
         // Asynchronously process the file uploads
         if (request()->hasFile('profile')) {
@@ -149,7 +158,12 @@ class AdminStudentController extends Controller
 
         $student->update($formData);
 
-        return redirect()->route('admin.students.details', ['student' => $student->id]);
+        if(auth()->check()){
+            return redirect()->route('admin.student.profile.details', ['student' => $student->id]);
+        }else{
+            return redirect()->back();
+        }
+
     }
 
     public function addCourse(Request $request, Student $student)
@@ -162,5 +176,33 @@ class AdminStudentController extends Controller
         $student->courses()->attach($formData['course_id'], ['year_id' => $formData['year_id']]);
 
         return redirect()->route('admin.students.details', ['student' => $student->id]);
+    }
+
+    public function changePassword(Student $student)
+    {
+        return view('admin.student_profile.change_password',[
+            'student' => $student,
+        ]);
+    }
+
+    public function passwordUpdate(Student $student)
+    {
+        $data = request()->validate([
+            'new_password' => 'required|min:8',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        // For users with a traditional password, check the old password
+        $oldPassword = request('old_password');
+        if (!Hash::check($oldPassword, $student->password)) {
+            return back()->withErrors(['old_password' => 'The old password is incorrect.']);
+        }
+
+        // Update the user's password
+        $student->password = Hash::make($data['new_password']);
+        $student->save();
+
+        // Redirect the user with a success message
+        return redirect()->route('admin.student.profile.edit', ['student' => $student->id])->with('success', 'Password updated successfully!');
     }
 }

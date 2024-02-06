@@ -19,32 +19,26 @@
                                 </li>
                             </ul>
                         </div>
-                        @guest
-                            <div class="ed-com-t1-right">
+                        @if(auth()->user() || auth()->guard('student')->check())
+                        <div class="ed-com-t1-left">
+                            <ul>
+                            @if(auth()->guard('student')->check())
+                                <li>
+                                    {{-- <a href="{{ route('admin.student.profile', ['identifier' => auth()->guard('student')->user()->student_id]) }}">Student Profile</a> --}}
+                                    <a href="#!">Student Profile</a>
+                                </li>
+                            @elseif(auth()->check())
+                                <li>
+                                    <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}">
+                                            User Profile
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
+                        </div>
+                        <div class="ed-com-t1-right">
+                            @if (auth()->check()) 
                                 <ul>
-                                    <li><a href="#!" data-toggle="modal" data-target="#modal1">Sign In</a>
-                                    </li>
-                                    <li><a href="#!" data-toggle="modal" data-target="#modal2">Sign Up</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        @endguest
-                        @auth
-                            <div class="ed-com-t1-right">
-                                <ul>
-                                    @if (auth()->check())
-                                        <li>
-                                        <a
-                                            href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}">Profile
-                                        </a>
-                                    </li>
-                                    @elseif(auth()->guard('student')->check())
-                                    <ul>
-                                        <li>
-                                            <a href="{{ route('admin.profile', ['student' => auth()->user()->student_id]) }}">Profile</a>
-                                        </li>
-                                    </ul>
-                                    @endif
                                     <li>
                                         <form action="{{ route('admin.auth.logout') }}" method="POST">
                                             @csrf
@@ -52,8 +46,27 @@
                                         </form>
                                     </li>
                                 </ul>
+                            @elseif(auth()->guard('student')->check())
+                            <ul>
+                                <li>
+                                    <form action="{{ route('admin.student.logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                            @endif
+                        </div>
+                        @else
+                        <div class="ed-com-t1-right">
+                                <ul>
+                                    <li><a href="#!" data-toggle="modal" data-target="#modal1">Sign In</a>
+                                    </li>
+                                    <li><a href="#!" data-toggle="modal" data-target="#modal2">Sign Up</a>
+                                    </li>
+                                </ul>
                             </div>
-                        @endauth
+                        @endif
                         <div class="ed-com-t1-social">
                             <ul>
                                 <li><a href="https://www.facebook.com/PhaungDawOoInternationalUniveristy" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>

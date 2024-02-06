@@ -21,38 +21,70 @@
                                 gpa and more</p>
                         </div>
                         <div class="tab-inn">
-                            <form action="{{ route('admin.students.update', ['student' => $student->id]) }}"
+                            <form action="{{ route('admin.student.update', ['student' => $student->id]) }}"
                                 method="POST" enctype="multipart/form-data">
                                 @method('patch')
                                 @csrf
                                 <input type="hidden" name="user_id">
+                                @if (auth()->check())
+                                        <div class="row">
+                                            <div class="input-field col s6">
+                                                <input id="fname" type="text" name="fname"
+                                                    value="{{ $student->fname }}" class="validate">
+                                                <label for="fname" class="">First Name</label>
+                                                @error('fname')
+                                                    <p class="text-danger">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <input id="lname" type="text" name="lname"
+                                                    value="{{ $student->lname }}" class="validate">
+                                                <label for="lname" class="">Last Name (Optional)</label>
+                                                @error('lname')
+                                                    <p class="text-danger">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                @elseif(auth()->guard('student')->check())
+                                        <div class="row">
+                                            <div class="input-field col s6">
+                                                <input id="fname" type="text" name="fname"
+                                                    value="{{ $student->fname }}" class="validate" disabled readonly>
+                                                <label for="fname" class="">First Name</label>
+                                                @error('fname')
+                                                    <p class="text-danger">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <input id="lname" type="text" name="lname"
+                                                    value="{{ $student->lname }}" class="validate" disabled readonly>
+                                                <label for="lname" class="">Last Name (Optional)</label>
+                                                @error('lname')
+                                                    <p class="text-danger">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                @endif
                                 <div class="row">
-                                    <div class="input-field col s6">
-                                        <input id="fname" type="text" name="fname"
-                                            value="{{ $student->fname }}" class="validate" required>
-                                        <label for="fname" class="">First Name</label>
-                                        @error('fname')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="input-field col s6">
-                                        <input id="lname" type="text" name="lname"
-                                            value="{{ $student->lname }}" class="validate">
-                                        <label for="lname" class="">Last Name (Optional)</label>
-                                        @error('lname')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col s6">
+                                    @if (auth()->check()) 
+                                        <div class="input-field col s6">
+                                            <input id="stuId" type="text" name="student_id"
+                                                value="{{ $student->student_id }}" class="validate">
+                                            <label for="stuId" class="">Student Id</label>
+                                            @error('student_id')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    @elseif(auth()->guard('student')->check())
+                                        <div class="input-field col s6">
                                         <input id="stuId" type="text" name="student_id"
-                                            value="{{ $student->student_id }}" class="validate" required>
+                                            value="{{ $student->student_id }}" class="validate" disabled>
                                         <label for="stuId" class="">Student Id</label>
                                         @error('student_id')
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
+                                    @endif
                                     <div class="file-field input-field col s6">
                                         <input id="dob" type="date" name="dob" value="{{ $student->dob }}"
                                             class="validate">
@@ -61,7 +93,9 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="row">
+                                @if (auth()->check())
+                                    @if(auth()->user()->isAdmin())
+                                    <div class="row">
                                     <div class="input-field col s6">
                                         <select class="input-field col s12" name="year_id">
                                             <option value="" disabled selected>Select Academic Year</option>
@@ -91,6 +125,8 @@
                                         </select>
                                     </div>
                                 </div>
+                                @endif
+                                @endif
                                 <div class="row">
                                     <div class="input-field col s6">
                                         <input id="phone" type="number" name="phone"

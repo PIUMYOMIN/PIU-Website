@@ -2,31 +2,54 @@
     <!--== USER INFO ==-->
     <div class="sb2-12">
         <ul>
+            @if (auth()->check()) 
+                <li>
+                    <img src="{{ auth()->user()->profile }}" alt="">
+                </li>
+                <li>
+                    <h5>{{ auth()->user()->name }} <span> {{ auth()->user()->city }}, {{ auth()->user()->country }}</span>
+                    </h5>
+                </li>
+            @elseif(auth()->guard('student')->check())
             <li>
-                <img src="{{ auth()->user()->profile }}" alt="">
+                <img src="{{ auth()->guard('student')->user()->profile }}" alt="">
             </li>
             <li>
-                <h5>{{ auth()->user()->name }} <span> {{ auth()->user()->city }}, {{ auth()->user()->country }}</span>
+                <h5>{{ auth()->guard('student')->user()->fname }} <span> {{ auth()->guard('student')->user()->city }}, {{ auth()->guard('student')->user()->country }}</span>
                 </h5>
             </li>
-            <li></li>
+            @endif
         </ul>
     </div>
     <!--== LEFT MENU ==-->
     <div class="sb2-13">
         <ul class="collapsible" data-collapsible="accordion">
-            <li>
-                <a href="/admin" class="menu-active"><i class="fa fa-bar-chart" aria-hidden="true"></i> Dashboard</a>
-            </li>
-            <li>
-                <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}"><i class="fa fa-cogs"
-                        aria-hidden="true"></i> Profile Setting</a>
-            </li>
-            <li>
+            @if (auth()->check()) 
+                <li>
+                    <a href="/admin" class="menu-active"><i class="fa fa-bar-chart" aria-hidden="true"></i> Dashboard</a>
+                </li>
+            @endif
+            @if (auth()->check()) 
+                <li>
+                    <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}"><i class="fa fa-cogs"
+                            aria-hidden="true"></i> Profile Setting</a>
+                </li>
+                <li>
                 <a href="{{ route('admin.user.password-change', ['user' => auth()->user()->id]) }}"><i class="fa fa-key"
                         aria-hidden="true"></i> Change Password</a>
             </li>
-            @if (auth()->user()->can('Read and Write'))
+            @elseif(auth()->guard('student')->check())
+            <li>
+                <a href="{{ route('admin.student.profile.edit', ['student' => auth()->guard('student')->user()->id]) }}"><i class="fa fa-cogs"
+                        aria-hidden="true"></i> Profile Setting</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.student.profile.password-change', ['student' => auth()->guard('student')->user()->id]) }}"><i class="fa fa-key"
+                        aria-hidden="true"></i> Change Password</a>
+            </li>
+            @endif
+            @if (auth()->check())
+                @if (auth()->user()->can('Read and Write'))
                 <li>
                     <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-users"
                             aria-hidden="true"></i>
@@ -339,7 +362,7 @@
                                 <a href="/admin/students">All Students</a>
                             </li>
                             <li>
-                                <a href="/admin/students/create">Add New Students</a>
+                                <a href="/admin/student/create">Add New Students</a>
                             </li>
                             <li>
                                 <a href="{{ route('admin.students.grading.create') }}">Add Student Grading</a>
@@ -361,6 +384,7 @@
                         </ul>
                     </div>
                 </li>
+            @endif
             @endif
         </ul>
     </div>

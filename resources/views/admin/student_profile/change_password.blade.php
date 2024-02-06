@@ -1,72 +1,66 @@
-<x-layout>
-    <!--SECTION START-->
-    <section>
-        <div class="pro-cover">
-        </div>
-        <x-profile-menu-tab :student="$student" />
-        <div class="stu-db">
-            <div class="container pg-inn">
-                <x-user-profile />
-                <div class="col-md-9">
-                    <div class="udb">
-                        <div class="udb-sec udb-cour">
-                            <h4>
-                                Change Your Password
-                            </h4>
-                            <p>Please keep in mind your update password. If you're forgotten your password, please
-                                contact to PIU Management Team.</p>
+<x-admin_layout>
+    <div class="sb2-2-2">
+        <ul>
+            <li><a href="/admin"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+            </li>
+            <li class="active-bre"><a href="#"> User Password Change</a>
+            </li>
+            <li class="page-back"><a href="/admin"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
+            </li>
+        </ul>
+    </div>
 
-                            <div class="sdb-cours">
-                                <form class="s12"
-                                    action="{{ route('student.profile.update_password', ['student_id' => $student->id]) }}"
-                                    method="POST">
-                                    @method('patch')
-                                    @csrf
-                                    <div>
-                                        <div class="input-field s12">
-                                            <input id="current_password" type="password" name="current_password"
-                                                class="validate" required>
-                                            <label class="">Current Password</label>
-                                            @error('current_password')
-                                                <p class="text-danger">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="input-field s12">
-                                            <input id="new_password" type="password" name="new_password"
-                                                class="validate" required>
-                                            <label class="">New Password</label>
-                                            @error('new_password')
-                                                <p class="text-danger">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="input-field s12">
-                                            <input id="password_confirmation" type="password"
-                                                name="new_password_confirmation" class="validate" required>
-                                            <label class="">Re-type Password</label>
-                                            @error('password_confirmation')
-                                                <p class="text-danger">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="input-field s4">
-                                            <button type="submit"
-                                                class="waves-effect waves-light log-in-btn waves-input-wrapper">
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+    <!--== User Details ==-->
+    <div class="sb2-2-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box-inn-sp admin-form">
+                    <div class="inn-title">
+                        <h4>Change Your Password</h4>
+                        <p>Here you can edit your website basic details URL, Phone, Email, Address, User and password
+                            and more</p>
+                    </div>
+                    <div class="tab-inn">
+                        <form action="{{ route('admin.student.passwordUpdate',[$student->id]) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="password" value="" name="old_password" class="validate" required>
+                                    <label class="">Old Password</label>
+                                    @error('old_password')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="password" value="" name="new_password" class="validate" required>
+                                    <label class="">New Password</label>
+                                    @error('new_password')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="password" value="" name="confirm_password" class="validate" required>
+                                    <label class="">Confirm Password</label>
+                                    @error('confirm_password')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <i class="waves-effect waves-light btn-large waves-input-wrapper"
+                                        style=""><input type="submit" class="waves-button-input"></i>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!--SECTION END-->
-</x-layout>
+    </div>
+</x-admin_layout>

@@ -93,7 +93,7 @@
                                                             <span class="label label-success">Active</span>
                                                         </td>
     													<td>
-                                                            <a href="{{ route('admin.students.details',$student->id) }}"
+                                                            <a href="{{ route('admin.student.profile.details',$student->id) }}"
                                                         class="ad-st-view">View</a>
                                                         </td>
                                                     </tr>

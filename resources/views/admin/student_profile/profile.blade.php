@@ -1,120 +1,212 @@
-<x-layout>
-    <!--SECTION START-->
-    {{-- @dd($firstTermGpa) --}}
-    <section>
-        <div class="pro-cover">
-        </div>
-        <x-profile-menu-tab :student="$student" :notificationCount="$notificationCount" :newAssignmentCount="$newAssignmentCount" />
-        <div class="stu-db">
-            <div class="container pg-inn">
-                <x-user-profile />
-                <div class="col-md-9">
-                    <div class="udb">
-                        <div class="udb-sec udb-prof">
-                            <h4><img src="images/icon/db1.png" alt="" /> My Profile</h4>
-                            <div class="sdb-tabl-com sdb-pro-table">
-                                <table class="responsive-table bordered">
-                                    <tbody>
-                                        <form action="update" method="POST" enctype="multipart/form-data">
-                                            @method('patch')
-                                            @csrf
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>:</td>
-                                                <td>{{ $student->fname }} {{ $student->lname }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Email</td>
-                                                <td>:</td>
-                                                <td>{{ $student->email }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Phone</td>
-                                                <td>:</td>
-                                                <td>{{ $student->phone }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Current Address</td>
-                                                <td>:</td>
-                                                <td>{{ $student->address }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Birthday</td>
-                                                <td>:</td>
-                                                <td>{{ $student->dob }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Permanent Address</td>
-                                                <td>:</td>
-                                                <td>{{ $student->permanent_address }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>National No</td>
-                                                <td>:</td>
-                                                <td class="text-uppercase">{{ $student->national_no }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Passport No</td>
-                                                <td>:</td>
-                                                <td class="text-uppercase">{{ $student->passport_no }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Country</td>
-                                                <td>:</td>
-                                                <td>{{ $student->country }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>City</td>
-                                                <td>:</td>
-                                                <td>{{ $student->city }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Marital Status</td>
-                                                <td>:</td>
-                                                <td>{{ $student->marital_sts }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Gender Status</td>
-                                                <td>:</td>
-                                                <td>{{ $student->gender_sts }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Current Course</td>
-                                                <td>:</td>
-                                                <td>{{ $student->course->title }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>First Term</td>
-                                                <td>:</td>
-                                                <td>{{ $firstTermGpa }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Second Term</td>
-                                                <td>:</td>
-                                                <td>{{ $secondTermGpa }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Third Term</td>
-                                                <td>:</td>
-                                                <td>{{ $thirdTermGpa }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="/admin/students/profile/{{ $student->student_id }}/edit"
-                                                        class="waves-effect waves-light btn-large sdb-btn"><i
-                                                            class="fa fa-pencil"></i> Edit my profile</a>
-                                                </td>
-                                            </tr>
-                                        </form>
-                                    </tbody>
-                                </table>
-                            </div>
+<x-admin_layout>
+    <div class="sb2-2-2">
+        <ul>
+            <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+            </li>
+            <li class="active-bre"><a href="#"> Dashboard</a>
+            </li>
+            <li class="page-back"><a href="/admin"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
+            </li>
+        </ul>
+    </div>
+
+    <!--== User Details ==-->
+    <div class="sb2-2-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box-inn-sp admin-form">
+                    <div class="inn-title">
+                        <h4>Student Details</h4>
+                        <p>You're strongly recommended to use the desktop computer to view the student details.</p>
+                    </div>
+                    <div class="udb-sec udb-prof">
+                        <div class="sdb-tabl-com sdb-pro-table">
+                            <table class="responsive-table bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>Student Profile</td>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($student->profile)
+                                                <img src="/storage/{{ $student->profile }}"
+                                                    alt="{{ $student->profile }}" width="80">
+                                            @else
+                                                No Profile found.
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Student Name</td>
+                                        <td>:</td>
+                                        <td>{{ $student->fname }} {{ $student->lname }}</td>
+                                    </tr>
+                                    {{-- <tr>
+                                        <td>Study Course</td>
+                                        <td>:</td>
+                                        <td>
+                                            @foreach ($courses as $course)
+                                                @if ($course->id == $student->course_id)
+                                                    {{ $course->title }}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                    </tr> --}}
+                                    {{-- <tr>
+                                        <td>Joined Courses</td>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($joinedCourses->isNotEmpty())
+                                                <ul>
+                                                    @foreach ($joinedCourses as $joinedCourse)
+                                                        <li>
+                                                            <div class="row">
+                                                                <div class="col s4">
+                                                                    {{ $joinedCourse->title }} -
+                                                                    <form
+                                                                            action="{{ route('admin.students.course.year.delete', ['student' => $student->id, 'year' => $joinedCourse->years[0]->id]) }}"
+                                                                            method="POST">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger">Delete</button>
+                                                                        </form>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @else
+                                                <p>No joined courses found.</p>
+                                            @endif
+                                        </td>
+                                    </tr> --}}
+                                    {{-- <tr>
+                                        <td>Add Joined Program</td>
+                                        <td>:</td>
+                                        <td>
+                                            <form
+                                                action="{{ route('admin.students.addCourse', ['student' => $student->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col s6">
+                                                        <select class="input-field" name="course_id" required>
+                                                            <option value="" disabled selected>Select Course
+                                                            </option>
+                                                            @foreach ($courses as $course)
+                                                                <option
+                                                                    {{ $course->id == old('course_id') ? 'selected' : '' }}
+                                                                    value="{{ $course->id }}">{{ $course->title }}
+                                                                </option>
+                                                                @error('course_id')
+                                                                    <p class="text-danger">{{ $message }}</p>
+                                                                @enderror
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col s6">
+                                                        <select class="input-field" name="year_id" required>
+                                                            <option value="" disabled selected>Academic Year
+                                                            </option>
+                                                            @foreach ($years as $year)
+                                                                <option
+                                                                    {{ $year->id == old('year_id') ? 'selected' : '' }}
+                                                                    value="{{ $year->id }}">{{ $year->name }}
+                                                                </option>
+                                                                @error('year_id')
+                                                                    <p class="text-danger">{{ $message }}</p>
+                                                                @enderror
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <button type="submit">Add Course</button>
+                                            </form>
+                                        </td>
+                                    </tr> --}}
+
+                                    <tr>
+                                        <td>Student Id</td>
+                                        <td>:</td>
+                                        <td>{{ $student->student_id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>:</td>
+                                        <td>{{ $student->email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone</td>
+                                        <td>:</td>
+                                        <td>{{ $student->phone }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date of Birth</td>
+                                        <td>:</td>
+                                        <td>{{ $student->dob }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Country</td>
+                                        <td>:</td>
+                                        <td>{{ $student->country }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>City</td>
+                                        <td>:</td>
+                                        <td>{{ $student->city }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address</td>
+                                        <td>:</td>
+                                        <td>{{ $student->address }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>National Id</td>
+                                        <td>:</td>
+                                        <td>{{ $student->national_id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Passport No</td>
+                                        <td>:</td>
+                                        <td>{{ $student->passport_id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Marital Status</td>
+                                        <td>:</td>
+                                        <td>{{ $student->marital_sts }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gender Status</td>
+                                        <td>:</td>
+                                        <td>{{ $student->gender_sts }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Education Background</td>
+                                        <td>:</td>
+                                        <td>
+                                            <span class="db-done">
+                                                @if ($student->education_certificate)
+                                                    <a href="{{ asset('storage/'.$student->education_certificate) }}" download>Download
+                                                </a>
+                                                @else
+                                                No Document Found.
+                                                @endif
+                                            </span></td>
+                                    </tr>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a href="{{ route('admin.student.profile.edit', $student->id) }}"
+                                                    class="btn btn-primary">Edit</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!--SECTION END-->
-
-</x-layout>
+    </div>
+</x-admin_layout>

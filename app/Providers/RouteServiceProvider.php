@@ -36,5 +36,9 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+
+        Route::model('student', \App\Models\Student::class, function ($value) {
+            return \App\Models\Student::where('id', $value)->first() ?? abort(404);
+        });
     }
 }

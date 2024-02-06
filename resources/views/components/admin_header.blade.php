@@ -26,23 +26,41 @@
             <!--== MY ACCCOUNT ==-->
             <div class="col-md-2 col-sm-3 col-xs-6">
                 <!-- Dropdown Trigger -->
-                <a class='waves-effect dropdown-button top-user-pro' href='#' data-activates='top-menu'><img src="{{ auth()->user()->profile }}" alt="" />My Account <i class="fa fa-angle-down" aria-hidden="true"></i>
+                @if (auth()->check()) 
+                    <a class='waves-effect dropdown-button top-user-pro' href='#' data-activates='top-menu'><img src="{{ auth()->user()->profile }}" alt="" />My Account <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </a>
+                @elseif(auth()->guard('student')->check())
+                <a class='waves-effect dropdown-button top-user-pro' href='#' data-activates='top-menu'><img src="{{ auth()->guard('student')->user()->profile }}" alt="" />My Account <i class="fa fa-angle-down" aria-hidden="true"></i>
                 </a>
+                @endif
 
                 <!-- Dropdown Structure -->
                 <ul id='top-menu' class='dropdown-content top-menu-sty'>
                     <li>
-                        <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}" class="waves-effect">
+                        @if (auth()->check()) 
+                            <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}" class="waves-effect">
+                        @elseif(auth()->guard('student')->check())
+                            <a href="{{ route('admin.student.profile.edit', ['student' => auth()->guard('student')->user()->id]) }}" class="waves-effect">
+                        @endif
                         <i class="fa fa-cogs" aria-hidden="true"></i> Profile Setting
                         </a>
                     </li>
                     <li class="divider"></li>
-                    <li>
-                        <form action="{{ route('admin.auth.logout') }}" method="POST">
-                            @csrf
-                            <button class="ho-dr-con-last waves-effect btn-link"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout</button>
-                        </form>
-                    </li>
+                    @if (auth()->check())
+                        <li>
+                            <form action="{{ route('admin.auth.logout') }}" method="POST">
+                                @csrf
+                                <button class="ho-dr-con-last waves-effect btn-link"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout</button>
+                            </form>
+                        </li>
+                    @elseif(auth()->guard('student')->check())
+                        <li>
+                            <form action="{{ route('admin.student.logout') }}" method="POST">
+                                @csrf
+                                <button class="ho-dr-con-last waves-effect btn-link"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout</button>
+                            </form>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>
