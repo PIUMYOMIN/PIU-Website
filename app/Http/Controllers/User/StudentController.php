@@ -19,7 +19,7 @@ class StudentController extends Controller
     // Extract the student ID from the identifier
     $student_id = substr($identifier, 0, 7);
 
-    dd($student_id);
+    // dd($student_id);
 
     // Retrieve the student data based on the extracted student ID
     $student = Student::where('student_id', $student_id)->firstOrFail();
