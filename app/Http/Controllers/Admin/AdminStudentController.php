@@ -102,19 +102,20 @@ class AdminStudentController extends Controller
     // student edit page 
     public function edit(Student $student)
     {
-        $authenticatedUser = Auth::user();
-        $authenticatedStudent = Auth::guard('student')->user();
 
-        if ($authenticatedUser->hasAnyRole(['admin', 'registrar']) || $authenticatedStudent->id === $student->id) {
-            return view('admin.students.edit', [
-                'student' => $student,
-                'courses' => Course::all(),
-                'years' => Year::all(),
-            ]);
-        } else {
-            return redirect()->back()->withErrors(['error' => 'You are not authorized to edit this profile.']);
-        }
+        $authenticatedUser = Auth::user(); // Get the authenticated user
+        $authenticatedStudent = Auth::guard('student')->user(); // Get the authenticated student
+
+    if (($authenticatedUser && $authenticatedUser->hasAnyRole(['admin', 'registrar'])) || ($authenticatedStudent && $authenticatedStudent->id === $student->id)) {
+        return view('admin.students.edit', [
+            'student' => $student,
+            'courses' => Course::all(),
+            'years' => Year::all(),
+        ]);
+    } else {
+        return redirect()->back()->withErrors(['error' => 'You are not authorized to edit this profile.']);
     }
+}
 
 
     public function update(Student $student)
@@ -129,8 +130,8 @@ class AdminStudentController extends Controller
             'dob' => 'nullable',
             'city' => 'nullable',
             'country' => 'nullable',
-            'student_id' => ['required', Rule::unique('students', 'student_id')->ignore($student->id)],
-            'national_id' => ['required', Rule::unique('students', 'national_id')->ignore($student->id)],
+            'student_id' => ['nullable', Rule::unique('students', 'student_id')->ignore($student->id)],
+            'national_id' => ['nullable', Rule::unique('students', 'national_id')->ignore($student->id)],
             'passport_id' => ['nullable', Rule::unique('students', 'passport_id')->ignore($student->id)],
             'course_id' => 'nullable',
             'marital_sts' => 'nullable',
