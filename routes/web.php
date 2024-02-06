@@ -186,11 +186,10 @@ Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('adm
 
 // Route::middleware(['auth','role:admin|registrar'])->name('admin.')->prefix('admin')->group(function () {
     // });
+Route::get('admin/student/profile/{identifier}', [StudentController::class, 'index'])->name('admin.student.profile');
 Route::get('admin/student/profile/{student:id}/edit', [AdminStudentController::class, 'edit'])->name('admin.student.profile.edit');
 Route::get('admin/student/profile/{student:id}/details', [AdminStudentController::class, 'show'])->name('admin.student.profile.details');
 Route::patch('admin/student/{student:id}/update', [AdminStudentController::class, 'update'])->name('admin.student.update');
-Route::get('admin/student/profile/{identifier}', [StudentController::class, 'index'])->name('admin.student.profile');
-Route::get('/admin/student/profile/{student:id}/edit', [AdminStudentController::class, 'edit'])->name('admin.student.profile.edit');
 Route::get('/admin/student/profile/{student:id}/password-change', [AdminStudentController::class, 'changePassword'])->name('admin.student.profile.password-change');
 Route::patch('/admin/student/profile/{student:id}/passwordUpdate', [AdminStudentController::class, 'passwordUpdate'])->name('admin.student.passwordUpdate');
 
