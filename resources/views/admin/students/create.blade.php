@@ -21,7 +21,7 @@
                                 gpa and more</p>
                         </div>
                         <div class="tab-inn">
-                            <form action="{{ route('admin.students.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.student.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="user_id">
                                 <div class="row">
