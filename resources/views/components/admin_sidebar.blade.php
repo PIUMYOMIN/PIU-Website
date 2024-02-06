@@ -15,7 +15,7 @@
                 <img src="{{ auth()->guard('student')->user()->profile }}" alt="">
             </li>
             <li>
-                <h5>{{ auth()->guard('student')->user()->fname }} <span> {{ auth()->guard('student')->user()->city }}, {{ auth()->guard('student')->user()->country }}</span>
+                <h5>{{ auth()->guard('student')->user()->fname }} {{ auth()->guard('student')->user()->lname }} <span> {{ auth()->guard('student')->user()->city }}, {{ auth()->guard('student')->user()->country }}</span>
                 </h5>
             </li>
             @endif
