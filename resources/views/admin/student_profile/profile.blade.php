@@ -3,9 +3,9 @@
         <ul>
             <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
             </li>
-            <li class="active-bre"><a href="#"> Dashboard</a>
+            <li class="active-bre"><a href="#"> Student Profile</a>
             </li>
-            <li class="page-back"><a href="/admin"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
+            <li class="page-back"><a href="{{ route('admin.student.profile.edit', $identifier) }}"><i class="fa fa-edit" aria-hidden="true"></i> Update Your Profile</a>
             </li>
         </ul>
     </div>
@@ -196,8 +196,10 @@
                                     <td>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <a href="{{ route('admin.student.profile.edit', $student->id) }}"
+                                                <a href="{{ route('admin.student.profile.edit', $identifier) }}"
                                                     class="btn btn-primary">Edit</a>
+                                                <a href="{{ route('admin.student.profile.password-change', $identifier) }}"
+                                                    class="btn btn-primary">Change Password</a>
                                             </div>
                                         </div>
                                     </td>

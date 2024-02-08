@@ -21,7 +21,7 @@
                             and more</p>
                     </div>
                     <div class="tab-inn">
-                        <form action="{{ route('admin.student.passwordUpdate',[$student->id]) }}" method="POST">
+                        <form action="{{ route('admin.student.passwordUpdate',['identifier' => $identifier]) }}" method="POST">
                             @csrf
                             @method('PATCH')
                             <div class="row">

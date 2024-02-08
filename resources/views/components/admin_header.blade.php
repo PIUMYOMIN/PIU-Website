@@ -38,12 +38,14 @@
                 <ul id='top-menu' class='dropdown-content top-menu-sty'>
                     <li>
                         @if (auth()->check()) 
-                            <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}" class="waves-effect">
+                        <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}" class="waves-effect">
+                            <i class="fa fa-cogs" aria-hidden="true"></i> Profile Setting
+                            </a>
                         @elseif(auth()->guard('student')->check())
-                            <a href="{{ route('admin.student.profile.edit', ['student' => auth()->guard('student')->user()->id]) }}" class="waves-effect">
+                            <a href="{{ route('admin.student.profile.edit', ['identifier' => auth()->guard('student')->user()->id]) }}" class="waves-effect">
+                                <i class="fa fa-cogs" aria-hidden="true"></i> Profile Setting
+                                </a>
                         @endif
-                        <i class="fa fa-cogs" aria-hidden="true"></i> Profile Setting
-                        </a>
                     </li>
                     <li class="divider"></li>
                     @if (auth()->check())

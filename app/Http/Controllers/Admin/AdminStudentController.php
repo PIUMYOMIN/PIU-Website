@@ -18,17 +18,17 @@ class AdminStudentController extends Controller
     public function index()
     {
         $students = Student::with('course', 'year')->get();
-       return view('admin.students.index',[
-        'students' => $students,
-        'courses' => Course::all(),
-        'years' => Year::all(),
-        'users' => User::all(),
-       ]);
+        return view('admin.students.index', [
+         'students' => $students,
+         'courses' => Course::all(),
+         'years' => Year::all(),
+         'users' => User::all(),
+        ]);
     }
 
     public function create()
     {
-        return view('admin.students.create',[
+        return view('admin.students.create', [
             'courses' => Course::all(),
             'years' => Year::all(),
         ]);
@@ -36,27 +36,27 @@ class AdminStudentController extends Controller
 
     public function store(Request $request)
     {
-       $formData = request()->validate([
-            'fname' => 'required',
-            'lname' => 'nullable',
-            'email' => ['required', 'email', Rule::unique('students', 'email')],
-            'phone' => 'required',
-            'address' => 'required',
-            'permanent_address' => 'nullable',
-            'dob' => 'nullable',
-            'city' => 'required',
-            'country' => 'required',
-            'student_id' => ['required', Rule::unique('students', 'student_id')],
-            'national_id' => ['required', Rule::unique('students', 'national_id')],
-            'passport_id' => ['nullable',Rule::unique('students', 'passport_id')],
-            'course_id' => 'required',
-            'marital_sts' => 'required',
-            'gender_sts' => 'required',
-            'year_id' => 'required',
-            'profile' => 'nullable|file|mimes:jpg,jpeg,png',
-            'education_certificate' => 'nullable|file|mimes:pdf,doc,docx',
-            'other_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
-        ]);
+        $formData = request()->validate([
+             'fname' => 'required',
+             'lname' => 'nullable',
+             'email' => ['required', 'email', Rule::unique('students', 'email')],
+             'phone' => 'required',
+             'address' => 'required',
+             'permanent_address' => 'nullable',
+             'dob' => 'nullable',
+             'city' => 'required',
+             'country' => 'required',
+             'student_id' => ['required', Rule::unique('students', 'student_id')],
+             'national_id' => ['required', Rule::unique('students', 'national_id')],
+             'passport_id' => ['nullable',Rule::unique('students', 'passport_id')],
+             'course_id' => 'required',
+             'marital_sts' => 'required',
+             'gender_sts' => 'required',
+             'year_id' => 'required',
+             'profile' => 'nullable|file|mimes:jpg,jpeg,png',
+             'education_certificate' => 'nullable|file|mimes:pdf,doc,docx',
+             'other_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
+         ]);
 
         $formData['password'] = Hash::make('piustudent2024');
         $formData['user_id'] = auth()->id();
@@ -82,15 +82,15 @@ class AdminStudentController extends Controller
     public function show(Student $student)
     {
         $joinedCourses = $student->courses()->with('years')->get();
-       return view('admin.students.show',[
-        'student' => $student,
-        'courses' => Course::all(),
-        'years' => Year::all(),
-        'joinedCourses' => $joinedCourses,
-       ]);
+        return view('admin.students.show', [
+         'student' => $student,
+         'courses' => Course::all(),
+         'years' => Year::all(),
+         'joinedCourses' => $joinedCourses,
+        ]);
     }
 
-    // joined course delete 
+    // joined course delete
     public function deleteCourse(Student $student, Year $year)
     {
         dd($student->courses());
@@ -99,27 +99,44 @@ class AdminStudentController extends Controller
     }
 
 
-    // student edit page 
-    public function edit(Student $student)
+    // student edit page
+    public function edit($identifier)
     {
+        
+        // Extract the student ID from the identifier
+        $student_id = substr($identifier, 0, 7);
 
-        $authenticatedUser = Auth::user(); // Get the authenticated user
-        $authenticatedStudent = Auth::guard('student')->user(); // Get the authenticated student
+        // dd($student_id);
 
-    if (($authenticatedUser && $authenticatedUser->hasAnyRole(['admin', 'registrar'])) || ($authenticatedStudent && $authenticatedStudent->id === $student->id)) {
-        return view('admin.students.edit', [
-            'student' => $student,
-            'courses' => Course::all(),
-            'years' => Year::all(),
-        ]);
-    } else {
-        return redirect()->back()->withErrors(['error' => 'You are not authorized to edit this profile.']);
+        // Retrieve the student data based on the extracted student ID
+        $student = Student::where('student_id', $student_id)->firstOrFail();
+
+        $authenticatedUser = Auth::user();
+        $authenticatedStudent = Auth::guard('student')->user();
+
+        if (($authenticatedUser && $authenticatedUser->hasAnyRole(['admin', 'registrar'])) || ($authenticatedStudent && $authenticatedStudent->id === $student->id)) {
+            return view('admin.students.edit', [
+                'student' => $student,
+                'courses' => Course::all(),
+                'years' => Year::all(),
+                'identifier' => $identifier,
+            ]);
+        } else {
+            return redirect()->back()->withErrors(['error' => 'You are not authorized to edit this profile.']);
+        }
     }
-}
 
 
-    public function update(Student $student)
+    public function update($identifier)
     {
+        
+        // Extract the student ID from the identifier
+        $student_id = substr($identifier, 0, 7);
+
+        
+        // Retrieve the student data based on the extracted student ID
+        $student = Student::where('student_id', $student_id)->firstOrFail();
+
         $formData = request()->validate([
             'fname' => 'nullable',
             'lname' => 'nullable',
@@ -159,11 +176,7 @@ class AdminStudentController extends Controller
 
         $student->update($formData);
 
-        if(auth()->check()){
-            return redirect()->route('admin.student.profile.details', ['student' => $student->id]);
-        }else{
-            return redirect()->back();
-        }
+        return redirect()->route('admin.student.profile', ['identifier' => $identifier]);
 
     }
 
@@ -179,15 +192,22 @@ class AdminStudentController extends Controller
         return redirect()->route('admin.students.details', ['student' => $student->id]);
     }
 
-    public function changePassword(Student $student)
+    public function changePassword($identifier)
     {
-        return view('admin.student_profile.change_password',[
+        $student_id = substr($identifier, 0, 7);
+
+        $student = Student::where('student_id', $student_id)->firstOrFail();
+
+        return view('admin.student_profile.change_password', [
             'student' => $student,
+            'identifier' => $identifier,
         ]);
     }
 
-    public function passwordUpdate(Student $student)
+    public function passwordUpdate($identifier)
     {
+        $student_id = substr($identifier, 0, 7);
+        $student = Student::where('student_id',$student_id)->firstOrFail();
         $data = request()->validate([
             'new_password' => 'required|min:8',
             'confirm_password' => 'required|same:new_password',
@@ -204,6 +224,6 @@ class AdminStudentController extends Controller
         $student->save();
 
         // Redirect the user with a success message
-        return redirect()->route('admin.student.profile.edit', ['student' => $student->id])->with('success', 'Password updated successfully!');
+        return redirect()->route('admin.student.profile', ['identifier' => $identifier])->with('success', 'Password updated successfully!');
     }
 }

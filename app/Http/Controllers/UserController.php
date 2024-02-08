@@ -157,6 +157,7 @@ public function user_login(Request $request)
             // Concatenate student ID with random string
             $mixedIdentifier = $student->student_id . $randomString;
 
+
             // Redirect with the mixed identifier appended to the route
             return redirect()->intended(route('admin.student.profile', ['identifier' => $mixedIdentifier]));
         }

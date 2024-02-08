@@ -3,7 +3,7 @@
         <ul>
             <li><a href="index-2.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
             </li>
-            <li class="active-bre"><a href="#"> Add New Assignment</a>
+            <li class="active-bre"><a href="#"> Submit Assignment</a>
             </li>
             <li class="page-back"><a href="index-2.html"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
             </li>
@@ -16,38 +16,29 @@
             <div class="col-md-12">
                 <div class="box-inn-sp admin-form">
                     <div class="inn-title">
-                        <h4>Add Assignment</h4>
+                        <h4>Turn Your Assignment</h4>
                         <p>Here you can edit your website basic details URL, Phone, Email, Address, User and password
                             and more</p>
                     </div>
                     <div class="tab-inn">
-                        <form action="{{ route('admin.assignment.update',['assignment' => $assignment->id]) }}" method="POST"
+                        <form action="{{ route('admin.student.assignment.turn',['slug' => $assignment->slug]) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
-                            @method('PATCH')
+                            @method('POST')
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input type="text" value="{{ $assignment->name }}" name="name" class="validate" required>
-                                    <label class="">Assignment Name</label>
+                                    <input type="text" value="{{ $assignment->name }}" class="validate">
+                                    <input type="hidden" value="{{ $assignment->id }}" name="assignment_id" class="validate">
+                                    <input type="hidden" value="{{ auth()->guard('student')->user()->id }}" name="student_id" class="validate">
+                                    <label class="">{{ $assignment->name }}</label>
                                 </div>
-                                @error('name')
-                                    <p class="text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <textarea name="description">{{ $assignment->description }}</textarea>
-                                    <label class="">Descriptions</label>
-                                </div>
-                                @error('description')
-                                    <p class="text-danger">{{ $message }}</p>
-                                @enderror
                             </div>
                             <div class="row">
                                 <div class="input-field col s6">
-                                    <select class="input-field col s12" name="course_id">
+                                    <select class="input-field col s12" name="course_id" required>
                                         @foreach ($courses as $course)
-                                            <option {{ $course->id == old('course_id') ? 'selected' : '' }} value="{{ $course->id }}">{{ $course->title }}</option>
+                                            <option {{ $course->id == old('course_id') ? 'selected' : '' }}
+                                                value="{{ $course->id }}">{{ $course->title }}</option>
                                         @endforeach
                                     </select>
                                     @error('course_id')
@@ -55,7 +46,7 @@
                                     @enderror
                                 </div>
                                 <div class="input-field col s6">
-                                    <select class="input-field col s12" name="module_id">
+                                    <select class="input-field col s12" name="module_id" required>
                                         @foreach ($modules as $module)
                                             <option value="{{ $module->id }}">{{ $module->module_code }}</option>
                                         @endforeach
@@ -66,13 +57,22 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="input-field col s12">
+                                    <textarea name="body"></textarea>
+                                    <label class="">Assignment</label>
+                                </div>
+                                @error('body')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="row">
                                 <div class="file-field input-field col s12">
                                     <div class="btn admin-upload-btn">
                                         <span>File</span>
                                         <input type="file" name="attach_file">
                                     </div>
                                     <div class="file-path-wrapper">
-                                        <input class="file-path validate" type="text" placeholder="Add Attachment">
+                                        <input class="file-path validate" type="text" placeholder="Upload Attachment">
                                     </div>
                                 </div>
                                 @error('attach_file')

@@ -10,6 +10,7 @@ class StudentController extends Controller
 {
     public function index($identifier)
 {
+    // dd($identifier);
     // Validate the format of the identifier
     // if (!preg_match('/^[A-Z]{3}\d{6}[A-Za-z0-9]{15}$/', $identifier)) {
     //     abort(404);
@@ -31,6 +32,7 @@ class StudentController extends Controller
 
     return view('admin.student_profile.profile', [
         'student' => $student,
+        'identifier' => $identifier
     ]);
 }
 

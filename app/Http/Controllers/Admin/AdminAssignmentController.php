@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\Assignment;
 use App\Models\Course;
 use App\Models\Module;
+use App\Models\StudentAssignment;
 
 class AdminAssignmentController extends Controller
 {
@@ -15,6 +16,8 @@ class AdminAssignmentController extends Controller
     {
        return view('admin.assignments.index',[
         'assignments' => Assignment::all(),
+        'student_assignments' => StudentAssignment::all(),
+        'modules' => Module::all(),
        ]);
     }
 
@@ -48,6 +51,14 @@ class AdminAssignmentController extends Controller
         return redirect('admin/assignments');
     }
 
+    public function details($slug)
+    {
+        $assignment = Assignment::where('slug', $slug)->firstOrFail();
+        return view('admin.assignments.show', [
+            'assignment' => $assignment,
+        ]);
+    }
+
     public function edit($slug)
     {
         $slug = Assignment::where('slug',$slug)->firstOrFail();
@@ -58,15 +69,16 @@ class AdminAssignmentController extends Controller
        ]);
     }
 
-    public function update(Request $request, Assignment $slug)
+    public function update(Request $request, Assignment $assignment)
     {
         $formData = request()->validate([
-            'name' => 'required|unique:assignments,name',
+            'name' => 'nullable|unique:assignments,name',
             'description' => 'nullable',
-            'course_id' => 'required',
-            'module_id' => 'required',
+            'course_id' => 'nullable',
+            'module_id' => 'nullable',
             'attach_file' => 'nullable|mimes:pdf,docx,doc',
         ]);
+
         $formData['slug'] = Str::slug($formData['name']);
 
         if($request->hasFile('attach_file')){
@@ -76,7 +88,7 @@ class AdminAssignmentController extends Controller
 
         $formData['user_id'] = auth()->user()->id;
 
-        $slug->update($formData);
+        $assignment->update($formData);
 
         return redirect('admin/assignments');
     }

@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminStudentController;
 use App\Http\Controllers\Admin\AdminCurriculumController;
 use App\Http\Controllers\Admin\AdminAssignmentController;
+use App\Http\Controllers\Admin\StudentAssignmentController;
 use App\Http\Controllers\Admin\SeminarEnrollController;
 use App\Http\Controllers\Admin\AdminGradingController;
 use App\Http\Controllers\HomeController;
@@ -144,7 +145,6 @@ Route::post('/seminar/enroll/submit', [SeminarEnrollController::class, 'store'])
 //event
 Route::delete('/event/{event:id}/delete', [AdminEventController::class, 'delete'])->name('event.delete');
 
-
 //event register
 Route::get('/event-enquiry', [AdminEventRegisterController::class, 'index'])->name('event.register.index');
 Route::post('/event/register/submit', [AdminEventRegisterController::class, 'store'])->name('event.register.submit');
@@ -171,11 +171,10 @@ Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('adm
     ->name('student.course.year.delete');
 
     // assignment
-    Route::get('/assignments', [AdminAssignmentController::class, 'index'])->name('assignment.index');
     Route::get('/assignment/create', [AdminAssignmentController::class, 'create'])->name('assignment.create');
     Route::post('/assignment/store', [AdminAssignmentController::class, 'store'])->name('assignment.form.submit');
-    Route::get('/assignment/{assignment:slug}/edit', [AdminAssignmentController::class, 'edit'])->name('assignment.edit');
-    Route::patch('/assignment/{assignment:slug}/update', [AdminAssignmentController::class, 'index'])->name('assignment.update');
+    Route::get('/assignment/{assignment:id}/edit', [AdminAssignmentController::class, 'edit'])->name('assignment.edit');
+    Route::patch('/assignment/{assignment}/update', [AdminAssignmentController::class, 'update'])->name('assignment.update');
 });
 
 
@@ -187,11 +186,19 @@ Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('adm
 // Route::middleware(['auth','role:admin|registrar'])->name('admin.')->prefix('admin')->group(function () {
     // });
 Route::get('admin/student/profile/{identifier}', [StudentController::class, 'index'])->name('admin.student.profile');
-Route::get('admin/student/profile/{student:id}/edit', [AdminStudentController::class, 'edit'])->name('admin.student.profile.edit');
+Route::get('admin/student/profile/{identifier}/edit', [AdminStudentController::class, 'edit'])->name('admin.student.profile.edit');
 Route::get('admin/student/profile/{student:id}/details', [AdminStudentController::class, 'show'])->name('admin.student.profile.details');
-Route::patch('admin/student/{student:id}/update', [AdminStudentController::class, 'update'])->name('admin.student.update');
-Route::get('/admin/student/profile/{student:id}/password-change', [AdminStudentController::class, 'changePassword'])->name('admin.student.profile.password-change');
-Route::patch('/admin/student/profile/{student:id}/passwordUpdate', [AdminStudentController::class, 'passwordUpdate'])->name('admin.student.passwordUpdate');
+Route::patch('admin/student/{identifier}/update', [AdminStudentController::class, 'update'])->name('admin.student.update');
+Route::get('/admin/student/profile/{identifier}/password-change', [AdminStudentController::class, 'changePassword'])->name('admin.student.profile.password-change');
+Route::patch('/admin/student/profile/{identifier}/passwordUpdate', [AdminStudentController::class, 'passwordUpdate'])->name('admin.student.passwordUpdate');
+
+
+// assignment for both admin, registrar and student
+Route::get('/admin/assignments', [AdminAssignmentController::class, 'index'])->name('assignments');
+Route::get('/admin/student/assignment/{slug}/details', [AdminAssignmentController::class, 'details'])->name('admin.student.assignment.details');
+Route::get('/admin/student/assignment/{slug}/submit', [StudentAssignmentController::class, 'submit'])->name('admin.student.assignment.submit');
+Route::post('/admin/student/assignment/{slug}/turn', [StudentAssignmentController::class, 'turn'])->name('admin.student.assignment.turn');
+Route::get('/admin/student/assignments', [StudentAssignmentController::class, 'index'])->name('admin.student.assignments');
 
 
 //Admin, Manager and Staff

@@ -5,7 +5,7 @@
                 </li>
                 <li class="active-bre"><a href="#"> Dashboard</a>
                 </li>
-                <li class="page-back"><a href="/admin"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
+                <li class="page-back"><a href="{{ route('admin.student.profile',['identifier' => $identifier]) }}"><i class="fa fa-backward" aria-hidden="true"></i> Back to Profile</a>
                 </li>
             </ul>
         </div>
@@ -21,7 +21,7 @@
                                 gpa and more</p>
                         </div>
                         <div class="tab-inn">
-                            <form action="{{ route('admin.student.update', ['student' => $student->id]) }}"
+                            <form action="{{ route('admin.student.update', ['identifier' => $identifier]) }}"
                                 method="POST" enctype="multipart/form-data">
                                 @method('patch')
                                 @csrf
@@ -184,7 +184,7 @@
                                 <div class="row">
                                     <div class="input-field col s6">
                                         <input id="id" type="text" name="national_id"
-                                            value="{{ $student->national_id }}" class="validate" required>
+                                            value="{{ $student->national_id }}" class="validate">
                                         <label for="id" class="">National No (e.g. MDY(N)123456)</label>
                                         @error('national_id')
                                             <p class="text-danger">{{ $message }}</p>

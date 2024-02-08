@@ -3,7 +3,7 @@
         <ul>
             <li><a href="index-2.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
             </li>
-            <li class="active-bre"><a href="#"> Seminar Enquiry</a>
+            <li class="active-bre"><a href="#"> Contact Mail Enquiry</a>
             </li>
             <li class="page-back"><a href="/admin"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
             </li>

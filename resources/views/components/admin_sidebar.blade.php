@@ -39,14 +39,14 @@
                         aria-hidden="true"></i> Change Password</a>
             </li>
             @elseif(auth()->guard('student')->check())
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin.student.profile.edit', ['student' => auth()->guard('student')->user()->id]) }}"><i class="fa fa-cogs"
                         aria-hidden="true"></i> Profile Setting</a>
             </li>
             <li>
                 <a href="{{ route('admin.student.profile.password-change', ['student' => auth()->guard('student')->user()->id]) }}"><i class="fa fa-key"
                         aria-hidden="true"></i> Change Password</a>
-            </li>
+            </li> --}}
             @endif
             @if (auth()->check())
                 @if (auth()->user()->can('Read and Write'))
@@ -335,22 +335,6 @@
                 </li>
             @endif
             @if (auth()->user()->can('Read and Write') ||
-                    auth()->user()->can('Read') ||
-                    auth()->user()->can('Write') ||
-                    auth()->user()->can('Registrar'))
-                <li><a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-graduation-cap"
-                            aria-hidden="true"></i> Assignments</a>
-                    <div class="collapsible-body left-sub-menu">
-                        <ul>
-                            <li><a href="/admin/assignments">All Assignments</a>
-                            </li>
-                            <li><a href="/admin/assignment/create">New Assignment</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            @endif
-            @if (auth()->user()->can('Read and Write') ||
                     auth()->user()->can('Registrar'))
                 <li>
                     <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-users"
@@ -386,6 +370,30 @@
                 </li>
             @endif
             @endif
+            {{-- @if(auth()->check() && auth()->user()->can('Read and Write') || auth()->guard('student')->check()) --}}
+            <li>
+                <a href="javascript:void(0)" class="collapsible-header">
+                    <i class="fa fa-graduation-cap" aria-hidden="true"></i> Assignments
+                </a>
+                <div class="collapsible-body left-sub-menu">
+                    <ul>
+                        <li>
+                            <a href="/admin/assignments">All Assignments</a>
+                        </li>
+                        @if (auth()->guard('student')->user()) 
+                            <li>
+                                <a href="/admin/student/assignments">Your Assignments</a>
+                            </li>
+                        @endif
+                        @if (auth()->check() && auth()->user()->can('Read and Write'))
+                        <li>
+                            <a href="/admin/assignment/create">New Assignment</a>
+                        </li>
+                        @endif
+                    </ul>
+                </div>
+            </li>
+            {{-- @endif --}}
         </ul>
     </div>
 </div>
