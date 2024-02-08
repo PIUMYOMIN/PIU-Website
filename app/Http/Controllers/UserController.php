@@ -352,6 +352,10 @@ public function user_login(Request $request)
 
     public function passwordChange(User $user)
     {
+        if($user->id !== auth()->user()->id){
+            abort(403);
+        }
+
         return view('admin.user.changePassword',[
             'user' => $user
         ]);
@@ -359,6 +363,10 @@ public function user_login(Request $request)
 
     public function passwordUpdate(User $user)
     {
+        if($user->id !== auth()->user()->id){
+            abort(403);
+        }
+
         $data = request()->validate([
             'new_password' => 'required|min:8',
             'confirm_password' => 'required|same:new_password',
