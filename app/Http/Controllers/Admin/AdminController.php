@@ -15,7 +15,9 @@ class AdminController extends Controller
     public function index()
     {
        return view('admin.index',[
+        'course' => Course::all(),
         'courses' => Course::latest()->get(),
+        'student' => Student::all(),
         'students' => Student::latest()->take(10)->get(),
         'users' => User::all(),
         'contacts' => Contact::all(),
