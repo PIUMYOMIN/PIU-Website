@@ -33,7 +33,7 @@
                             <h4>User Profile</h4>
                                 <ul>
                                     <li>
-                                        <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}">User profile</a>
+                                        <a href="{{ route('admin.users.profile.edit', ['user' => auth()->user()->id]) }}">User profile</a>
                                     </li>
                                     <li>
                                     <form action="{{ route('admin.auth.logout') }}" method="POST">

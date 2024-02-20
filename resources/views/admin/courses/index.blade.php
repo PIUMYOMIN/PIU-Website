@@ -75,7 +75,7 @@
                                             auth()->user()->can('Manager'))
                                             <td>
                                                 <form method="POST"
-                                                    action="/admin/course/{{ $course->id }}/isActive">
+                                                    action="/admin/courses/{{ $course->id }}/isActive">
                                                     @csrf
                                                     @method('PATCH')
                                                     <div class="form-check form-switch">
@@ -90,7 +90,7 @@
                                             </td>
                                             <td>
                                                 <form method="POST"
-                                                    action="/admin/course/{{ $course->id }}/application">
+                                                    action="/admin/courses/{{ $course->id }}/application">
                                                     @csrf
                                                     @method('PATCH')
                                                     <div class="form-check form-switch">
@@ -109,7 +109,7 @@
                                                 @if (auth()->user()->can('Read and Write') ||
                                                     auth()->user()->can('Write') ||
                                                     auth()->user()->can('Manager'))
-                                                <a href="{{ route('admin.course.edit', [$course->id]) }}"
+                                                <a href="{{ route('admin.courses.edit', [$course->id]) }}"
                                                     class="ad-st-view">Edit</a>
                                                     @endif
                                                 {{-- @if (auth()->user()->can('Read and Write'))

@@ -5,7 +5,7 @@
                 </li>
                 <li class="active-bre"><a href="#"> Dashboard</a>
                 </li>
-                <li class="page-back"><a href="{{ route('admin.student.profile',['identifier' => $identifier]) }}"><i class="fa fa-backward" aria-hidden="true"></i> Back to Profile</a>
+                <li class="page-back"><a href="#!"><i class="fa fa-backward" aria-hidden="true"></i> Back to Profile</a>
                 </li>
             </ul>
         </div>
@@ -21,7 +21,7 @@
                                 gpa and more</p>
                         </div>
                         <div class="tab-inn">
-                            <form action="{{ route('admin.student.update', ['identifier' => $identifier]) }}"
+                            <form action="{{ route('admin.student.update',['id' => $student->id]) }}"
                                 method="POST" enctype="multipart/form-data">
                                 @method('patch')
                                 @csrf

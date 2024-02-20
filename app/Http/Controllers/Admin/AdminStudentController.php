@@ -11,7 +11,7 @@ use App\Models\User;
 use App\Models\StudentCourseYear;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+
 
 class AdminStudentController extends Controller
 {
@@ -99,27 +99,15 @@ class AdminStudentController extends Controller
     }
 
 
-    // student edit page
-    public function edit($identifier)
+    public function edit($id)
     {
-        
-        // Extract the student ID from the identifier
-        $student_id = substr($identifier, 0, 7);
+        $student = Student::where('id', $id)->firstOrFail();
 
-        // dd($student_id);
-
-        // Retrieve the student data based on the extracted student ID
-        $student = Student::where('student_id', $student_id)->firstOrFail();
-
-        $authenticatedUser = Auth::user();
-        $authenticatedStudent = Auth::guard('student')->user();
-
-        if (($authenticatedUser && $authenticatedUser->hasAnyRole(['admin', 'registrar'])) || ($authenticatedStudent && $authenticatedStudent->id === $student->id)) {
+        if (($student->id == $id)) {
             return view('admin.students.edit', [
                 'student' => $student,
                 'courses' => Course::all(),
                 'years' => Year::all(),
-                'identifier' => $identifier,
             ]);
         } else {
             return redirect()->back()->withErrors(['error' => 'You are not authorized to edit this profile.']);
@@ -127,15 +115,10 @@ class AdminStudentController extends Controller
     }
 
 
-    public function update($identifier)
+    public function update($id)
     {
-        
-        // Extract the student ID from the identifier
-        $student_id = substr($identifier, 0, 7);
-
-        
         // Retrieve the student data based on the extracted student ID
-        $student = Student::where('student_id', $student_id)->firstOrFail();
+        $student = Student::where('id', $id)->firstOrFail();
 
         $formData = request()->validate([
             'fname' => 'nullable',
@@ -176,7 +159,7 @@ class AdminStudentController extends Controller
 
         $student->update($formData);
 
-        return redirect()->route('admin.student.profile', ['identifier' => $identifier]);
+        return redirect('/admin/students');
 
     }
 

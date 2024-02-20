@@ -32,7 +32,7 @@
                         </form>
                     </div>
                     <div class="tab-inn">
-                        <form action="{{ route('admin.user.roles', $user->id) }}" method="POST">
+                        <form action="{{ route('admin.users.roles', $user->id) }}" method="POST">
                             @csrf
                             @method('POST')
                             <div class="row">
@@ -63,7 +63,7 @@
                                 <h5>Assigned Roles</h5>
                                 @foreach ($user->roles as $user_role)
                                     <form
-                                        action="{{ route('admin.user.roles.removeRole', ['user' => $user->id, 'role' => $user_role->id]) }}"
+                                        action="{{ route('admin.users.roles.removeRole', ['user' => $user->id, 'role' => $user_role->id]) }}"
                                         method="POST">
                                         @csrf
                                         @method('DELETE')
@@ -74,7 +74,7 @@
                             </div>
                     </div>
                     <div class="tab-inn">
-                        <form action="{{ route('admin.user.permissions', $user->id) }}" method="POST">
+                        <form action="{{ route('admin.users.permissions', $user->id) }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="">
@@ -103,7 +103,7 @@
                         <div class="row">
                                 <h5>Assigned Permission</h5>
                                 @foreach ($user->permissions as $user_permission)
-                                    <form action="{{ route('admin.user.permissions.revokePermission',['user' => $user->id, 'permission' => $user_permission->id]) }}" method="POST">
+                                    <form action="{{ route('admin.users.permissions.revokePermission',['user' => $user->id, 'permission' => $user_permission->id]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <span class="ad-st-view" onclick="deletePermission(this)" style="cursor:pointer;">&times; {{ $user_permission->name }}</span>

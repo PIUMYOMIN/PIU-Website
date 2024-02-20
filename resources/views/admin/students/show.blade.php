@@ -260,7 +260,7 @@
                                     <td>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <a href="{{ route('admin.student.profile.edit', $student->id) }}"
+                                                <a href="{{ route('admin.student.edit', $student->id) }}"
                                                     class="btn btn-primary">Edit</a>
                                             </div>
                                         </div>

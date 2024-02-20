@@ -52,14 +52,14 @@
                                                         <span class="label label-success">Active</span>
                                                     </td>
 													<td>
-                                                        <a href="/admin/user/{{ $user->id }}/details" class="ad-st-view">Details</a>
+                                                        <a href="/admin/users/{{ $user->id }}/details" class="ad-st-view">Details</a>
                                                     </td>
 													<td>
                                                         @if (auth()->user()->email == $user->email)
-                                                            <a href="{{ route('admin.user.profile.edit', ['user' => $user->id]) }}" class="ad-st-view">Edit</a>
+                                                            <a href="{{ route('admin.users.profile.edit', ['user' => $user->id]) }}" class="ad-st-view">Edit</a>
                                                         @endif
                                                         @can('Read and Write')
-                                                            <form action="{{ route('admin.user.destroy',$user->id) }}" method="POST">
+                                                            <form action="{{ route('admin.users.destroy',$user->id) }}" method="POST">
                                                             @csrf
                                                             @method('DELETE')
                                                         <button type="submit" class="ad-st-view">Delete</button>

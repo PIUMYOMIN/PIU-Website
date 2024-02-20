@@ -1,14 +1,10 @@
 <?php
 
+//Admin Controllers
 use App\Http\Controllers\Admin\AdminAdmissionController;
-
 use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Admin\AdminController;
-
 use App\Http\Controllers\Admin\AdminCourseCategoryController;
-
-//Admin Controllers
-
 use App\Http\Controllers\Admin\AdminCourseCommentController;
 use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminDepartmentController;
@@ -27,11 +23,11 @@ use App\Http\Controllers\Admin\AdminAssignmentController;
 use App\Http\Controllers\Admin\StudentAssignmentController;
 use App\Http\Controllers\Admin\SeminarEnrollController;
 use App\Http\Controllers\Admin\AdminGradingController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 
 //User Controllers
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\User\CourseController;
 use App\Http\Controllers\User\AdmissionController;
@@ -56,10 +52,10 @@ use Spatie\Analytics\Period;
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/login', [UserController::class, 'login'])->middleware('guest');
-Route::post('/user/login/form/submit', [UserController::class, 'user_login'])->name('user.login.form.submit');
+Route::post('/users/login/form/submit', [UserController::class, 'user_login'])->name('users.login.form.submit');
 
 Route::get('/register', [UserController::class, 'register'])->middleware('guest')->name('admin.auth.register');
-Route::post('/user/register/form/submit', [UserController::class, 'store'])->name('user.register.form.submit');
+Route::post('/users/register/form/submit', [UserController::class, 'store'])->name('users.register.form.submit');
 
 Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admin.auth.logout');
 Route::post('/admin/student/logout', [UserController::class, 'studentLogout'])->name('admin.student.logout');
@@ -70,8 +66,8 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->grou
 
 //user details/delete
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/user/{user:id}/details', [UserController::class, 'show'])->name('user.details');
-Route::delete('/user/{user:id}', [UserController::class, 'destroy'])->name('user.destroy');
+Route::get('/users/{user:id}/details', [UserController::class, 'show'])->name('users.details');
+Route::delete('/users/{user:id}', [UserController::class, 'destroy'])->name('users.destroy');
 
 
 //user role
@@ -166,6 +162,8 @@ Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('adm
     Route::get('/students', [AdminStudentController::class, 'index'])->name('student.index');
     Route::get('/student/create', [AdminStudentController::class, 'create'])->name('student.create');
     Route::post('/student/store', [AdminStudentController::class, 'store'])->name('student.store');
+    Route::get('/student/{id}/edit', [AdminStudentController::class, 'edit'])->name('student.edit');
+    Route::patch('/student/{id}/update', [AdminStudentController::class, 'update'])->name('student.update');
     Route::post('/student/{student:id}/add_course', [AdminStudentController::class, 'addCourse'])->name('student.addCourse');
     Route::delete('/student/{student}/course/{year}/year/delete', [AdminStudentController::class, 'deleteCourse'])
     ->name('student.course.year.delete');
@@ -186,9 +184,9 @@ Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('adm
 // Route::middleware(['auth','role:admin|registrar'])->name('admin.')->prefix('admin')->group(function () {
     // });
 Route::get('admin/student/profile/{identifier}', [StudentController::class, 'index'])->name('admin.student.profile');
-Route::get('admin/student/profile/{identifier}/edit', [AdminStudentController::class, 'edit'])->name('admin.student.profile.edit');
+Route::get('admin/student/profile/{identifier}/edit', [StudentController::class, 'edit'])->name('admin.student.profile.edit');
 Route::get('admin/student/profile/{student:id}/details', [AdminStudentController::class, 'show'])->name('admin.student.profile.details');
-Route::patch('admin/student/{identifier}/update', [AdminStudentController::class, 'update'])->name('admin.student.update');
+Route::patch('admin/student/profile/{identifier}/update', [StudentController::class, 'update'])->name('admin.student.profile.update');
 Route::get('/admin/student/profile/{identifier}/password-change', [AdminStudentController::class, 'changePassword'])->name('admin.student.profile.password-change');
 Route::patch('/admin/student/profile/{identifier}/passwordUpdate', [AdminStudentController::class, 'passwordUpdate'])->name('admin.student.passwordUpdate');
 
@@ -271,11 +269,11 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
 });
 
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
-    Route::get('/user/profile/{user}/edit', [UserController::class, 'editUserProfile'])->name('user.profile.edit');
-    Route::patch('/user/{user:id}/edit/form/submit', [UserController::class, 'update'])->name('user.edit.form.submit');
-    Route::get('/user/password-change/{user:id}', [UserController::class, 'passwordChange'])->name('user.password-change');
-    Route::post('/user/passwordUpdate/{user:id}', [UserController::class, 'passwordUpdate'])->name('user.passwordUpdate');
-    Route::get('/user/{user:id}/update', [UserController::class, 'update'])->name('user.update');
+    Route::get('/users/profile/{user}/edit', [UserController::class, 'editUserProfile'])->name('users.profile.edit');
+    Route::patch('/users/{user:id}/edit/form/submit', [UserController::class, 'update'])->name('users.edit.form.submit');
+    Route::get('/users/password-change/{user:id}', [UserController::class, 'passwordChange'])->name('users.password-change');
+    Route::post('/users/passwordUpdate/{user:id}', [UserController::class, 'passwordUpdate'])->name('users.passwordUpdate');
+    Route::get('/users/{user:id}/update', [UserController::class, 'update'])->name('user.update');
 });
 
 //admin, manager, staff, registrar
@@ -310,13 +308,13 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
 
 //course
 
-Route::get('/courses', [AdminCourseController::class, 'index'])->name('course.index');
-Route::get('/course/create', [AdminCourseController::class, 'create'])->name('course.create');
-Route::post('/course/store', [AdminCourseController::class, 'store'])->name('course.store');
-Route::get('/course/{course:id}/edit', [AdminCourseController::class, 'edit'])->name('course.edit');
-Route::patch('/course/{course:id}/update', [AdminCourseController::class, 'update'])->name('course.update');
-Route::patch('/course/{course:id}/isActive', [AdminCourseController::class, 'isActive'])->name('course.isActive');
-Route::patch('/course/{course:id}/application', [AdminCourseController::class, 'application'])->name('course.application');
+Route::get('/courses', [AdminCourseController::class, 'index'])->name('courses.index');
+Route::get('/courses/create', [AdminCourseController::class, 'create'])->name('courses.create');
+Route::post('/courses/store', [AdminCourseController::class, 'store'])->name('courses.store');
+Route::get('/courses/{course:id}/edit', [AdminCourseController::class, 'edit'])->name('courses.edit');
+Route::patch('/courses/{course:id}/update', [AdminCourseController::class, 'update'])->name('courses.update');
+Route::patch('/courses/{course:id}/isActive', [AdminCourseController::class, 'isActive'])->name('courses.isActive');
+Route::patch('/courses/{course:id}/application', [AdminCourseController::class, 'application'])->name('courses.application');
 
 
 //department
@@ -348,7 +346,7 @@ Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'up
 });
 
 //course
-Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/courses', [CourseController::class, 'index'])->name('course.index');
 Route::get('/courses/{slug}', [CourseController::class, 'show'])->name('courses.show');
 
 //news

@@ -21,7 +21,7 @@
                             and more</p>
                     </div>
                     <div class="tab-inn">
-                        <form action="{{ route('admin.course.update',[$course->id]) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.courses.update',[$course->id]) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
                             <div class="row">

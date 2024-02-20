@@ -21,7 +21,7 @@
                     </a>
                     <h4>Login</h4>
                     <p>Don't have an account? Create your account. It's take less then a minutes</p>
-                    <form action="{{ route('user.login.form.submit') }}" method="POST" class="s12">
+                    <form action="{{ route('users.login.form.submit') }}" method="POST" class="s12">
                         @csrf
                         @method('POST')
                         <div>
@@ -79,7 +79,7 @@
                     </a>
                     <h4>Create an Account</h4>
                     <p>Don't have an account? Create your account. It's take less then a minutes</p>
-                    <form action="{{ route('user.register.form.submit') }}" method="POST" class="s12" enctype="multipart/form-data">
+                    <form action="{{ route('users.register.form.submit') }}" method="POST" class="s12" enctype="multipart/form-data">
                         @csrf
                         <div>
                             <div class="input-field s12">

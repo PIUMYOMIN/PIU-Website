@@ -31,11 +31,11 @@
             @endif
             @if (auth()->check()) 
                 <li>
-                    <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}"><i class="fa fa-cogs"
+                    <a href="{{ route('admin.users.profile.edit', ['user' => auth()->user()->id]) }}"><i class="fa fa-cogs"
                             aria-hidden="true"></i> Profile Setting</a>
                 </li>
                 <li>
-                <a href="{{ route('admin.user.password-change', ['user' => auth()->user()->id]) }}"><i class="fa fa-key"
+                <a href="{{ route('admin.users.password-change', ['user' => auth()->user()->id]) }}"><i class="fa fa-key"
                         aria-hidden="true"></i> Change Password</a>
             </li>
             @elseif(auth()->guard('student')->check())
@@ -103,7 +103,7 @@
                                     auth()->user()->can('Write') ||
                                     auth()->user()->can('Manager'))
                                 <li>
-                                    <a href="/admin/course/create">Add New Course</a>
+                                    <a href="/admin/courses/create">Add New Course</a>
                                 </li>
                                 <li>
                                     <a href="/admin/course-categories">Course Category</a>

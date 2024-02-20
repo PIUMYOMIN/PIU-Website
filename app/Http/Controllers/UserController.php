@@ -12,6 +12,7 @@ use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use Illuminate\Support\Str;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -21,14 +22,10 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        if($request->is('api/*')){
-            return new UserResource($users);
-        } else {
-            return view('admin.user.index', [
-                'users' => $users,
-                'roles' => Role::all()
-            ]);
-        }
+        return view('admin.user.index', [
+            'users' => $users,
+            'roles' => Role::all()
+        ]);
     }
 
     public function register()
@@ -145,6 +142,7 @@ public function user_login(Request $request)
             }
         }
     } else {
+        // dd('hit');
         // Attempt to find a student with the provided student_id
         $student = Student::where('student_id', $identifier)->first();
 
@@ -156,6 +154,7 @@ public function user_login(Request $request)
 
             // Concatenate student ID with random string
             $mixedIdentifier = $student->student_id . $randomString;
+            // dd($mixedIdentifier);
 
 
             // Redirect with the mixed identifier appended to the route
@@ -377,7 +376,7 @@ public function user_login(Request $request)
             $user->password = Hash::make($data['new_password']);
             $user->save();
 
-            return redirect()->route('admin.user.profile.edit', ['user' => $user->id])  ->with('success', 'Password updated successfully!');
+            return redirect()->route('admin.users.profile.edit', ['user' => $user->id])  ->with('success', 'Password updated successfully!');
         }
 
         // For users with a traditional password, check the old password
@@ -391,7 +390,7 @@ public function user_login(Request $request)
         $user->save();
 
         // Redirect the user with a success message
-        return redirect()->route('admin.user.profile.edit', ['user' => $user->id])->with('success', 'Password updated successfully!');
+        return redirect()->route('admin.users.profile.edit', ['user' => $user->id])->with('success', 'Password updated successfully!');
     }
 
 

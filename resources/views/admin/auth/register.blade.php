@@ -12,7 +12,7 @@
 			<div class="log-in-pop-right" style="width:100% !important;">
                     <h4>Register</h4>
                     <p>Don't have an account? Create your account. It's take less then a minutes</p>
-                    <form action="{{ route('user.register.form.submit') }}" method="POST" class="s12" enctype="multipart/form-data">
+                    <form action="{{ route('users.register.form.submit') }}" method="POST" class="s12" enctype="multipart/form-data">
                         @csrf
                         @method('POST')
                         <div>

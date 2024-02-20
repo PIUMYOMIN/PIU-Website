@@ -2,7 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CourseController;
+use App\Models\User;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +19,17 @@ use App\Http\Controllers\Api\UserController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-Route::apiResource('users', UserController::class);
+// Route::middleware('auth:sanctum')->get('/users', function (Request $request) {
+//     return $request->user();
+// });
+
+// Route::resource('/courses', CourseController::class);
+
+// Route::get('/users', function () {
+//     return UserResource::collection(User::all());
+// });
+
+Route::get('/users', function () {
+    return new UserCollection(User::all());
+});

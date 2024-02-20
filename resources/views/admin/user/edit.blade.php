@@ -5,7 +5,7 @@
                 </li>
                 <li class="active-bre"><a href="#"> Update Your Profile</a>
                 </li>
-                <li class="page-back"><a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
+                <li class="page-back"><a href="{{ route('admin.users.profile.edit', ['user' => auth()->user()->id]) }}"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
                 </li>
             </ul>
         </div>
@@ -21,7 +21,7 @@
                                 password and more</p>
                         </div>
                         <div class="tab-inn">
-                            <form action="{{ route('admin.user.edit.form.submit', $user->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.users.edit.form.submit', $user->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
                                 <div class="row">
