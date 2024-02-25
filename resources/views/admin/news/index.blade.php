@@ -5,7 +5,7 @@
                 </li>
                 <li class="active-bre"><a href="#"> Events</a>
                 </li>
-                <li class="page-back"><a href="index-2.html"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
+                <li class="page-back"><a href="{{ route('admin.news.create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Add News</a>
                 </li>
             </ul>
         </div>
@@ -46,7 +46,7 @@
                                                 <td>
                                                     <a href="/news/{{ $new->slug }}">{{ $new->title }}</a>
                                                 </td>
-                                                <td>{{ $new->body }}</td>
+                                                <td>{{ Str::limit($new->body, 30, '...') }}</td>
                                                 <td>
                                                     <span class="label label-primary">{{ $new->user->name }}</span>
                                                 </td>
@@ -54,11 +54,11 @@
                                                     <span class="label label-success">Active</span>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('admin.news.edit',[$new->slug]) }}" class="ad-st-view">Edit</a>
+                                                    <a href="{{ route('admin.news.edit',[$new->id]) }}" class="ad-st-view">Edit</a>
                                                 </td>
                                                 @if(auth()->user()->can('Read and Write'))
                                                 <td>
-                                                    <form action="{{ route('admin.news.delete',$new->slug) }}" method="POST">
+                                                    <form action="{{ route('admin.news.delete',$new->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="ad-st-view">Delete</button>

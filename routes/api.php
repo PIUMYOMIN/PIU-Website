@@ -2,10 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\CourseController;
-use App\Models\User;
-use App\Http\Resources\UserResource;
-use App\Http\Resources\UserCollection;
+use App\Http\Controllers\Api\V1\CourseController;
+use App\Http\Controllers\Api\V1\NewsController;
+use App\Http\Controllers\Api\V1\TeamController;
 
 
 /*
@@ -24,12 +23,8 @@ use App\Http\Resources\UserCollection;
 //     return $request->user();
 // });
 
-// Route::resource('/courses', CourseController::class);
-
-// Route::get('/users', function () {
-//     return UserResource::collection(User::all());
-// });
-
-Route::get('/users', function () {
-    return new UserCollection(User::all());
+Route::prefix('v1')->group(function(){
+    Route::resource('/courses',CourseController::class);
+    Route::resource('/news',NewsController::class);
+    Route::resource('/teams',TeamController::class);
 });

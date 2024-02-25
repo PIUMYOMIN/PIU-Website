@@ -7,8 +7,7 @@
             </li>
             @if (auth()->user()->can('Read and Write') ||
                     auth()->user()->can('Write Only'))
-                <li class="page-back"><a href="/admin/course/create"><i class="fa fa-plus" aria-hidden="true"></i> Add
-                        Course</a>
+                <li class="page-back"><a href="/admin/teams/create"><i class="fa fa-plus" aria-hidden="true"></i> New Member</a>
                 </li>
             @endif
         </ul>
@@ -62,9 +61,9 @@
                                                 <span class="label label-success">Active</span>
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.team.edit', [$team->id]) }}"
+                                                <a href="{{ route('admin.team.edit', [$team->slug]) }}"
                                                     class="ad-st-view">Edit</a>
-                                                <form action="{{ route('admin.team.delete', [$team->id]) }}"
+                                                <form action="{{ route('admin.team.delete', [$team->slug]) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')

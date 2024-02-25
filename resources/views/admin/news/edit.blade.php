@@ -20,7 +20,7 @@
                                     <p>Here you can edit your website basic details URL, Phone, Email, Address, User and password and more</p>
                                 </div>
                                 <div class="tab-inn">
-                                    <form action="{{ route('admin.news.form.update',$new->slug) }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('admin.news.form.update',$new->id) }}" method="POST" enctype="multipart/form-data">
                                       @csrf
                                       @method('PATCH')
                                         <div class="row">

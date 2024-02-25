@@ -109,11 +109,11 @@ Route::delete('/news/{new:slug}/delete', [AdminNewsController::class, 'destroy']
 
 // teams Routes
 Route::get('/teams', [AdminTeamController::class, 'index'])->name('team.index');
-Route::get('/team/create', [AdminTeamController::class, 'create'])->name('team.create');
-Route::post('/team/form/submit', [AdminTeamController::class, 'store'])->name('team.form.submit');
-Route::get('/team/{team:id}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
-Route::patch('/team/form/{team:id}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
-Route::delete('/team/{team:id}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
+Route::get('/teams/create', [AdminTeamController::class, 'create'])->name('team.create');
+Route::post('/teams/form/submit', [AdminTeamController::class, 'store'])->name('team.form.submit');
+Route::get('/teams/{slug}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
+Route::patch('/teams/form/{slug}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
+Route::delete('/teams/{slug}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
 
 
 //Slider
@@ -206,8 +206,9 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
     Route::get('/news', [AdminNewsController::class, 'index'])->name('news.index');
     Route::get('/news/create', [AdminNewsController::class, 'create'])->name('news.create');
     Route::post('/news/form/submit', [AdminNewsController::class, 'store'])->name('news.form.submit');
-    Route::get('/news/{new:slug}/edit', [AdminNewsController::class, 'edit'])->name('news.edit');
-    Route::patch('/news/form/{new:slug}/update', [AdminNewsController::class, 'update'])->name('news.form.update');
+    Route::get('/news/{id}/edit', [AdminNewsController::class, 'edit']);
+    Route::patch('/news/form/{id}/update', [AdminNewsController::class, 'update'])->name('news.form.update');
+    Route::resource('/news', App\Http\Controllers\Admin\AdminNewsController::class);
 
     //galleries
     Route::get('/galleries', [AdminGalleryController::class, 'index'])->name('gallery.index');
@@ -347,11 +348,15 @@ Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'up
 
 //course
 Route::get('/courses', [CourseController::class, 'index'])->name('course.index');
-Route::get('/courses/{slug}', [CourseController::class, 'show'])->name('courses.show');
+Route::get('/courses/{slug}', [CourseController::class, 'show']);
 
 //news
-Route::get('/news', [NewsController::class, 'index'])->name('news.index');
-Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
+Route::get('/news', [NewsController::class, 'index']);
+Route::get('/news/{slug}', [NewsController::class, 'show']);
+
+//teams
+Route::get('/teams', [TeamController::class, 'index']);
+Route::get('/teams/{slug}', [TeamController::class, 'show']);
 
 //seminar
 Route::get('/seminars/{seminar:slug}', [SeminarController::class, 'show'])->name('seminar.show');

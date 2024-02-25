@@ -189,7 +189,7 @@
                     <div class="collapsible-body left-sub-menu">
                         <ul>
                             <li><a href="/admin/teams">All Teams</a></li>
-                            <li><a href="/admin/team/create">New Team Member</a></li>
+                            <li><a href="/admin/teams/create">New Team Member</a></li>
                         </ul>
                     </div>
                 </li>
