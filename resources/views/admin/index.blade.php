@@ -44,7 +44,7 @@
                                     <a href="/admin/contact-mails">View more</a>
                                 </div>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <div class="dash-book dash-b-4">
                                     <h5>Popular Page</h5>
                                     @foreach ($mostVisitedPages as $page)
@@ -60,7 +60,7 @@
                                         <h4>{{ $visit['url'] }} ({{ $visit['pageViews'] }} page views)</h4>
                                     @endforeach
                                 </div>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </div>
