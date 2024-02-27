@@ -379,12 +379,6 @@ Route::post('/piu/application/second-form', [AdmissionController::class, 'storeS
 Route::get('/piu/admission/application-form-successfully-submited/{token}', [AdmissionController::class, 'success']);
 Route::get('/admin/admissions/{admission:id}/details', [AdmissionController::class, 'show']);
 
-//api
-Route::get('/data', function () {
-    $analyticsData = Analytics::fetchVisitorsAndPageViews(Period::days(7));
-    dd($analyticsData);
-});
-
 // google login
 Route::get('/auth/google/user/redirect', [UserController::class, 'redirectToGoogle'])->name('auth.google.user.redirect');
 Route::get('/auth/google/user/callback', [UserController::class, 'googleCallback'])->name('googleCallback');

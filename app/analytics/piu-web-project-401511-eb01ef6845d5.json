@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "piu-web-project-401511",
+  "private_key_id": "eb01ef6845d5f92554dcbff4c53f23a20a715abf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCG9CRll4fH9MHQ\nP6e80E5sCZbmH0MKFWN/lbMGiDKjYQwchyWFk0WFPupIlM66nk9WfGb6HRq8pMfW\nplc4gMzhtzQ0V9UM5shqzEgqANOozCr/4kzf4x3vNyJW6TZ5zGeKElPchuvMSU4q\nE99KB7tN/nSlhqxsBRKhBhWBL+01NYKPnEiS2NNTcrmFB6nasfdKc2ZvI417v9tH\ndipFTg7R4+D1Hkl3fwtXlmBfl/39Bm+ajx/Dw5TRMRETssKcaZOHqfRw6swrXVPQ\nHGgRhykJisq+7dH0zC9WN8kmr3jHskqUGVLTBPkPum7SRG7jz17yc9DXHixy7FxB\nobm9TyU3AgMBAAECggEAIO8MwNQpeTU0ZTdbnnrxYHE4p6EicaAFn5mvTl1HilKB\nK6cZk478rMdNUngqOSWwM+l5EfmvUDEgabQ/XdUk6sKUVV/H6PWbHGENDV8VSEDH\nD5ow64RYBkxcr3wLZM7qx6mwWIV+nuSW1DL0T3MylRaPbeO/ST81rCE5d0T0bQLu\nx5inH1Hkgmu6mpr2G6okRHVOTnDa8nXzHc6C5dIZnXv7YO3XKyeG2qsXNzksvi5q\nzcWSYitY7IUl+y6CfSPzX/qxFH7pF8Ciy4UXty6naFSDDNbX9xEDH7qowYV6kQdn\nyQxDqfrCLvAmlo7XmeMWFdDgKy+IeCKXeXe6J58aDQKBgQC7zdjBSO9Cm5v5i9/F\ndGyfS24rqaTkz3/mck272Rj99PIj8w6kTfyllfIhZhClVXKtYjNMVh9+hfliFdq3\nPKMid03crZRh52XxKnAOp3XvY11jN2UwTTwO6VzT40ydAtR2iF6g5J3PxkH6KFED\nSpA7Z7jKpfpD78meD6hz6MVsVQKBgQC39VqUDelocNSIWGbHP+hEWsbKvvo/M3FB\nUtjR2YosaK3z9bVmIO0/rov1PmX/TwCs1yc30TSqEWafY1E6GD453+Yj1DVka6ab\nlnoTu858EYCTfFSzlVDhxZtZNHbfidXBiPirOHt4jlli/UYZbv6Vxh2FPA2wUZg4\njlP4vs4XWwKBgQCACHLYOqfayglI1GIG1DtlUeBW5f2jfA7fBVgXU4clQ0N83KxD\nuWMfZB1BRbrdbGaU65i7Vw97i0yb4PhN6Ynx6lHru26oXD/0bREd/G57eEtnY5GZ\nn13tcIy3a4OEmzRLZubUW2d3Cdta9vdb/g5cYXbquMLoY+YY2uXlt3A4TQKBgQCn\nPjrxK4yuVRYEN0qJj0JdEqJ0pRfh6aTnnKhecIY8RZcQmqwmg3zuToQTnH0ilfKp\nMJoJFvvoOhWwhpzMUkoQV8xleoJoH67C+RVXZ4EcLtVUQM7IzdFQ0VSgzx/brvZV\nE2/wSlOGkPQXGOhoKw7tn8Yq4SQYzrWzhUI2fVHkzQKBgB1Am2S0bxoJRjzizJsF\nEHO29dGDVKk72mE1nJnfOsVkxJlVN5KSyABq2/3TLM2wqFYpaoxDsdLJrif7kJnf\nkTBXzhz4RKJDcO56In+rXt+G4xbvZeMx1FW1lE1OBO+Yf0dH5mcFROy5PQLLPs5J\nsdQChWOqa42NAlX+aqKYrD3U\n-----END PRIVATE KEY-----\n",
+  "client_email": "phaung-daw-oo-internationa-455@piu-web-project-401511.iam.gserviceaccount.com",
+  "client_id": "110353318137547540654",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/phaung-daw-oo-internationa-455%40piu-web-project-401511.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

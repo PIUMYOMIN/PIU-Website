@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab015a2caefb0d8637e9095d6d73b248",
+    "content-hash": "a57da85560564bd9d584de010b8f22cf",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -3900,30 +3900,30 @@
         },
         {
             "name": "spatie/laravel-analytics",
-            "version": "5.2.0",
+            "version": "5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-analytics.git",
-                "reference": "e0433283f603183b82ea2aefd3c61e5fbd2d2f6e"
+                "reference": "7f8b5e8283c4df45ae3e8447298b8828c516b9ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-analytics/zipball/e0433283f603183b82ea2aefd3c61e5fbd2d2f6e",
-                "reference": "e0433283f603183b82ea2aefd3c61e5fbd2d2f6e",
+                "url": "https://api.github.com/repos/spatie/laravel-analytics/zipball/7f8b5e8283c4df45ae3e8447298b8828c516b9ee",
+                "reference": "7f8b5e8283c4df45ae3e8447298b8828c516b9ee",
                 "shasum": ""
             },
             "require": {
                 "google/analytics-data": "^0.9.4",
-                "laravel/framework": "^10.0",
+                "laravel/framework": "^10.0|^11.0",
                 "nesbot/carbon": "^2.66",
                 "php": "^8.1",
                 "spatie/laravel-package-tools": "^1.13.7",
-                "symfony/cache": "^6.0"
+                "symfony/cache": "^6.0|^7.0"
             },
             "require-dev": {
                 "league/flysystem": "^3.0",
                 "mockery/mockery": "^1.5",
-                "orchestra/testbench": "^8.0",
+                "orchestra/testbench": "^8.0|^9.0",
                 "pestphp/pest": "^2.0",
                 "spatie/ray": "^1.37"
             },
@@ -3966,7 +3966,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-analytics/tree/5.2.0"
+                "source": "https://github.com/spatie/laravel-analytics/tree/5.2.1"
             },
             "funding": [
                 {
@@ -3974,7 +3974,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2024-01-03T08:51:11+00:00"
+            "time": "2024-02-12T08:35:44+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
