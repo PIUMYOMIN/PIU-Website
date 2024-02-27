@@ -16,8 +16,8 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $mostVisitedPages = Analytics::fetchMostVisitedPages(Period::days(7));
-        $visitorPages = Analytics::fetchVisitorsAndPageViews(Period::days(7));
+        // $mostVisitedPages = Analytics::fetchMostVisitedPages(Period::days(7));
+        // $visitorPages = Analytics::fetchVisitorsAndPageViews(Period::days(7));
        return view('admin.index',[
         'course' => Course::all(),
         'courses' => Course::latest()->get(),
@@ -26,8 +26,8 @@ class AdminController extends Controller
         'users' => User::all(),
         'contacts' => Contact::all(),
         'admissions' => Admission::all(),
-        'mostVisitedPages' => $mostVisitedPages,
-        'visitorPages' => $visitorPages,
+        // 'mostVisitedPages' => $mostVisitedPages,
+        // 'visitorPages' => $visitorPages,
        ]);
     }
 }
