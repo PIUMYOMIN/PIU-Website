@@ -61,6 +61,7 @@ Route::get('/forgot-password',[UserController::class,'forget_password'])->name('
 Route::post('/forgot-password-form',[UserController::class,'forget_password_form'])->name('forget-password.form.submit');
 Route::get('auth/passwords/password_reset_link_sent', [UserController::class, 'password_reset_link_successfull_sent']);
 Route::get('/reset-password/{token}', [UserController::class, 'showResetPasswordForm']);
+Route::patch('/reset-password/update', [UserController::class, 'forgotPasswordUpdate'])->name('forget-password.update');
 
 Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admin.auth.logout');
 Route::post('/admin/student/logout', [UserController::class, 'studentLogout'])->name('admin.student.logout');

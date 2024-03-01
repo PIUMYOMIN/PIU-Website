@@ -14,6 +14,8 @@ use Exception;
 use Illuminate\Support\Str;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
+use Mail;
+use App\Mail\ForgotPasswordMail;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -39,38 +41,38 @@ class UserController extends Controller
     }
 
     public function store(Request $request)
-{
+    {
 
-    $data = $request->validate([
-        'name' => 'required',
-        'email' => ['required','email',Rule::unique('users','email')],
-        'phone' => 'nullable',
-        'address' => 'nullable',
-        'password' => 'required|min:8|max:25|confirmed',
-        'picture' => 'image|mimes:jpg,jpeg,png',
-        'provider_id' => 'nullable',
-    ]);
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => ['required','email',Rule::unique('users','email')],
+            'phone' => 'nullable',
+            'address' => 'nullable',
+            'password' => 'required|min:8|max:25|confirmed',
+            'picture' => 'image|mimes:jpg,jpeg,png',
+            'provider_id' => 'nullable',
+        ]);
 
-    $request->validate([
-        'g-recaptcha-response' => 'required|captcha',
-    ]);
+        $request->validate([
+            'g-recaptcha-response' => 'required|captcha',
+        ]);
 
-    $data['password'] = Hash::make($data['password']);
+        $data['password'] = Hash::make($data['password']);
 
 
-    if ($request->hasFile('picture')) {
-        $imagePath = $request->file('picture')->store('user_profiles', 'public');
-        $data['picture'] = $imagePath;
-    } else {
-        $data['picture'] = 'img/picture.png';
+        if ($request->hasFile('picture')) {
+            $imagePath = $request->file('picture')->store('user_profiles', 'public');
+            $data['picture'] = $imagePath;
+        } else {
+            $data['picture'] = 'img/picture.png';
+        }
+
+        $user = User::create($data);
+
+        Auth::login($user);
+
+        return redirect()->back()->with('success', 'Registration successful! Please Login');
     }
-
-    $user = User::create($data);
-
-    Auth::login($user);
-
-    return redirect()->back()->with('success', 'Registration successful! Please Login');
-}
 
 
     public function show(User $user)
@@ -406,19 +408,19 @@ public function user_login(Request $request)
 
     public function forget_password_form(Request $request)
     {
-        $request->validate([
+        $email = $request->validate([
             'email' => 'required|email',
         ]);
 
-        $user = User::where('email', $request->email)->first();
-
-        dd($user);
+        $user = User::where('email', $email['email'])->first();
 
         if ($user) {
             $token = Str::random(60);
             $user->update(['remember_token' => $token]);
             Mail::to($user->email)->send(new ForgotPasswordMail($user, $token));
             return redirect('auth/passwords/password_reset_link_sent')->with('status', 'We have e-mailed your password reset link!');
+        }else{
+            return redirect()->route('forget-password')->with('message','Email is not registered.');
         }
 
         return redirect()->back()->withErrors(['email' => 'We could not find a user with that email address.']);
@@ -427,5 +429,33 @@ public function user_login(Request $request)
     public function password_reset_link_successfull_sent()
     {
         return view('user.auth.password_reset_link_sent');
+    }
+
+    public function showResetPasswordForm($token)
+    {
+        $user = User::where('remember_token', $token)->first();
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'Invalid password reset token');
+        }
+
+        return view('user.auth.reset_password')->with(['token' => $token, 'email' => $user->email]);
+    }
+
+    public function forgotPasswordUpdate()
+    {
+        $formData = request()->validate([
+            'token' => 'required',
+            'password' => 'required|max:255|min:8',
+            'password_confirmation' => ['required', 'same:password'],
+        ]);
+
+        $user = User::where('remember_token', $formData['token'])->firstOrFail();
+
+        $user->password = bcrypt($formData['password']);
+        $user->remember_token = null;
+        $user->save();
+
+        return redirect('/login')->with('success', 'Welcome' . $user->name);
     }
 }

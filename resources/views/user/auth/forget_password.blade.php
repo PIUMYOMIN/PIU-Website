@@ -16,7 +16,7 @@
                           @method('POST')
                         <div>
                             <div class="input-field s12">
-                                <input type="email" class="validate" required>
+                                <input type="email" name="email" class="validate" required>
                                 <label>Enter Your Email</label>
                             </div>
                         </div>
