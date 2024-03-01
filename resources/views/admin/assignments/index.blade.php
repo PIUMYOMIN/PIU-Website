@@ -5,7 +5,7 @@
                 </li>
                 <li class="active-bre"><a href="#"> Events</a>
                 </li>
-                @if(auth()->check() && auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
+                @if(auth()->check() && auth()->user()->can('Read and Write') || auth()->user()->can('Registrar'))
                 <li class="page-back"><a href="/admin/assignment/create"><i class="fa fa-plus" aria-hidden="true"></i> Add Assignment</a>
                 </li>
                 @endif
