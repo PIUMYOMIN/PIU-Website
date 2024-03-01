@@ -148,11 +148,13 @@
                     </a>
                     <h4>Forgot password</h4>
                     <p>Don't have an account? Create your account. It's take less then a minutes</p>
-                    <form class="s12">
+                    <form class="s12" action="{{ route('forget-password.form.submit') }}" method="POST">
+                        @csrf
+                        @method('POST')
                         <div>
                             <div class="input-field s12">
-                                <input type="text" data-ng-model="name3" class="validate">
-                                <label>User name or email id</label>
+                                <input type="text" name="email" data-ng-model="name3" class="validate">
+                                <label>Enter Your Email</label>
                             </div>
                         </div>
                         <div>
