@@ -51,11 +51,16 @@ use Spatie\Analytics\Period;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/login', [UserController::class, 'login'])->middleware('guest');
+Route::get('/login', [UserController::class, 'login'])->middleware('guest')->name('login');
 Route::post('/users/login/form/submit', [UserController::class, 'user_login'])->name('users.login.form.submit');
 
-Route::get('/register', [UserController::class, 'register'])->middleware('guest')->name('admin.auth.register');
+Route::get('/register', [UserController::class, 'register'])->middleware('guest')->name('register');
 Route::post('/users/register/form/submit', [UserController::class, 'store'])->name('users.register.form.submit');
+
+Route::get('/forgot-password',[UserController::class,'forget_password'])->name('forget-password');
+Route::post('/forgot-password-form',[UserController::class,'forget_password_form'])->name('forget-password.form.submit');
+Route::get('auth/passwords/password_reset_link_sent', [UserController::class, 'password_reset_link_successfull_sent']);
+Route::get('/reset-password/{token}', [UserController::class, 'showResetPasswordForm']);
 
 Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admin.auth.logout');
 Route::post('/admin/student/logout', [UserController::class, 'studentLogout'])->name('admin.student.logout');

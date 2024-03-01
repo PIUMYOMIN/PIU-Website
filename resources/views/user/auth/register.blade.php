@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                         <div>
-                            <div class="input-field s12"> <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#modal1">Are you a already member ? Login</a> </div>
+                            <div class="input-field s12"> <a href="{{ route('login') }}">Are you a already member ? Login</a> </div>
                         </div>
                     </form>
                 </div>

@@ -51,7 +51,7 @@
                                     <a href="{{ route('auth.twitter.user.redirect') }}" class="btn btn-info btn-outline-info" style="color: white !important; margin: 3px 0px !important;"><i class="fa fa-twitter"></i> Login with Twitter</a>
                                 </div>
                             <div>
-                                <div class="input-field s12"> <a href="admin-forgot.html">Forgot password</a> | <a
+                                <div class="input-field s12"> <a href="{{ route('forget-password') }}">Forgot password?</a> | <a
                                         href="/register">Create a new account</a> </div>
                             </div>
                         </form>

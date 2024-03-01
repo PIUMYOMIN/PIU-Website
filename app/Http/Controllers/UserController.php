@@ -30,12 +30,12 @@ class UserController extends Controller
 
     public function register()
     {
-        return view('admin.auth.register');
+        return view('user.auth.register');
     }
 
     public function login()
     {
-        return view('admin.auth.login');
+        return view('user.auth.login');
     }
 
     public function store(Request $request)
@@ -397,5 +397,35 @@ public function user_login(Request $request)
     public function profile()
     {
         return view('admin.profile.index');
+    }
+
+    public function forget_password()
+    {
+        return view('user.auth.forget_password');
+    }
+
+    public function forget_password_form(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        dd($user);
+
+        if ($user) {
+            $token = Str::random(60);
+            $user->update(['remember_token' => $token]);
+            Mail::to($user->email)->send(new ForgotPasswordMail($user, $token));
+            return redirect('auth/passwords/password_reset_link_sent')->with('status', 'We have e-mailed your password reset link!');
+        }
+
+        return redirect()->back()->withErrors(['email' => 'We could not find a user with that email address.']);
+    }
+
+    public function password_reset_link_successfull_sent()
+    {
+        return view('user.auth.password_reset_link_sent');
     }
 }

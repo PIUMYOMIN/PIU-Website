@@ -345,9 +345,12 @@
                             <li>
                                 <a href="/admin/students">All Students</a>
                             </li>
+                            @if (auth()->user() && auth()->user()->can('Read and Write') ||
+                    auth()->user()->can('Registrar'))
                             <li>
                                 <a href="/admin/student/create">Add New Students</a>
                             </li>
+                            @endif
                             <li>
                                 <a href="{{ route('admin.students.grading.create') }}">Add Student Grading</a>
                             </li>
