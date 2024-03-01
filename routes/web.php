@@ -72,14 +72,14 @@ Route::delete('/users/{user:id}', [UserController::class, 'destroy'])->name('use
 
 //user role
 
-Route::post('/user/{user:id}/roles', [UserController::class, 'assignRole'])->name('user.roles');
-Route::delete('/user/{user}/roles/{role}', [UserController::class, 'removeRole'])->name('user.roles.removeRole');
+Route::post('/user/{user:id}/roles', [UserController::class, 'assignRole'])->name('users.roles');
+Route::delete('/user/{user}/roles/{role}', [UserController::class, 'removeRole'])->name('users.roles.removeRole');
 
 
 //user permission
 
-Route::post('/user/{user:id}/permissions', [UserController::class, 'givePermission'])->name('user.permissions');
-Route::delete('/user/{user}/permissions/{permission}', [UserController::class, 'revokePermission'])->name('user.permissions.revokePermission');
+Route::post('/user/{user:id}/permissions', [UserController::class, 'givePermission'])->name('users.permissions');
+Route::delete('/user/{user}/permissions/{permission}', [UserController::class, 'revokePermission'])->name('users.permissions.revokePermission');
 
 
 // Roles Routes
