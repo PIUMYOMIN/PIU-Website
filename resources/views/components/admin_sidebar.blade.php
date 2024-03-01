@@ -385,7 +385,7 @@
                                 <a href="/admin/student/assignments">Your Assignments</a>
                             </li>
                         @endif
-                        @if(auth()->check() && auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
+                        @if(auth()->check() && auth()->user()->can('Read and Write') || auth()->user()->can('Registrar'))
                         <li>
                             <a href="/admin/assignment/create">New Assignment</a>
                         </li>
