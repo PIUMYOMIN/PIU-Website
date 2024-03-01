@@ -137,7 +137,7 @@ public function user_login(Request $request)
         if ($user && Auth::attempt(['email' => $identifier, 'password' => $password])) {
             Auth::login($user);
 
-            if ($user->hasRole('admin')) {
+            if ($user->hasRole('admin|manager|faculty|registrar')) {
                 return redirect('/admin')->with('success', 'Welcome back');
             } else {
                 return redirect('/')->with('success', 'Welcome back');
