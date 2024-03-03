@@ -5,7 +5,7 @@
                 </li>
                 <li class="active-bre"><a href="#"> All Enquiry</a>
                 </li>
-                <li class="page-back"><a href="/admin/students/create"><i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
+                <li class="page-back"><a href="#!"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
                 </li>
             </ul>
         </div>
@@ -16,7 +16,7 @@
                 <div class="col-md-12">
                     <div class="box-inn-sp">
                         <div class="inn-title">
-                            <h4>Enquiry</h4>
+                            <h4>Add Student Grading</h4>
                             <p>All about students like name, student id, phone, email, country, city and more</p>
                         </div>
                         <div class="tab-inn">

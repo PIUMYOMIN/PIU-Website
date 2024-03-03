@@ -335,7 +335,7 @@
                 </li>
             @endif
             @if (auth()->user()->can('Read and Write') ||
-                    auth()->user()->can('Registrar'))
+                    auth()->user()->can('Registrar') || auth()->user()->can('Faculty'))
                 <li>
                     <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-users"
                             aria-hidden="true"></i>
@@ -373,7 +373,8 @@
                 </li>
             @endif
             @endif
-            {{-- @if(auth()->check() && auth()->user()->can('Read and Write') || auth()->guard('student')->check()) --}}
+            @if(auth()->check() || auth()->user()->can('Read and Write') &&
+                    auth()->user()->can('Registrar') && auth()->user()->can('Faculty'))
             <li>
                 <a href="javascript:void(0)" class="collapsible-header">
                     <i class="fa fa-graduation-cap" aria-hidden="true"></i> Assignments
@@ -388,7 +389,7 @@
                                 <a href="/admin/student/assignments">Your Assignments</a>
                             </li>
                         @endif
-                        @if(auth()->check() && auth()->user()->can('Read and Write') || auth()->user()->can('Registrar'))
+                        @if(auth()->check() || auth()->user()->can('Read and Write') && auth()->user()->can('Registrar') && auth()->user->can('Faculty'))
                         <li>
                             <a href="/admin/assignment/create">New Assignment</a>
                         </li>
@@ -396,7 +397,7 @@
                     </ul>
                 </div>
             </li>
-            {{-- @endif --}}
+            @endif
         </ul>
     </div>
 </div>

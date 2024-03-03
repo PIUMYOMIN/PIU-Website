@@ -16,7 +16,7 @@
                 <div class="col-md-12">
                     <div class="box-inn-sp">
                         <div class="inn-title">
-                            <h4>Enquiry</h4>
+                            <h4>Student Grading List</h4>
                             <p>All about students like name, student id, phone, email, country, city and more</p>
                         </div>
                         <div class="tab-inn">

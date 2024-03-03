@@ -51,7 +51,7 @@ class AdminGradingController extends Controller
             'module_id' => 'required',
             'year_id' => 'required',
             'assignment_id' => 'required',
-            'mark' => 'required|numeric',
+            'mark' => 'required|numeric|max:100',
             'grade_point' => 'required|numeric',
             'grade_value' => 'required',
         ]);
@@ -86,7 +86,7 @@ class AdminGradingController extends Controller
             'module_id' => 'required',
             'year_id' => 'required',
             'assignment_id' => 'required',
-            'mark' => 'required|numeric',
+            'mark' => 'required|numeric|max:100',
             'grade_point' => 'required|numeric',
             'grade_value' => 'required',
         ]);
@@ -158,7 +158,7 @@ class AdminGradingController extends Controller
             "year_id" => 'required',
             "module_id" => 'required',
             "assignment_id" => 'required',
-            'mark' => 'required|numeric',
+            'mark' => 'required|numeric|max:100',
             "grade_point" => 'required',
             "grade_value" => 'required',
         ]);

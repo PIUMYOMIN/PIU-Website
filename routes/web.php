@@ -163,7 +163,7 @@ Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::
 
 });
 
-Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin|registrar|faculty'])->name('admin.')->prefix('admin')->group(function () {
     //students
     Route::get('/students', [AdminStudentController::class, 'index'])->name('student.index');
     Route::get('/student/create', [AdminStudentController::class, 'create'])->name('student.create');
@@ -285,7 +285,7 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
 
 //admin, manager, staff, registrar
 
-Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name('admin.')->prefix('admin')->group(function () {
     //admission
     Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
     Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);

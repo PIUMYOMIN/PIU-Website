@@ -5,8 +5,11 @@
                 </li>
                 <li class="active-bre"><a href="#"> All Enquiry</a>
                 </li>
+                @if (auth()->user() && auth()->user()->can('Read and Write') ||
+                    auth()->user()->can('Registrar'))
                 <li class="page-back"><a href="/admin/student/create"><i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
                 </li>
+                @endif
             </ul>
         </div>
 
@@ -16,7 +19,7 @@
                 <div class="col-md-12">
                     <div class="box-inn-sp">
                         <div class="inn-title">
-                            <h4>Enquiry</h4>
+                            <h4>Student List</h4>
                             <p>All about students like name, student id, phone, email, country, city and more</p>
                         </div>
                         <div class="tab-inn">
