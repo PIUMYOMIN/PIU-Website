@@ -209,4 +209,14 @@ class AdminStudentController extends Controller
         // Redirect the user with a success message
         return redirect()->route('admin.student.profile', ['identifier' => $identifier])->with('success', 'Password updated successfully!');
     }
+
+    public function filterCourse(Request $request, $course_id)
+    {
+        $students = Student::with(['course', 'year', 'user'])
+                    ->where('course_id', $course_id)
+                    ->get();
+
+        return response()->json($students);
+    }
+
 }

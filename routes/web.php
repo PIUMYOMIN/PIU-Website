@@ -173,6 +173,7 @@ Route::middleware(['auth', 'role:admin|registrar|faculty'])->name('admin.')->pre
     Route::post('/student/{student:id}/add_course', [AdminStudentController::class, 'addCourse'])->name('student.addCourse');
     Route::delete('/student/{student}/course/{year}/year/delete', [AdminStudentController::class, 'deleteCourse'])
     ->name('student.course.year.delete');
+    Route::get('/students/study-course/{course_id}', [AdminStudentController::class,'filterCourse'])->middleware('auth');
 
     // assignment
     Route::get('/assignment/create', [AdminAssignmentController::class, 'create'])->name('assignment.create');
@@ -191,7 +192,7 @@ Route::middleware(['auth', 'role:admin|registrar|faculty'])->name('admin.')->pre
     // });
 Route::get('admin/student/profile/{identifier}', [StudentController::class, 'index'])->name('admin.student.profile');
 Route::get('admin/student/profile/{identifier}/edit', [StudentController::class, 'edit'])->name('admin.student.profile.edit');
-Route::get('admin/student/profile/{student:id}/details', [AdminStudentController::class, 'show'])->name('admin.student.profile.details');
+Route::get('admin/students/profile/{student:id}/details', [AdminStudentController::class, 'show'])->name('admin.students.profile.details');
 Route::patch('admin/student/profile/{identifier}/update', [StudentController::class, 'update'])->name('admin.student.profile.update');
 Route::get('/admin/student/profile/{identifier}/password-change', [AdminStudentController::class, 'changePassword'])->name('admin.student.profile.password-change');
 Route::patch('/admin/student/profile/{identifier}/passwordUpdate', [AdminStudentController::class, 'passwordUpdate'])->name('admin.student.passwordUpdate');
@@ -293,6 +294,7 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
     // student grading
     Route::get('students/grading/create', [AdminGradingController::class, 'index'])->name('students.grading.create');
     Route::get('students/grading/check', [AdminGradingController::class, 'viewGrading']);
+    Route::get('/students/grading/study-course/{course_id}', [AdminGradingController::class,'filterCourse'])->middleware('auth');
 
     //first semester
     Route::get('students/first_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'firstSemesterGradingAdd'])->name('students.first_semester.grading.add');
