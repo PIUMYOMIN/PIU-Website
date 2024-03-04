@@ -31,7 +31,6 @@
 													<th>Job Campus</th>
                                                     <th>Deadline</th>
 													<th>Location</th>
-													<th>Status</th>
 													<th>Edit</th>
 													<th>Delete</th>
                                                 </tr>
@@ -46,11 +45,8 @@
     													<td>{{ $job->job_campus }}</td>
     													<td>{{ $job->expire_date }}</td>
     													<td>{{ $job->country }},{{ $job->city }}</td>
-                                                        <td>
-                                                            <span class="label label-success">Active</span>
-                                                        </td>
     													<td>
-                                                            <a href="{{ route('admin.jobs.edit', $job->id) }}" class="ad-st-view">Edit</a>
+                                                            <a href="{{ route('admin.jobs.edit', ['id' => $job->id]) }}" class="ad-st-view">Edit</a>
                                                         </td>
                                                         <form action="{{ route('admin.jobs.delete',$job->id) }}" method="POST">
                                                             @csrf

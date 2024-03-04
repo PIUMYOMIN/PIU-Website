@@ -226,7 +226,7 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
     Route::get('/jobs/{id}/edit', [AdminJobController::class, 'edit'])->name('jobs.edit');
     Route::patch('/jobs/form/{id}/update', [AdminJobController::class, 'update'])->name('jobs.form.update');
     Route::delete('/jobs/{id}/delete', [AdminJobController::class, 'destroy'])->name('jobs.delete');
-    Route::resource('/jobs', App\Http\Controllers\Admin\AdminJobController::class);
+    // Route::resource('/jobs', App\Http\Controllers\Admin\AdminJobController::class);
 
     //galleries
     Route::get('/galleries', [AdminGalleryController::class, 'index'])->name('gallery.index');
@@ -387,7 +387,7 @@ Route::get('/events/{slug}/register', [EventController::class, 'register'])->nam
 
 //job
 Route::get('/jobs', [JobController::class, 'index'])->name('job.index');
-Route::get('/jobs/{job:id}', [JobController::class, 'show'])->name('job.show');
+Route::get('/jobs/{id}', [JobController::class, 'show'])->name('job.show');
 
 
 //Contact Form
