@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\AdminSlideController;
 use App\Http\Controllers\Admin\AdminPositionController;
 use App\Http\Controllers\Admin\AdminSeminarController;
 use App\Http\Controllers\Admin\AdminTeamController;
+use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\Admin\AdminModuleController;
 use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminStudentController;
@@ -36,6 +37,7 @@ use App\Http\Controllers\User\NewsController;
 use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\SeminarController;
 use App\Http\Controllers\User\StudentController;
+use App\Http\Controllers\User\JobController;
 use Spatie\Analytics\Period;
 
 /*
@@ -217,6 +219,15 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
     Route::patch('/news/form/{id}/update', [AdminNewsController::class, 'update'])->name('news.form.update');
     Route::resource('/news', App\Http\Controllers\Admin\AdminNewsController::class);
 
+    //jobs
+    Route::get('/jobs', [AdminJobController::class, 'index'])->middleware('auth')->name('jobs');
+    Route::get('/jobs/create', [AdminJobController::class, 'create'])->name('jobs.create');
+    Route::post('/jobs/form/submit', [AdminJobController::class, 'store'])->name('jobs.form.submit');
+    Route::get('/jobs/{id}/edit', [AdminJobController::class, 'edit'])->name('jobs.edit');
+    Route::patch('/jobs/form/{id}/update', [AdminJobController::class, 'update'])->name('jobs.form.update');
+    Route::delete('/jobs/{id}/delete', [AdminJobController::class, 'destroy'])->name('jobs.delete');
+    Route::resource('/jobs', App\Http\Controllers\Admin\AdminJobController::class);
+
     //galleries
     Route::get('/galleries', [AdminGalleryController::class, 'index'])->name('gallery.index');
     Route::get('/gallery/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
@@ -372,8 +383,12 @@ Route::get('/seminars/{seminar:slug}', [SeminarController::class, 'show'])->name
 //event
 Route::get('/events', [EventController::class, 'index'])->name('event.index');
 Route::get('/events/{event:slug}', [EventController::class, 'show'])->name('event.show');
-
 Route::get('/events/{slug}/register', [EventController::class, 'register'])->name('events.register');
+
+//job
+Route::get('/jobs', [JobController::class, 'index'])->name('job.index');
+Route::get('/jobs/{job:id}', [JobController::class, 'show'])->name('job.show');
+
 
 //Contact Form
 Route::get('/contact-us', [ContactController::class, 'index']);

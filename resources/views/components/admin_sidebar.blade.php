@@ -326,9 +326,9 @@
                             aria-hidden="true"></i> Job Vacants</a>
                     <div class="collapsible-body left-sub-menu">
                         <ul>
-                            <li><a href="#!">All Jobs</a>
+                            <li><a href="/admin/jobs">All Jobs</a>
                             </li>
-                            <li><a href="#!">Create New Job</a>
+                            <li><a href="/admin/jobs/create">Create New Job</a>
                             </li>
                         </ul>
                     </div>

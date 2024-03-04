@@ -17,8 +17,8 @@ return new class extends Migration
             $table->text('description');
             $table->string('num_of_posts');
             $table->string('job_campus');
-            $table->string('expire_date');
-            $table->string('expire_time');
+            $table->date('expire_date');
+            $table->time('expire_time');
             $table->string('city');
             $table->string('country');
             $table->string('image');
