@@ -18,9 +18,21 @@ class NewsController extends Controller
 
     public function show($slug)
     {
-        $new = News::where('slug', $slug)->firstOrFail();
+        $news = News::where('slug', $slug)->firstOrFail();
+        $dateParts = explode('-', $news->created_at);
+        $timeParts = explode(':', $news->updated_at);
+        $day = $dateParts[1];
+        $month = date('M', mktime(0, 0, 0, $dateParts[1], 1));
+        $year = $dateParts[0];
+        $hour = $timeParts[0];
+        $minute = $timeParts[1];
         return view('user.news.show',[
-            'new' => $new,
+            'news' => $news,
+            'day' => $day,
+            'month' => $month,
+            'year' => $year,
+            'hour' => $hour,
+            'minute' => $minute,
         ]);
     }
 }

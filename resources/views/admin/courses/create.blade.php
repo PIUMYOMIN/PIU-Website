@@ -21,7 +21,7 @@
                             and more</p>
                     </div>
                     <div class="tab-inn">
-                        <form action="{{ route('admin.course.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.courses.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('POST')
                             <div class="row">

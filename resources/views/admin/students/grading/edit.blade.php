@@ -145,38 +145,32 @@
     function updateGpaValue() {
         const gradePoint = parseFloat(gradePointInput.value);
         if (!isNaN(gradePoint)) {
-            if (gradePoint >= 90) {
-                gpaPointInput.value = '4.00';
-                gpaValueInput.value = 'A';
-            } else if (gradePoint >= 80) {
-                gpaPointInput.value = '4';
-                gpaValueInput.value = 'A';
-            } else if (gradePoint >= 79) {
-                gpaPointInput.value = '3';
-                gpaValueInput.value = 'B';
-            } else if (gradePoint >= 74) {
-                gpaPointInput.value = '2';
-                gpaValueInput.value = 'C';
-            } else if (gradePoint >= 69) {
-                gpaPointInput.value = '1';
-                gpaValueInput.value = 'D';
-            } else if (gradePoint >= 64) {
-                gpaPointInput.value = '0.7';
-                gpaValueInput.value = 'E';
-            } else if (gradePoint >= 50) {
-                gpaPointInput.value = '0';
-                gpaValueInput.value = 'Failed';
-            } else if (gradePoint >= 0) {
-                gpaPointInput.value = '2.00';
-                gpaValueInput.value = 'Failed';
+                if (gradePoint >= 90) {
+                    gpaPointInput.value = '4.00';
+                    gpaValueInput.value = 'A';
+                } else if (gradePoint >= 80) {
+                    gpaPointInput.value = '4';
+                    gpaValueInput.value = 'A';
+                } else if (gradePoint >= 75) {
+                    gpaPointInput.value = '3';
+                    gpaValueInput.value = 'B';
+                } else if (gradePoint >= 70) {
+                    gpaPointInput.value = '2';
+                    gpaValueInput.value = 'C';
+                } else if (gradePoint >= 65) {
+                    gpaPointInput.value = '1';
+                    gpaValueInput.value = 'D';
+                } else if (gradePoint >= 50) {
+                    gpaPointInput.value = '0.7';
+                    gpaValueInput.value = 'E';
+                } else {
+                    gpaPointInput.value = '00';
+                    gpaValueInput.value = 'Failed';
+                }
             } else {
-                gpaPointInput.value = 'Failed';
+                gpaPointInput.value = '';
                 gpaValueInput.value = '';
             }
-        } else {
-            gpaPointInput.value = '';
-            gpaValueInput.value = '';
-        }
     }
 
     // Add event listener to update GPA value when mark changes

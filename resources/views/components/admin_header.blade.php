@@ -38,7 +38,7 @@
                 <ul id='top-menu' class='dropdown-content top-menu-sty'>
                     <li>
                         @if (auth()->check()) 
-                        <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}" class="waves-effect">
+                        <a href="{{ route('admin.users.profile.edit', ['user' => auth()->user()->id]) }}" class="waves-effect">
                             <i class="fa fa-cogs" aria-hidden="true"></i> Profile Setting
                             </a>
                         @elseif(auth()->guard('student')->check())

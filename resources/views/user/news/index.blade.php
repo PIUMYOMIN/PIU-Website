@@ -13,7 +13,9 @@
                                 <ul>
                                   @forelse ($news as $new)
                                     <li>
-                                        <div class="ho-ev-date pg-eve-date"><span>07</span><span>jan,2018</span>
+                                        <div class="ho-ev-date pg-eve-date">
+                                            <span>{{ $new->created_at->format('d') }}</span>
+                                            <span>&nbsp;{{ $new->created_at->format('M,Y') }}</span>
                                         </div>
                                         <div class="pg-eve-desc pg-blog-desc">
                                             <h4>{{ $new->title }}</h4>

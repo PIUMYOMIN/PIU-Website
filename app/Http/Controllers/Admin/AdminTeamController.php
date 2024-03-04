@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 use App\Models\Team;
 use App\Models\Department;
 use App\Models\Position;
@@ -51,6 +52,7 @@ class AdminTeamController extends Controller
         }
 
         $data['profile'] = $filePatch;
+        $data['slug'] = Str::slug($data['name']);
         $data['user_id'] = auth()->user()->id;
 
         Team::create($data);
@@ -58,8 +60,9 @@ class AdminTeamController extends Controller
         return redirect('/admin/teams');
     }
 
-    public function edit(Team $team)
+    public function edit($slug)
     {
+        $team = Team::where('slug',$slug)->firstOrFail();
         return view('admin.teams.edit',[
             'team' => $team,
             'departments' => Department::all(),
@@ -67,8 +70,9 @@ class AdminTeamController extends Controller
         ]);
     }
 
-    public function update(Request $request, Team $team)
+    public function update(Request $request, $slug)
     {
+        $team = Team::where('slug',$slug)->firstOrFail();
        $data = request()->validate([
             'name' => 'required',
             'email' => ["required",Rule::unique('teams','email')->ignore($team->id)],
@@ -93,6 +97,8 @@ class AdminTeamController extends Controller
         }else{
             $data['profile'] = $team->profile;
         }
+
+        $data['slug'] = Str::slug($data['name']);
 
 
         $team->update($data);

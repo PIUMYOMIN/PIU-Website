@@ -5,7 +5,7 @@
                 </li>
                 <li class="active-bre"><a href="#"> All Enquiry</a>
                 </li>
-                <li class="page-back"><a href="/admin/students/create"><i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
+                <li class="page-back"><a href="#!"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
                 </li>
             </ul>
         </div>
@@ -16,12 +16,17 @@
                 <div class="col-md-12">
                     <div class="box-inn-sp">
                         <div class="inn-title">
-                            <h4>Enquiry</h4>
-                            <p>All about students like name, student id, phone, email, country, city and more</p>
+                            <h4>Add Student Grading</h4>
+                            <select onchange="filterstudent(event)">
+                                <option disabled selected>Filter</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="tab-inn">
                             <div class="table-responsive table-desi">
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="studentsTableBody">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -56,4 +61,47 @@
                 </div>
             </div>
         </div>
+        <script>
+        function filterstudent(event) {
+            const selectedCourseId = event.target.value;
+            fetch(`/admin/students/grading/study-course/${selectedCourseId}`).then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch students');
+            }
+            return response.json();
+        })
+        .then(data => displayStudent(data))
+        .catch(error => {
+            console.error(error);
+            // Handle the error, e.g., display a message to the user
+        });
+}
+
+function displayStudent(students) {
+    const tableBody = document.getElementById('studentsTableBody');
+    tableBody.innerHTML = '';
+    let iteration = 0;
+
+    students.forEach(student => {
+        iteration++;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${iteration}</td>
+            <td>${student.fname} ${student.lname}</td>
+            <td>${student.student_id}</td>
+            <td>${student.course.title}</td>
+            <td>
+                <a href="/admin/students/first_semester/grading/add/${student.id}/1" class="ad-st-view">First Semester</a>
+            </td>
+            <td>
+                <a href="/admin/students/second_semester/grading/add/${student.id}/2" class="ad-st-view">Second Semester</a>
+            </td>
+            <td>
+                <a href="/admin/students/profile/${student.id}/details" class="ad-st-view">View</a>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+    </script>
 </x-admin_layout>

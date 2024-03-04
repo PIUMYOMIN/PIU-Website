@@ -12,7 +12,7 @@
                     <div class="log-in-pop-right" style="width:100% !important">
                         <h4>Login</h4>
                         <p>Don't have an account? Create your account. It's take less then a minutes</p>
-                        <form action="{{ route('user.login.form.submit') }}" method="POST" class="s12">
+                        <form action="{{ route('users.login.form.submit') }}" method="POST" class="s12">
                             @csrf
                             @method('POST')
                             <div>
@@ -51,7 +51,7 @@
                                     <a href="{{ route('auth.twitter.user.redirect') }}" class="btn btn-info btn-outline-info" style="color: white !important; margin: 3px 0px !important;"><i class="fa fa-twitter"></i> Login with Twitter</a>
                                 </div>
                             <div>
-                                <div class="input-field s12"> <a href="admin-forgot.html">Forgot password</a> | <a
+                                <div class="input-field s12"> <a href="{{ route('forget-password') }}">Forgot password?</a> | <a
                                         href="/register">Create a new account</a> </div>
                             </div>
                         </form>

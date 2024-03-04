@@ -21,7 +21,7 @@
                     </a>
                     <h4>Login</h4>
                     <p>Don't have an account? Create your account. It's take less then a minutes</p>
-                    <form action="{{ route('user.login.form.submit') }}" method="POST" class="s12">
+                    <form action="{{ route('users.login.form.submit') }}" method="POST" class="s12">
                         @csrf
                         @method('POST')
                         <div>
@@ -79,7 +79,7 @@
                     </a>
                     <h4>Create an Account</h4>
                     <p>Don't have an account? Create your account. It's take less then a minutes</p>
-                    <form action="{{ route('user.register.form.submit') }}" method="POST" class="s12" enctype="multipart/form-data">
+                    <form action="{{ route('users.register.form.submit') }}" method="POST" class="s12" enctype="multipart/form-data">
                         @csrf
                         <div>
                             <div class="input-field s12">
@@ -148,11 +148,13 @@
                     </a>
                     <h4>Forgot password</h4>
                     <p>Don't have an account? Create your account. It's take less then a minutes</p>
-                    <form class="s12">
+                    <form class="s12" action="{{ route('forget-password.form.submit') }}" method="POST">
+                        @csrf
+                        @method('POST')
                         <div>
                             <div class="input-field s12">
-                                <input type="text" data-ng-model="name3" class="validate">
-                                <label>User name or email id</label>
+                                <input type="text" name="email" data-ng-model="name3" class="validate">
+                                <label>Enter Your Email</label>
                             </div>
                         </div>
                         <div>

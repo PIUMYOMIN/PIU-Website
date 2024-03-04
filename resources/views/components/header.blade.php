@@ -29,7 +29,7 @@
                                 </li>
                             @elseif(auth()->check())
                                 <li>
-                                    <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}">
+                                    <a href="{{ route('admin.users.profile.edit', ['user' => auth()->user()->id]) }}">
                                             User Profile
                                     </a>
                                 </li>

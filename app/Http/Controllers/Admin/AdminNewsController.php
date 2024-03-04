@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\News;
+use Illuminate\Validation\Rule;
 
 class AdminNewsController extends Controller
 {
@@ -43,15 +44,17 @@ class AdminNewsController extends Controller
         return redirect('/admin/news');
     }
 
-    public function edit(News $new)
+    public function edit($id)
     {
+        $new = News::where('id',$id)->firstOrFail();
         return view('admin.news.edit', [
             'new' => $new,
         ]);
     }
 
-    public function update(Request $request, News $new)
+    public function update(Request $request, $id)
     {
+        $new = News::where('id',$id)->firstOrFail();
         $data = request()->validate([
             'title' => ["required",Rule::unique('news','title')->ignore($new->id)],
             'body' => 'required',

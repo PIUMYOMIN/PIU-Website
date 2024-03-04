@@ -19,6 +19,7 @@ class AdminGradingController extends Controller
     {
        return view('admin.students.grading.index',[
         'students' => Student::all(),
+        'courses' => Course::all()
        ]);
     }
 
@@ -51,7 +52,7 @@ class AdminGradingController extends Controller
             'module_id' => 'required',
             'year_id' => 'required',
             'assignment_id' => 'required',
-            'mark' => 'required|numeric',
+            'mark' => 'required|numeric|max:100',
             'grade_point' => 'required|numeric',
             'grade_value' => 'required',
         ]);
@@ -86,7 +87,7 @@ class AdminGradingController extends Controller
             'module_id' => 'required',
             'year_id' => 'required',
             'assignment_id' => 'required',
-            'mark' => 'required|numeric',
+            'mark' => 'required|numeric|max:100',
             'grade_point' => 'required|numeric',
             'grade_value' => 'required',
         ]);
@@ -158,7 +159,7 @@ class AdminGradingController extends Controller
             "year_id" => 'required',
             "module_id" => 'required',
             "assignment_id" => 'required',
-            'mark' => 'required|numeric',
+            'mark' => 'required|numeric|max:100',
             "grade_point" => 'required',
             "grade_value" => 'required',
         ]);
@@ -166,6 +167,15 @@ class AdminGradingController extends Controller
         $grading->update($formData);
 
         return redirect('admin/students/grading/check');
+    }
+
+    public function filterCourse(Request $request, $course_id)
+    {
+        $students = Student::with(['course', 'year', 'user'])
+                    ->where('course_id', $course_id)
+                    ->get();
+
+        return response()->json($students);
     }
 
 }

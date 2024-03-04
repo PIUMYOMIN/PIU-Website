@@ -1,14 +1,10 @@
 <?php
 
+//Admin Controllers
 use App\Http\Controllers\Admin\AdminAdmissionController;
-
 use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Admin\AdminController;
-
 use App\Http\Controllers\Admin\AdminCourseCategoryController;
-
-//Admin Controllers
-
 use App\Http\Controllers\Admin\AdminCourseCommentController;
 use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminDepartmentController;
@@ -27,11 +23,11 @@ use App\Http\Controllers\Admin\AdminAssignmentController;
 use App\Http\Controllers\Admin\StudentAssignmentController;
 use App\Http\Controllers\Admin\SeminarEnrollController;
 use App\Http\Controllers\Admin\AdminGradingController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 
 //User Controllers
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\User\CourseController;
 use App\Http\Controllers\User\AdmissionController;
@@ -55,11 +51,17 @@ use Spatie\Analytics\Period;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/login', [UserController::class, 'login'])->middleware('guest');
-Route::post('/user/login/form/submit', [UserController::class, 'user_login'])->name('user.login.form.submit');
+Route::get('/login', [UserController::class, 'login'])->middleware('guest')->name('login');
+Route::post('/users/login/form/submit', [UserController::class, 'user_login'])->name('users.login.form.submit');
 
-Route::get('/register', [UserController::class, 'register'])->middleware('guest')->name('admin.auth.register');
-Route::post('/user/register/form/submit', [UserController::class, 'store'])->name('user.register.form.submit');
+Route::get('/register', [UserController::class, 'register'])->middleware('guest')->name('register');
+Route::post('/users/register/form/submit', [UserController::class, 'store'])->name('users.register.form.submit');
+
+Route::get('/forgot-password',[UserController::class,'forget_password'])->name('forget-password');
+Route::post('/forgot-password-form',[UserController::class,'forget_password_form'])->name('forget-password.form.submit');
+Route::get('auth/passwords/password_reset_link_sent', [UserController::class, 'password_reset_link_successfull_sent']);
+Route::get('/reset-password/{token}', [UserController::class, 'showResetPasswordForm']);
+Route::patch('/reset-password/update', [UserController::class, 'forgotPasswordUpdate'])->name('forget-password.update');
 
 Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admin.auth.logout');
 Route::post('/admin/student/logout', [UserController::class, 'studentLogout'])->name('admin.student.logout');
@@ -70,20 +72,20 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->grou
 
 //user details/delete
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/user/{user:id}/details', [UserController::class, 'show'])->name('user.details');
-Route::delete('/user/{user:id}', [UserController::class, 'destroy'])->name('user.destroy');
+Route::get('/users/{user:id}/details', [UserController::class, 'show'])->name('users.details');
+Route::delete('/users/{user:id}', [UserController::class, 'destroy'])->name('users.destroy');
 
 
 //user role
 
-Route::post('/user/{user:id}/roles', [UserController::class, 'assignRole'])->name('user.roles');
-Route::delete('/user/{user}/roles/{role}', [UserController::class, 'removeRole'])->name('user.roles.removeRole');
+Route::post('/user/{user:id}/roles', [UserController::class, 'assignRole'])->name('users.roles');
+Route::delete('/user/{user}/roles/{role}', [UserController::class, 'removeRole'])->name('users.roles.removeRole');
 
 
 //user permission
 
-Route::post('/user/{user:id}/permissions', [UserController::class, 'givePermission'])->name('user.permissions');
-Route::delete('/user/{user}/permissions/{permission}', [UserController::class, 'revokePermission'])->name('user.permissions.revokePermission');
+Route::post('/user/{user:id}/permissions', [UserController::class, 'givePermission'])->name('users.permissions');
+Route::delete('/user/{user}/permissions/{permission}', [UserController::class, 'revokePermission'])->name('users.permissions.revokePermission');
 
 
 // Roles Routes
@@ -113,11 +115,11 @@ Route::delete('/news/{new:slug}/delete', [AdminNewsController::class, 'destroy']
 
 // teams Routes
 Route::get('/teams', [AdminTeamController::class, 'index'])->name('team.index');
-Route::get('/team/create', [AdminTeamController::class, 'create'])->name('team.create');
-Route::post('/team/form/submit', [AdminTeamController::class, 'store'])->name('team.form.submit');
-Route::get('/team/{team:id}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
-Route::patch('/team/form/{team:id}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
-Route::delete('/team/{team:id}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
+Route::get('/teams/create', [AdminTeamController::class, 'create'])->name('team.create');
+Route::post('/teams/form/submit', [AdminTeamController::class, 'store'])->name('team.form.submit');
+Route::get('/teams/{slug}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
+Route::patch('/teams/form/{slug}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
+Route::delete('/teams/{slug}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
 
 
 //Slider
@@ -161,14 +163,17 @@ Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::
 
 });
 
-Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin|registrar|faculty'])->name('admin.')->prefix('admin')->group(function () {
     //students
     Route::get('/students', [AdminStudentController::class, 'index'])->name('student.index');
     Route::get('/student/create', [AdminStudentController::class, 'create'])->name('student.create');
     Route::post('/student/store', [AdminStudentController::class, 'store'])->name('student.store');
+    Route::get('/student/{id}/edit', [AdminStudentController::class, 'edit'])->name('student.edit');
+    Route::patch('/student/{id}/update', [AdminStudentController::class, 'update'])->name('student.update');
     Route::post('/student/{student:id}/add_course', [AdminStudentController::class, 'addCourse'])->name('student.addCourse');
     Route::delete('/student/{student}/course/{year}/year/delete', [AdminStudentController::class, 'deleteCourse'])
     ->name('student.course.year.delete');
+    Route::get('/students/study-course/{course_id}', [AdminStudentController::class,'filterCourse'])->middleware('auth');
 
     // assignment
     Route::get('/assignment/create', [AdminAssignmentController::class, 'create'])->name('assignment.create');
@@ -186,9 +191,9 @@ Route::middleware(['auth', 'role:admin|registrar'])->name('admin.')->prefix('adm
 // Route::middleware(['auth','role:admin|registrar'])->name('admin.')->prefix('admin')->group(function () {
     // });
 Route::get('admin/student/profile/{identifier}', [StudentController::class, 'index'])->name('admin.student.profile');
-Route::get('admin/student/profile/{identifier}/edit', [AdminStudentController::class, 'edit'])->name('admin.student.profile.edit');
-Route::get('admin/student/profile/{student:id}/details', [AdminStudentController::class, 'show'])->name('admin.student.profile.details');
-Route::patch('admin/student/{identifier}/update', [AdminStudentController::class, 'update'])->name('admin.student.update');
+Route::get('admin/student/profile/{identifier}/edit', [StudentController::class, 'edit'])->name('admin.student.profile.edit');
+Route::get('admin/students/profile/{student:id}/details', [AdminStudentController::class, 'show'])->name('admin.students.profile.details');
+Route::patch('admin/student/profile/{identifier}/update', [StudentController::class, 'update'])->name('admin.student.profile.update');
 Route::get('/admin/student/profile/{identifier}/password-change', [AdminStudentController::class, 'changePassword'])->name('admin.student.profile.password-change');
 Route::patch('/admin/student/profile/{identifier}/passwordUpdate', [AdminStudentController::class, 'passwordUpdate'])->name('admin.student.passwordUpdate');
 
@@ -208,8 +213,9 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
     Route::get('/news', [AdminNewsController::class, 'index'])->name('news.index');
     Route::get('/news/create', [AdminNewsController::class, 'create'])->name('news.create');
     Route::post('/news/form/submit', [AdminNewsController::class, 'store'])->name('news.form.submit');
-    Route::get('/news/{new:slug}/edit', [AdminNewsController::class, 'edit'])->name('news.edit');
-    Route::patch('/news/form/{new:slug}/update', [AdminNewsController::class, 'update'])->name('news.form.update');
+    Route::get('/news/{id}/edit', [AdminNewsController::class, 'edit']);
+    Route::patch('/news/form/{id}/update', [AdminNewsController::class, 'update'])->name('news.form.update');
+    Route::resource('/news', App\Http\Controllers\Admin\AdminNewsController::class);
 
     //galleries
     Route::get('/galleries', [AdminGalleryController::class, 'index'])->name('gallery.index');
@@ -271,16 +277,16 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
 });
 
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
-    Route::get('/user/profile/{user}/edit', [UserController::class, 'editUserProfile'])->name('user.profile.edit');
-    Route::patch('/user/{user:id}/edit/form/submit', [UserController::class, 'update'])->name('user.edit.form.submit');
-    Route::get('/user/password-change/{user:id}', [UserController::class, 'passwordChange'])->name('user.password-change');
-    Route::post('/user/passwordUpdate/{user:id}', [UserController::class, 'passwordUpdate'])->name('user.passwordUpdate');
-    Route::get('/user/{user:id}/update', [UserController::class, 'update'])->name('user.update');
+    Route::get('/users/profile/{user}/edit', [UserController::class, 'editUserProfile'])->name('users.profile.edit');
+    Route::patch('/users/{user:id}/edit/form/submit', [UserController::class, 'update'])->name('users.edit.form.submit');
+    Route::get('/users/password-change/{user:id}', [UserController::class, 'passwordChange'])->name('users.password-change');
+    Route::post('/users/passwordUpdate/{user:id}', [UserController::class, 'passwordUpdate'])->name('users.passwordUpdate');
+    Route::get('/users/{user:id}/update', [UserController::class, 'update'])->name('user.update');
 });
 
 //admin, manager, staff, registrar
 
-Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name('admin.')->prefix('admin')->group(function () {
     //admission
     Route::get('/admission/application-forms', [AdminAdmissionController::class, 'index'])->name('admission.forms');
     Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
@@ -288,6 +294,7 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.'
     // student grading
     Route::get('students/grading/create', [AdminGradingController::class, 'index'])->name('students.grading.create');
     Route::get('students/grading/check', [AdminGradingController::class, 'viewGrading']);
+    Route::get('/students/grading/study-course/{course_id}', [AdminGradingController::class,'filterCourse'])->middleware('auth');
 
     //first semester
     Route::get('students/first_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'firstSemesterGradingAdd'])->name('students.first_semester.grading.add');
@@ -310,13 +317,13 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
 
 //course
 
-Route::get('/courses', [AdminCourseController::class, 'index'])->name('course.index');
-Route::get('/course/create', [AdminCourseController::class, 'create'])->name('course.create');
-Route::post('/course/store', [AdminCourseController::class, 'store'])->name('course.store');
-Route::get('/course/{course:id}/edit', [AdminCourseController::class, 'edit'])->name('course.edit');
-Route::patch('/course/{course:id}/update', [AdminCourseController::class, 'update'])->name('course.update');
-Route::patch('/course/{course:id}/isActive', [AdminCourseController::class, 'isActive'])->name('course.isActive');
-Route::patch('/course/{course:id}/application', [AdminCourseController::class, 'application'])->name('course.application');
+Route::get('/courses', [AdminCourseController::class, 'index'])->name('courses.index');
+Route::get('/courses/create', [AdminCourseController::class, 'create'])->name('courses.create');
+Route::post('/courses/store', [AdminCourseController::class, 'store'])->name('courses.store');
+Route::get('/courses/{course:id}/edit', [AdminCourseController::class, 'edit'])->name('courses.edit');
+Route::patch('/courses/{course:id}/update', [AdminCourseController::class, 'update'])->name('courses.update');
+Route::patch('/courses/{course:id}/isActive', [AdminCourseController::class, 'isActive'])->name('courses.isActive');
+Route::patch('/courses/{course:id}/application', [AdminCourseController::class, 'application'])->name('courses.application');
 
 
 //department
@@ -348,12 +355,16 @@ Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'up
 });
 
 //course
-Route::get('/courses', [CourseController::class, 'index']);
-Route::get('/courses/{slug}', [CourseController::class, 'show'])->name('courses.show');
+Route::get('/courses', [CourseController::class, 'index'])->name('course.index');
+Route::get('/courses/{slug}', [CourseController::class, 'show']);
 
 //news
-Route::get('/news', [NewsController::class, 'index'])->name('news.index');
-Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
+Route::get('/news', [NewsController::class, 'index']);
+Route::get('/news/{slug}', [NewsController::class, 'show']);
+
+//teams
+Route::get('/teams', [TeamController::class, 'index']);
+Route::get('/teams/{slug}', [TeamController::class, 'show']);
 
 //seminar
 Route::get('/seminars/{seminar:slug}', [SeminarController::class, 'show'])->name('seminar.show');
@@ -375,12 +386,6 @@ Route::get('/piu/application/second-form', [AdmissionController::class, 'second'
 Route::post('/piu/application/second-form', [AdmissionController::class, 'storeSecond'])->name('piu.application.second-form');
 Route::get('/piu/admission/application-form-successfully-submited/{token}', [AdmissionController::class, 'success']);
 Route::get('/admin/admissions/{admission:id}/details', [AdmissionController::class, 'show']);
-
-//api
-Route::get('/data', function () {
-    $analyticsData = Analytics::fetchVisitorsAndPageViews(Period::days(7));
-    dd($analyticsData);
-});
 
 // google login
 Route::get('/auth/google/user/redirect', [UserController::class, 'redirectToGoogle'])->name('auth.google.user.redirect');

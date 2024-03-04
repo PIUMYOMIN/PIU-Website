@@ -31,11 +31,11 @@
             @endif
             @if (auth()->check()) 
                 <li>
-                    <a href="{{ route('admin.user.profile.edit', ['user' => auth()->user()->id]) }}"><i class="fa fa-cogs"
+                    <a href="{{ route('admin.users.profile.edit', ['user' => auth()->user()->id]) }}"><i class="fa fa-cogs"
                             aria-hidden="true"></i> Profile Setting</a>
                 </li>
                 <li>
-                <a href="{{ route('admin.user.password-change', ['user' => auth()->user()->id]) }}"><i class="fa fa-key"
+                <a href="{{ route('admin.users.password-change', ['user' => auth()->user()->id]) }}"><i class="fa fa-key"
                         aria-hidden="true"></i> Change Password</a>
             </li>
             @elseif(auth()->guard('student')->check())
@@ -103,7 +103,7 @@
                                     auth()->user()->can('Write') ||
                                     auth()->user()->can('Manager'))
                                 <li>
-                                    <a href="/admin/course/create">Add New Course</a>
+                                    <a href="/admin/courses/create">Add New Course</a>
                                 </li>
                                 <li>
                                     <a href="/admin/course-categories">Course Category</a>
@@ -189,7 +189,7 @@
                     <div class="collapsible-body left-sub-menu">
                         <ul>
                             <li><a href="/admin/teams">All Teams</a></li>
-                            <li><a href="/admin/team/create">New Team Member</a></li>
+                            <li><a href="/admin/teams/create">New Team Member</a></li>
                         </ul>
                     </div>
                 </li>
@@ -335,7 +335,7 @@
                 </li>
             @endif
             @if (auth()->user()->can('Read and Write') ||
-                    auth()->user()->can('Registrar'))
+                    auth()->user()->can('Registrar') || auth()->user()->can('Faculty'))
                 <li>
                     <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-users"
                             aria-hidden="true"></i>
@@ -345,9 +345,12 @@
                             <li>
                                 <a href="/admin/students">All Students</a>
                             </li>
+                            @if (auth()->user() && auth()->user()->can('Read and Write') ||
+                    auth()->user()->can('Registrar'))
                             <li>
                                 <a href="/admin/student/create">Add New Students</a>
                             </li>
+                            @endif
                             <li>
                                 <a href="{{ route('admin.students.grading.create') }}">Add Student Grading</a>
                             </li>
@@ -370,7 +373,8 @@
                 </li>
             @endif
             @endif
-            {{-- @if(auth()->check() && auth()->user()->can('Read and Write') || auth()->guard('student')->check()) --}}
+            @if(auth()->check() || auth()->user()->can('Read and Write') &&
+                    auth()->user()->can('Registrar') && auth()->user()->can('Faculty'))
             <li>
                 <a href="javascript:void(0)" class="collapsible-header">
                     <i class="fa fa-graduation-cap" aria-hidden="true"></i> Assignments
@@ -385,7 +389,7 @@
                                 <a href="/admin/student/assignments">Your Assignments</a>
                             </li>
                         @endif
-                        @if (auth()->check() && auth()->user()->can('Read and Write'))
+                        @if(auth()->check() || auth()->user()->can('Read and Write') && auth()->user()->can('Registrar') && auth()->user->can('Faculty'))
                         <li>
                             <a href="/admin/assignment/create">New Assignment</a>
                         </li>
@@ -393,7 +397,7 @@
                     </ul>
                 </div>
             </li>
-            {{-- @endif --}}
+            @endif
         </ul>
     </div>
 </div>

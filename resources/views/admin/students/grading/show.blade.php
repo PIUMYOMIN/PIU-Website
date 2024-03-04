@@ -58,7 +58,7 @@
                                                         'student' => $grading->student,
                                                         'grading' => $grading,
                                                         'semester' => $grading->semester,
-                                                    ]) }}">Edit</a>
+                                                    ]) }}" class="ad-st-view">Edit</a>
                                             </td>
                                         </tr>
                                         <?php

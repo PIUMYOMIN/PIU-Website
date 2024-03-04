@@ -9,10 +9,10 @@
                             <div class="ho-event pg-eve-main pg-blog">
                                 <ul>
                                     <li>
-                                        <div class="ho-ev-date pg-eve-date"><span>07</span><span>jan,2018</span>
+                                        <div class="ho-ev-date pg-eve-date"><span>{{ $day }}</span><span>{{ $month }}, {{ $year }}</span>
                                         </div>
                                         <div class="pg-eve-desc pg-blog-desc">
-                                            <h4>{{ $new->title }}</h4>
+                                            <h4>{{ $news->title }}</h4>
                                             <div class="share-btn blog-share-btn">
                                                 <ul>
                                                     <li>
@@ -22,7 +22,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="https://twitter.com/intent/tweet?url={{ url()->current() }}&text={{ $new->title }}&via=YourTwitterHandle"
+                                                        <a href="https://twitter.com/intent/tweet?url={{ url()->current() }}&text={{ $news->title }}&via=YourTwitterHandle"
                                                             onclick="window.open(this.href, '_blank', 'height=500,width=800'); return false;">
                                                             <i class="fa fa-twitter tw1"></i> Share On Twitter
                                                         </a>
@@ -35,8 +35,8 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <img src="{{ asset('storage/' . $new->image) }}" alt="">
-                                            <p>{{ $new->body }}</p>
+                                            <img src="{{ asset('storage/' . $news->image) }}" alt="">
+                                            <p>{{ $news->body }}</p>
                                         </div>
                                     </li>
                                 </ul>
