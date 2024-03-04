@@ -9,6 +9,7 @@ use App\Models\Gallery;
 use App\Models\Event;
 use App\Models\Job;
 use App\Models\News;
+use App\Models\Campus;
 
 class HomeController extends Controller
 {
@@ -21,6 +22,7 @@ class HomeController extends Controller
         'events' => Event::latest()->take(4)->get(),
         'news' => News::latest()->take(4)->get(),
         'jobs' => Job::latest()->take(4)->get(),
+        'campuses' => Campus::latest()->take(4)->get(),
        ]);
     }
 }

@@ -92,7 +92,7 @@
                     </div>
                     <div class="ho-event ho-event-mob-bot-sp">
                         <ul>
-                            @foreach ($events as $event) 
+                            @forelse ($events as $event) 
                                 <li>
                                     <div class="ho-ev-date"><span>07</span><span>jan,2018</span>
                                     </div>
@@ -104,7 +104,9 @@
                                         <span>{{ $event->start_time }} – {{ $event->end_time }}</span>
                                     </div>
                                 </li>
-                            @endforeach
+                            @empty
+                            <p class="text-center">No event found.</p>
+                            @endforelse
                         </ul>
                     </div>
                 </div>
@@ -116,7 +118,7 @@
                     </div>
                     <div class="ho-event ho-event-mob-bot-sp">
                         <ul>
-                            @foreach ($jobs as $job) 
+                            @forelse ($jobs as $job) 
                                 <li>
                                     <div class="ho-ev-img">
                                         <img src="{{ asset('storage/'.$job->image) }}" alt="">
@@ -129,7 +131,9 @@
                                         <span>Location: {{ $job->city }}</span>
                                     </div>
                                 </li>
-                            @endforeach
+                            @empty
+                                <p class="text-center">No job vacant found.</p>
+                            @endforelse
                         </ul>
                     </div>
                 </div>
@@ -141,17 +145,21 @@
                     </div>
                     <div class="ho-event ho-event-mob-bot-sp">
                         <ul>
-                            <li>
-                                <div class="ho-ev-img"><img src="images/event/1.jpg" alt="">
-                                </div>
-                                <div class="ho-ev-link">
-                                    <a href="#">
-                                        <h4>Almost before we knew it, we had left the ground</h4>
-                                    </a>
-                                    <p>Etiam ornare lacus nec lectus vestibulum aliquam.</p>
-                                    <span>Location: New York</span>
-                                </div>
-                            </li>
+                            @forelse ($campuses as $campus) 
+                                <li>
+                                    <div class="ho-ev-img"><img src="images/event/1.jpg" alt="">
+                                    </div>
+                                    <div class="ho-ev-link">
+                                        <a href="#">
+                                            <h4>Almost before we knew it, we had left the ground</h4>
+                                        </a>
+                                        <p>Etiam ornare lacus nec lectus vestibulum aliquam.</p>
+                                        <span>Location: New York</span>
+                                    </div>
+                                </li>
+                            @empty 
+                                <p class="text-center">No campus found.</p>
+                            @endforelse
                         </ul>
                     </div>
                 </div>

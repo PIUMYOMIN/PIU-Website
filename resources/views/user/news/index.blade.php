@@ -46,7 +46,7 @@
                                             <span>9:15 am – 5:00 pm</span>
                                         </div>
                                         <div class="pg-eve-reg pg-blog-reg">
-                                            <a href="/news/{{ $new->title }}">Read more</a>
+                                            <a href="/news/{{ $new->slug }}">Read more</a>
                                         </div>
                                     </li>
                                     @empty
