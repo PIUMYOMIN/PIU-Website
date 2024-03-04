@@ -8,6 +8,7 @@ use App\Models\Slide;
 use App\Models\Gallery;
 use App\Models\Event;
 use App\Models\Job;
+use App\Models\News;
 
 class HomeController extends Controller
 {
@@ -15,10 +16,10 @@ class HomeController extends Controller
     {
        return view('index',[
         'slides' => Slide::where('is_active', 1)->take(3)->get(),
-        'galleries' => Gallery::take(12)
-                    ->get(),
+        'galleries' => Gallery::take(12)->get(),
         'courses' => Course::where('is_active', 1)->latest()->get(),
         'events' => Event::latest()->take(4)->get(),
+        'news' => News::latest()->take(4)->get(),
         'jobs' => Job::latest()->take(4)->get(),
        ]);
     }

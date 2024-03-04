@@ -201,16 +201,16 @@
                         <h4>News & Event</h4>
                         <div class="ho-event">
                             <ul>
-                                @foreach ($events as $event) 
+                                @foreach ($news as $new) 
                                     <li>
-                                        <div class="ho-ev-date"><span>07</span><span>jan,2018</span>
+                                        <div class="ho-ev-date"><span>{{ $new->created_at->format('d') }}</span><span>{{ $new->created_at->format('M') }},{{ $new->created_at->format('Y') }}</span>
                                         </div>
                                         <div class="ho-ev-link">
-                                            <a href="events.html">
-                                                <h4>{{ Str::limit($event->name, 20, '...') }}</h4>
+                                            <a href="/news/{{ $new->slug }}">
+                                                <h4>{{ Str::limit($new->title, 20, '...') }}</h4>
                                             </a>
-                                            <p>{{ Str::limit($event->description, 150, '...') }}</p>
-                                            <span>{{ $event->start_time }} – {{ $event->end_time }}</span>
+                                            <p>{{ Str::limit($new->body, 150, '...') }}</p>
+                                            <span>{{ $new->created_at }} – {{ $new->updated_at }}</span>
                                         </div>
                                     </li>
                                 @endforeach
