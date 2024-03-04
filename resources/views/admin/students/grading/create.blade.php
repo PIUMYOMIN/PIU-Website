@@ -88,7 +88,7 @@
                                                         <div class="row">
                                                             <div class="input-field col s6">
                                                                 <div class="input-field col s12">
-                                                                    <input type="number" name="mark" min="0" max="100" step="100"
+                                                                    <input type="number" name="mark" min="0" max="100"
                                                                         placeholder="Enter Marks" required>
                                                                         @error('mark')
                                                                             <p class="text-danger">{{ $message }}</p>
