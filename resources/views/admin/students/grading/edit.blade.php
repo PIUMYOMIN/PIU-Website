@@ -1,4 +1,5 @@
 <x-admin_layout>
+    {{-- @dd($student) --}}
   <div class="sb2-2-2">
             <ul>
                 <li><a href="/admin"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
@@ -47,7 +48,7 @@
                                                             </div>
                                                             <div class="input-field col s6">
                                                                 <select class="input-field col s12"
-                                                                    name="year_id" required>
+                                                                    name="year_id">
                                                                     @foreach ($years as $year)
                                                                         <option
                                                                             {{ $year->id == old('year_id') ? 'selected' : '' }}
@@ -59,12 +60,9 @@
                                                                 @enderror
                                                             </div>
                                                             <div class="input-field col s6">
-                                                                <select class="input-field col s12" name="module_id"
-                                                                    required>
+                                                                <select class="input-field col s12" name="module_id">
                                                                     @foreach ($modules as $module)
-                                                                        <option
-                                                                            {{ $module->id == old('module_id') ? 'selected' : '' }}
-                                                                            value="{{ $module->id }}">{{ $module->module_code }}</option>
+                                                                        <option {{ $grading->module_id == $module->id ? 'selected' : '' }} value="{{ $module->id }}">{{ $module->module_code }}</option>
                                                                     @endforeach
                                                                 </select>
                                                                 @error('module_id')
@@ -72,13 +70,9 @@
                                                                 @enderror
                                                             </div>
                                                             <div class="input-field col s6">
-                                                                <select class="input-field col s12" name="assignment_id"
-                                                                    required>
+                                                                <select class="input-field col s12" name="assignment_id">
                                                                     @foreach ($assignments as $assignment)
-                                                                        <option
-                                                                            {{ $assignment->id == old('assignment_id') ? 'selected' : '' }}
-                                                                            value="{{ $assignment->id }}">{{ $assignment->name }}
-                                                                        </option>
+                                                                        <option {{ $grading->assignment_id == $assignment->id ? 'selected' : '' }} value="{{ $assignment->id }}">{{ $assignment->name }}</option>
                                                                         @error('assignment_id')
                                                                             <p class="text-danger">{{ $message }}</p>
                                                                         @enderror
