@@ -4,13 +4,6 @@
             <div class="container">
                 <div class="head-2-inn head-2-inn-padd-top">
                     <h1>List of College Courses</h1>
-                    <div class="event-head-sub">
-                        <ul>
-                            <li>Topic: Global warming</li>
-                            <li>Time: 09:15 am – 5:00 pm</li>
-                            <li>Location: Illunois</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
