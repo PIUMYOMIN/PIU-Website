@@ -3,7 +3,7 @@
         <div class="head-2">
             <div class="container">
                 <div class="head-2-inn head-2-inn-padd-top">
-                    <h1>List of College Facilities</h1>
+                    <h1>List of College Courses</h1>
                     <div class="event-head-sub">
                         <ul>
                             <li>Topic: Global warming</li>
