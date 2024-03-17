@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\NewsController;
 use App\Http\Controllers\Api\V1\TeamController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\SeminarController;
+use App\Http\Controllers\Api\V1\SlideController;
 
 
 /*
@@ -31,4 +32,5 @@ Route::prefix('v1')->group(function(){
     Route::resource('/teams',TeamController::class);
     Route::resource('/events',EventController::class);
     Route::resource('/seminars',SeminarController::class);
+    Route::resource('/slides',SlideController::class);
 });

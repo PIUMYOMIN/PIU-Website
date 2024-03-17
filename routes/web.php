@@ -368,6 +368,7 @@ Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'up
 //course
 Route::get('/courses', [CourseController::class, 'index'])->name('course.index');
 Route::get('/courses/{slug}', [CourseController::class, 'show']);
+Route::post('/search-course',[AdminCourseController::class,'search'])->name('search-course');
 
 //news
 Route::get('/news', [NewsController::class, 'index']);

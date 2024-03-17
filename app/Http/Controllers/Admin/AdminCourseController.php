@@ -125,4 +125,15 @@ class AdminCourseController extends Controller
 
         return redirect()->back();
     }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        $courses = Course::where('title', 'like', "%$searchTerm%")->get();
+
+        return view('user.courses.search_course',[
+            'courses' => $courses
+        ]);
+    }
 }

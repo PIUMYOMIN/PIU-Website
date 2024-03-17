@@ -27,11 +27,17 @@
                                     <input type="text" value="{{ old('image_tag') }}" class="validate"
                                         name="image_tag" required>
                                     <label class="">Image Tag</label>
+                                    @error('image_tag')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 </div>
                                 <div class="input-field col s6">
                                     <input type="text" class="validate" value="{{ old('tag_link') }}"
                                         name="tag_link">
                                     <label class="">Tag Link</label>
+                                    @error('tag_link')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 </div>
                             </div>
                             <div class="row">

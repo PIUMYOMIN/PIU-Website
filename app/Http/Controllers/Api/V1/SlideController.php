@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Seminar;
+use App\Models\Slide;
 
-class SeminarController extends Controller
+class SlideController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $seminars = Seminar::all();
-        return response()->json($seminars);
+        $slides = Slide::all();
+        return response()->json($slides);
     }
 
     /**

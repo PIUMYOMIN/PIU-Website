@@ -3,10 +3,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="search-form">
-                            <form>
+                            <form action="{{ route('search-course') }}" method="POST">
+                                @csrf
+                                @method('POST')
                                 <div class="sf-type">
                                     <div class="sf-input">
-                                        <input type="text" id="sf-box" placeholder="Search course">
+                                        <input type="text" name="search" id="sf-box" placeholder="Search Course">
                                     </div>
                                     <div class="sf-list">
                                         <ul>
