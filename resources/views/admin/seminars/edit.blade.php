@@ -27,43 +27,67 @@
                                         <div class="row">
                                             <div class="input-field col s12">
                                                 <input type="text" name="name" value="{{ $seminar->name }}" class="validate" required>
-                                                <label class="">Seminar name</label>
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <textarea name="description">{{ $seminar->description }}</textarea>
-                                                <label class="">Seminar Descriptions</label>
+                                                <textarea name="description" required>{{ $seminar->description }}</textarea>
+                                                @error('description')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s6">
                                                 <input type="date" name="date" value="{{ $seminar->date }}" class="validate" required>
-                                                <label class="" style="margin-left: 20%">Date</label>
+                                                @error('date')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="input-field col s6">
-                                                <input type="text" name="time" class="validate" value="{{ $seminar->time }}" required>
-                                                <label class="">Time</label>
+                                                <div class="col s6">
+                                                    <input type="time" name="start_time" class="validate" value="{{ $seminar->start_time }}" required>
+                                                    @error('start_time')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col s6">
+                                                    <input type="time" name="end_time" class="validate" value="{{ $seminar->end_time }}" required>
+                                                    @error('end_time')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s6">
                                                 <input type="text" name="location" value="{{ $seminar->location }}" class="validate" required>
-                                                <label class="">Location</label>
+                                                @error('location')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="input-field col s6">
                                                 <input type="number" name="seat" class="validate" value="{{ $seminar->seat }}" required>
-                                                <label class="">Seat</label>
+                                                @error('seat')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s6">
                                                 <input type="text" name="city" value="{{ $seminar->city }}" class="validate">
-                                                <label class="">City</label>
+                                                @error('city')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="input-field col s6">
                                                 <input type="text" name="country" value="{{ $seminar->country }}" class="validate">
-                                                <label class="">Country</label>
+                                                @error('country')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="row">
@@ -73,14 +97,11 @@
 													<input type="file" name="image">
 												</div>
 												<div class="file-path-wrapper">
-													<input class="file-path validate" type="text" placeholder="Seminar image">
+													<input class="file-path validate" type="text" placeholder="Event image">
 												</div>
-                        <img
-                          src="{{ asset('storage/'.$seminar->image) }}"
-                          class="img-fluid rounded-top"
-                          alt="" width="200"
-                        />
-                        
+                                                @error('image')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
 											</div>
                                         </div>
 										<div class="row">

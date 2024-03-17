@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\Seminar;
 
@@ -26,16 +27,16 @@ class AdminSeminarController extends Controller
     public function store(Request $request)
     {
        $data = request()->validate([
-            'name' => 'required',
+            'name' => ['required',Rule::unique('seminars','name')],
             'description' => 'required',
             'date' => 'required',
-            'time' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
             'location' => 'required',
             'seat' => 'required',
             'city' => 'required',
             'country' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:1024',
-            'g-recaptcha-response' => 'required|captcha',
        ]);
 
        $data['slug'] = Str::slug($data['name']);
@@ -64,7 +65,8 @@ class AdminSeminarController extends Controller
             'name' => 'required',
             'description' => 'required',
             'date' => 'required',
-            'time' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
             'location' => 'required',
             'seat' => 'required',
             'city' => 'required',

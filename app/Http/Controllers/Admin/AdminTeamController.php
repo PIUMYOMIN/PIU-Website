@@ -30,8 +30,8 @@ class AdminTeamController extends Controller
     public function store(Request $request)
     {
         $data = request()->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:teams,email',
+            'name' => ['required',Rule::unique('teams','name')],
+            'email' => ['required',Rule::unique('teams','email')],
             'phone' => 'required',
             'address'=> 'required',
             'country' => 'nullable',
@@ -106,8 +106,9 @@ class AdminTeamController extends Controller
         return redirect('/admin/teams');
     }
 
-    public function destroy(Team $team)
+    public function destroy($slug)
     {
+        $team = Team::where('slug',$slug)->firstOrFail();
         $team->delete();
 
         return redirect()->back();
