@@ -33,14 +33,18 @@
                                             @if(auth()->check() && auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
                                             <th>By</th>
                                             @endif
+                                            @if(auth()->check() && auth()->guard('student')->user())
                                             <th>Status</th>
+                                            @endif
                                             @if(auth()->check() && auth()->user()->can('Read and Write') || auth()->user()->can('Registrar'))
                                             <th>Edit</th>
                                             @endif
                                             {{-- @if(auth()->user()->can('Read and Write'))
                                             <th>Delete</th>
                                             @endif --}}
+                                            @if(auth()->check() && auth()->guard('student')->user())
                                             <th>View</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -57,6 +61,7 @@
                                                     <span class="label label-primary">{{ $assignment->user->name }}</span>
                                                 </td>
                                                 @endif
+                                                @if(auth()->check() && auth()->guard('student')->user())
                                                 <td>
                                                     @php
                                                         $isSubmitted = false;
@@ -76,6 +81,7 @@
                                                         <span class="label label-danger">Not Submitded</span>
                                                     @endif
                                                 </td>
+                                                @endif
                                                 @if(auth()->check() && auth()->user()->can('Read and Write') ||auth()->user()->can('Registrar'))
                                                 <td>
                                                     <a href="{{ route('admin.assignment.edit',[$assignment->slug]) }}" class="ad-st-view">Edit</a>
@@ -90,9 +96,11 @@
                                                     </form>
                                                 </td>
                                                 @endif --}}
+                                                @if(auth()->check() && auth()->guard('student')->user())
                                                 <td>
                                                     <a href="{{ route('admin.student.assignment.details',['slug' => $assignment->slug]) }}" class="ad-st-view" >View</a>
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
