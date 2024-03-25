@@ -414,6 +414,7 @@
                     auth()->user()->can('Write') &&
                     auth()->user()->can('Read') &&
                     auth()->user()->can('Manager')&&
+                    auth()->user()->can('Faculty')&&
                     auth()->user()->can('Registrar'))
                     <li>
                         <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-book"
@@ -426,6 +427,7 @@
                                 @if (auth()->user()->can('Read and Write') ||
                                         auth()->user()->can('Write') ||
                                         auth()->user()->can('Manager') ||
+                                        auth()->user()->can('Faculty') ||
                                         auth()->user()->can('Registrar'))
                                     <li>
                                         <a href="/admin/subjects/create">Add New Subject</a>
