@@ -34,7 +34,7 @@
                                             <th>By</th>
                                             @endif
                                             <th>Status</th>
-                                            @if(auth()->check() && auth()->user()->can('Read and Write'))
+                                            @if(auth()->check() && auth()->user()->can('Read and Write') || auth()->user()->can('Registrar'))
                                             <th>Edit</th>
                                             @endif
                                             {{-- @if(auth()->user()->can('Read and Write'))
@@ -76,7 +76,7 @@
                                                         <span class="label label-danger">Not Submitded</span>
                                                     @endif
                                                 </td>
-                                                @if(auth()->check() && auth()->user()->can('Read and Write'))
+                                                @if(auth()->check() && auth()->user()->can('Read and Write') ||auth()->user()->can('Registrar'))
                                                 <td>
                                                     <a href="{{ route('admin.assignment.edit',[$assignment->slug]) }}" class="ad-st-view">Edit</a>
                                                 </td>

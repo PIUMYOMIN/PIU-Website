@@ -56,7 +56,7 @@
                                 <div class="input-field col s6">
                                     <select class="input-field col s12" name="module_id">
                                         @foreach ($modules as $module)
-                                            <option value="{{ $module->id }}">{{ $module->module_code }}</option>
+                                            <option {{ $assignment->module_id == $module->id ? 'selected' : '' }} value="{{ $module->id }}">{{ $module->module_code }}</option>
                                         @endforeach
                                     </select>
                                     @error('module_id')

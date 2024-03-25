@@ -9,6 +9,7 @@ use App\Models\Assignment;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\StudentAssignment;
+use Illuminate\Validation\Rule;
 
 class AdminAssignmentController extends Controller
 {
@@ -71,8 +72,9 @@ class AdminAssignmentController extends Controller
 
     public function update(Request $request, Assignment $assignment)
     {
+        $assignment = Assignment::where('id', $assignment->id)->firstOrFail();
         $formData = request()->validate([
-            'name' => 'nullable|unique:assignments,name',
+            'name' => ['required',Rule::unique('assignments','name')->ignore($assignment)],
             'description' => 'nullable',
             'course_id' => 'nullable',
             'module_id' => 'nullable',
