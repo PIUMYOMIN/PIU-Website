@@ -29,8 +29,14 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Body</th>
+                                            @if(auth()->check() || auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
+                                            <th>Course</th>
+                                            @endif
                                             <th>Module Code</th>
-                                            @if(auth()->check() && auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
+                                            @if(auth()->check() || auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
+                                            <th>Subject</th>
+                                            @endif
+                                            @if(auth()->check() || auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
                                             <th>By</th>
                                             @endif
                                             @if(auth()->check() && auth()->guard('student')->user())
@@ -55,8 +61,14 @@
                                                     <a href="/assignments/{{ $assignment->slug }}">{{ $assignment->name }}</a>
                                                 </td>
                                                 <td>{{ Str::limit($assignment->description, 30, '...') }}</td>
+                                                @if(auth()->check() || auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
+                                                <td>{{ $assignment->course->title }}</td>
+                                                @endif
                                                 <td>{{ $assignment->module->module_code }}</td>
-                                                @if(auth()->check() && auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
+                                                @if(auth()->check() || auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
+                                                <td>{{ $assignment->subject->name }}</td>
+                                                @endif
+                                                @if(auth()->check() || auth()->user()->can('Read and Write') && auth()->user()->can('Registrar'))
                                                 <td>
                                                     <span class="label label-primary">{{ $assignment->user->name }}</span>
                                                 </td>

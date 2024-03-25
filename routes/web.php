@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\Admin\AdminModuleController;
 use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminStudentController;
+use App\Http\Controllers\Admin\AdminSubjectController;
 use App\Http\Controllers\Admin\AdminCurriculumController;
 use App\Http\Controllers\Admin\AdminAssignmentController;
 use App\Http\Controllers\Admin\StudentAssignmentController;
@@ -358,6 +359,14 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.'
     Route::get('/module/{module:id}/edit', [AdminModuleController::class, 'edit'])->name('module.edit');
     Route::patch('/module/{module:id}/update', [AdminModuleController::class, 'update'])->name('module.update');
     Route::delete('/module/{module:id}/delete', [AdminModuleController::class, 'destroy'])->name('module.delete');
+
+//module
+    Route::get('/subjects', [AdminSubjectController::class, 'index'])->name('subjects.index');
+    Route::get('/subjects/create', [AdminSubjectController::class, 'create'])->name('subjects.create');
+    Route::post('/subjects/store', [AdminSubjectController::class, 'store'])->name('subjects.store');
+    Route::get('/subjects/{id}/edit', [AdminSubjectController::class, 'edit'])->name('subjects.edit');
+    Route::patch('/subjects/{id}/update', [AdminSubjectController::class, 'update'])->name('subjects.update');
+    Route::delete('/subjects/{subject:id}/delete', [AdminSubjectController::class, 'destroy'])->name('subjects.delete');
 });
 
 //course

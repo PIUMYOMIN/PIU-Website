@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('course_id')->references('id')->on('courses')->onDelete('cascade');
-            $table->unsignedBigInteger('module_id')->references('id')->on('modules')->onDelete('cascade');
+            $table->text('description')->nullable()->default('');
+            $table->unsignedBigInteger('course_id');
+            $table->unsignedBigInteger('module_id')->refrence('id')->on('modules')->onDelete('cascade');
             $table->integer('user_id');
             $table->timestamps();
         });

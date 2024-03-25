@@ -26,12 +26,22 @@
                             @csrf
                             @method('PATCH')
                             <div class="row">
-                                <div class="input-field col s12">
+                                <div class="input-field col s6">
                                     <input type="text" value="{{ $assignment->name }}" name="name" class="validate">
+                                    @error('name')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                @error('name')
-                                    <p class="text-danger">{{ $message }}</p>
-                                @enderror
+                                <div class="input-field col s6">
+                                    <select class="input-field col s12" name="module_id">
+                                        @foreach ($modules as $module)
+                                            <option {{ $assignment->module_id == $module->id ? 'selected' : '' }} value="{{ $module->id }}">{{ $module->module_code }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('module_id')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
@@ -54,9 +64,9 @@
                                     @enderror
                                 </div>
                                 <div class="input-field col s6">
-                                    <select class="input-field col s12" name="module_id">
-                                        @foreach ($modules as $module)
-                                            <option {{ $assignment->module_id == $module->id ? 'selected' : '' }} value="{{ $module->id }}">{{ $module->module_code }}</option>
+                                    <select class="input-field col s12" name="subject_id">
+                                        @foreach ($subjects as $subject)
+                                            <option {{ $assignment->subject_id == $subject->id ? 'selected' : '' }} value="{{ $subject->id }}">{{ $subject->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('module_id')

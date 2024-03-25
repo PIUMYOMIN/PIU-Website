@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\Assignment;
 use App\Models\Course;
 use App\Models\Module;
+use App\Models\Subject;
 use App\Models\StudentAssignment;
 use Illuminate\Validation\Rule;
 
@@ -19,6 +20,7 @@ class AdminAssignmentController extends Controller
         'assignments' => Assignment::all(),
         'student_assignments' => StudentAssignment::all(),
         'modules' => Module::all(),
+        'subjects' => Subject::all(),
        ]);
     }
 
@@ -27,6 +29,7 @@ class AdminAssignmentController extends Controller
         return view('admin.assignments.create',[
             'courses' => Course::all(),
             'modules' => Module::all(),
+            'subjects' => Subject::all(),
         ]);
     }
 
@@ -66,7 +69,8 @@ class AdminAssignmentController extends Controller
        return view('admin.assignments.edit',[
         'assignment' => $slug,
         'courses' => Course::all(),
-        'modules' => Module::all()
+        'modules' => Module::all(),
+        'subjects' => Subject::all()
        ]);
     }
 
@@ -78,6 +82,7 @@ class AdminAssignmentController extends Controller
             'description' => 'nullable',
             'course_id' => 'nullable',
             'module_id' => 'nullable',
+            'subject_id' => 'nullable',
             'attach_file' => 'nullable|mimes:pdf,docx,doc',
         ]);
 
