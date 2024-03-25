@@ -269,14 +269,6 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
     Route::get('/event/{event:id}/edit', [AdminEventController::class, 'edit'])->name('event.edit');
     Route::patch('/event/{event:id}/update', [AdminEventController::class, 'update'])->name('event.update');
 
-    //module
-    Route::get('/modules', [AdminModuleController::class, 'index'])->name('modules.index');
-    Route::get('/module/create', [AdminModuleController::class, 'create'])->name('module.create');
-    Route::post('/module/store', [AdminModuleController::class, 'store'])->name('module.store');
-    Route::get('/module/{module:id}/edit', [AdminModuleController::class, 'edit'])->name('module.edit');
-    Route::patch('/module/{module:id}/update', [AdminModuleController::class, 'update'])->name('module.update');
-    Route::delete('/module/{module:id}/delete', [AdminModuleController::class, 'destroy'])->name('module.delete');
-
     //curriculums
     Route::get('/curriculums', [AdminCurriculumController::class, 'index'])->name('curriculum.index');
     Route::get('/curriculum/create', [AdminCurriculumController::class, 'create'])->name('curriculum.create');
@@ -324,45 +316,48 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
 });
 
 //admin, manager, staff
-Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
 
 //course
-
-Route::get('/courses', [AdminCourseController::class, 'index'])->name('courses.index');
-Route::get('/courses/create', [AdminCourseController::class, 'create'])->name('courses.create');
-Route::post('/courses/store', [AdminCourseController::class, 'store'])->name('courses.store');
-Route::get('/courses/{course:id}/edit', [AdminCourseController::class, 'edit'])->name('courses.edit');
-Route::patch('/courses/{course:id}/update', [AdminCourseController::class, 'update'])->name('courses.update');
-Route::patch('/courses/{course:id}/isActive', [AdminCourseController::class, 'isActive'])->name('courses.isActive');
-Route::patch('/courses/{course:id}/application', [AdminCourseController::class, 'application'])->name('courses.application');
+    Route::get('/courses', [AdminCourseController::class, 'index'])->name('courses.index');
+    Route::get('/courses/create', [AdminCourseController::class, 'create'])->name('courses.create');
+    Route::post('/courses/store', [AdminCourseController::class, 'store'])->name('courses.store');
+    Route::get('/courses/{course:id}/edit', [AdminCourseController::class, 'edit'])->name('courses.edit');
+    Route::patch('/courses/{course:id}/update', [AdminCourseController::class, 'update'])->name('courses.update');
+    Route::patch('/courses/{course:id}/isActive', [AdminCourseController::class, 'isActive'])->name('courses.isActive');
+    Route::patch('/courses/{course:id}/application', [AdminCourseController::class, 'application'])->name('courses.application');
 
 
 //department
-
-Route::get('/departments', [AdminDepartmentController::class, 'index'])->name('department.index');
-Route::get('/department/create', [AdminDepartmentController::class, 'create'])->name('department.create');
-Route::post('/department/store', [AdminDepartmentController::class, 'store'])->name('department.form.submit');
-Route::get('/department/{department:id}/edit', [AdminDepartmentController::class, 'edit'])->name('department.edit');
-Route::patch('/department/{department:id}/update', [AdminDepartmentController::class, 'update'])->name('department.update');
+    Route::get('/departments', [AdminDepartmentController::class, 'index'])->name('department.index');
+    Route::get('/department/create', [AdminDepartmentController::class, 'create'])->name('department.create');
+    Route::post('/department/store', [AdminDepartmentController::class, 'store'])->name('department.form.submit');
+    Route::get('/department/{department:id}/edit', [AdminDepartmentController::class, 'edit'])->name('department.edit');
+    Route::patch('/department/{department:id}/update', [AdminDepartmentController::class, 'update'])->name('department.update');
 
 
 //position
-
-Route::get('/positions', [AdminPositionController::class, 'index'])->name('position.index');
-Route::get('/position/create', [AdminPositionController::class, 'create'])->name('position.create');
-Route::post('/position/store', [AdminPositionController::class, 'store'])->name('position.form.submit');
-Route::get('/position/{position:id}/edit', [AdminPositionController::class, 'edit'])->name('position.edit');
-Route::patch('/position/{position:id}/update', [AdminPositionController::class, 'update'])->name('position.update');
+    Route::get('/positions', [AdminPositionController::class, 'index'])->name('position.index');
+    Route::get('/position/create', [AdminPositionController::class, 'create'])->name('position.create');
+    Route::post('/position/store', [AdminPositionController::class, 'store'])->name('position.form.submit');
+    Route::get('/position/{position:id}/edit', [AdminPositionController::class, 'edit'])->name('position.edit');
+    Route::patch('/position/{position:id}/update', [AdminPositionController::class, 'update'])->name('position.update');
 
 
 //seminar
-Route::get('/seminars', [AdminSeminarController::class, 'index'])->name('seminar.index');
-Route::get('/seminar/create', [AdminSeminarController::class, 'create'])->name('seminar.create');
-Route::post('/seminar/store', [AdminSeminarController::class, 'store'])->name('seminar.store');
-Route::get('/seminar/{seminar:id}/edit', [AdminSeminarController::class, 'edit'])->name('seminar.edit');
-Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'update'])->name('seminar.update');
+    Route::get('/seminars', [AdminSeminarController::class, 'index'])->name('seminar.index');
+    Route::get('/seminar/create', [AdminSeminarController::class, 'create'])->name('seminar.create');
+    Route::post('/seminar/store', [AdminSeminarController::class, 'store'])->name('seminar.store');
+    Route::get('/seminar/{seminar:id}/edit', [AdminSeminarController::class, 'edit'])->name('seminar.edit');
+    Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'update'])->name('seminar.update');
 
-
+//module
+    Route::get('/modules', [AdminModuleController::class, 'index'])->name('modules.index');
+    Route::get('/module/create', [AdminModuleController::class, 'create'])->name('module.create');
+    Route::post('/module/store', [AdminModuleController::class, 'store'])->name('module.store');
+    Route::get('/module/{module:id}/edit', [AdminModuleController::class, 'edit'])->name('module.edit');
+    Route::patch('/module/{module:id}/update', [AdminModuleController::class, 'update'])->name('module.update');
+    Route::delete('/module/{module:id}/delete', [AdminModuleController::class, 'destroy'])->name('module.delete');
 });
 
 //course
@@ -421,10 +416,10 @@ Route::get('/about-us', function () {
 
 Route::get('/president-of-piu',function () {
     return view('user.about.president');
-
 });
 
 Route::get('/pravicy-policy',function () {
     return view('user.pravicy.index');
-
 });
+
+Route::get('/checkUserRole', [UserController::class, 'checkUserRole']);

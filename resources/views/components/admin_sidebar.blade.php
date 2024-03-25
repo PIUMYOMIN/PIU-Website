@@ -4,15 +4,20 @@
         <ul>
             @if (auth()->check()) 
                 <li>
-                    <img src="{{ auth()->user()->profile }}" alt="">
+                    <img src="{{ asset('storage/'. auth()->user()->picture) }}" width="200" alt="">
                 </li>
                 <li>
                     <h5>{{ auth()->user()->name }} <span> {{ auth()->user()->city }}, {{ auth()->user()->country }}</span>
                     </h5>
                 </li>
+                <li>
+                    @if (auth()->user()->role) 
+                        <span>{{ auth()->user()->role->name }}</span>
+                    @endif
+                </li>
             @elseif(auth()->guard('student')->check())
             <li>
-                <img src="{{ auth()->guard('student')->user()->profile }}" alt="">
+                <img src="{{ asset('storage/'. auth()->guard('student')->user()->profile) }}" alt="{{ auth()->guard('student')->user->name }}">
             </li>
             <li>
                 <h5>{{ auth()->guard('student')->user()->fname }} {{ auth()->guard('student')->user()->lname }} <span> {{ auth()->guard('student')->user()->city }}, {{ auth()->guard('student')->user()->country }}</span>
@@ -129,29 +134,6 @@
                                         auth()->user()->can('Manager'))
                                     <li>
                                         <a href="/admin/news/create">Create News</a>
-                                    </li>
-                                @endif
-                            </ul>
-                        </div>
-                    </li>
-                @endif
-                @if (auth()->user()->can('Read and Write') ||
-                        auth()->user()->can('Write') ||
-                        auth()->user()->can('Read') ||
-                        auth()->user()->can('Manager'))
-                    <li>
-                        <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-bookmark-o"
-                                aria-hidden="true"></i>Course Modules</a>
-                        <div class="collapsible-body left-sub-menu">
-                            <ul>
-                                <li>
-                                    <a href="/admin/modules">Modules</a>
-                                </li>
-                                @if (auth()->user()->can('Read and Write') ||
-                                        auth()->user()->can('Write') ||
-                                        auth()->user()->can('Manager'))
-                                    <li>
-                                        <a href="/admin/module/create">Add New Module</a>
                                     </li>
                                 @endif
                             </ul>
@@ -335,7 +317,8 @@
                 </li>
             @endif
             @if (auth()->user()->can('Read and Write') ||
-                    auth()->user()->can('Registrar') || auth()->user()->can('Faculty'))
+                    auth()->user()->can('Registrar') || 
+                    auth()->user()->can('Faculty'))
                 <li>
                     <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-users"
                             aria-hidden="true"></i>
@@ -373,8 +356,10 @@
                 </li>
             @endif
             @endif
-            @if(auth()->check() || auth()->user()->can('Read and Write') &&
-                    auth()->user()->can('Registrar') && auth()->user()->can('Faculty'))
+            @if(auth()->check() || 
+                auth()->user()->can('Read and Write') &&
+                auth()->user()->can('Registrar') && 
+                auth()->user()->can('Faculty'))
             <li>
                 <a href="javascript:void(0)" class="collapsible-header">
                     <i class="fa fa-graduation-cap" aria-hidden="true"></i> Assignments
@@ -398,6 +383,32 @@
                 </div>
             </li>
             @endif
+            @if(auth()->check() ||
+                    auth()->user()->can('Read and Write') && 
+                    auth()->user()->can('Write') &&
+                    auth()->user()->can('Read') &&
+                    auth()->user()->can('Manager')&&
+                    auth()->user()->can('Registrar'))
+                    <li>
+                        <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-bookmark-o"
+                                aria-hidden="true"></i>Course Modules</a>
+                        <div class="collapsible-body left-sub-menu">
+                            <ul>
+                                <li>
+                                    <a href="/admin/modules">Modules</a>
+                                </li>
+                                @if (auth()->user()->can('Read and Write') ||
+                                        auth()->user()->can('Write') ||
+                                        auth()->user()->can('Manager') ||
+                                        auth()->user()->can('Registrar'))
+                                    <li>
+                                        <a href="/admin/module/create">Add New Module</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+                @endif
         </ul>
     </div>
 </div>

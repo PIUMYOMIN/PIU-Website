@@ -1,4 +1,3 @@
-{{-- @dd($assignment) --}}
 <x-admin_layout>
     <div class="sb2-2-2">
         <ul>

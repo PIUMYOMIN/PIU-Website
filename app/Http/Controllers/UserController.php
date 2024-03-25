@@ -42,7 +42,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-
+        // dd(request()->all());
         $data = $request->validate([
             'name' => 'required',
             'email' => ['required','email',Rule::unique('users','email')],
@@ -459,5 +459,21 @@ public function user_login(Request $request)
         $user->save();
 
         return redirect('/login')->with('success', 'Welcome' . $user->name);
+    }
+
+     public function checkUserRole()
+    {
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Check if the user has the 'admin' role
+        if ($user->hasRole('admin')) {
+            $roleName = "Admin";
+        } elseif($user->hasRole('Registrar')) {
+            $roleName = "Registrar";
+        }else{
+            $roleName = "User";
+        }
+        return $roleName;
     }
 }

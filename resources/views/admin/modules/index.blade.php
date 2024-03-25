@@ -5,9 +5,14 @@
             </li>
             <li class="active-bre"><a href="#"> Modules</a>
             </li>
+            @if (auth()->user()->can('Read and Write')||
+                auth()->user()->can('Write') ||
+                auth()->user()->can('Manager')||
+                auth()->user()->can('Registrar'))
             <li class="page-back">
                 <a href="/admin/module/create"><i class="fa fa-plus" aria-hidden="true"></i> Add module</a>
             </li>
+            @endif
         </ul>
     </div>
     <div class="sb2-2-3">

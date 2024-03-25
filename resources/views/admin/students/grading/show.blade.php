@@ -16,7 +16,7 @@
             <div class="col-md-12">
                 <div class="box-inn-sp">
                     <div class="inn-title">
-                        <h4>Enquiry</h4>
+                        <h4>Grading Point Value Details</h4>
                         <p>All about students like name, student id, phone, email, country, city and more</p>
                     </div>
                     <div class="tab-inn">
@@ -83,17 +83,17 @@
                                             </td>
                                             <td>
                                                 @if (number_format($gpa, 2) >= 4) 
-                                                Total Grade Value: <strong class="text-success">A</strong>
+                                                Grade Value: <strong class="text-success">A</strong>
                                                 @elseif (number_format($gpa, 2) >= 3) 
-                                                Total Grade Value: <strong class="text-success">B</strong>
+                                                Grade Value: <strong class="text-success">B</strong>
                                                 @elseif (number_format($gpa, 2) >= 2) 
-                                                Total Grade Value: <strong class="text-success">C</strong>
+                                                Grade Value: <strong class="text-success">C</strong>
                                                 @elseif (number_format($gpa, 2) >= 1) 
-                                                Total Grade Value: <strong class="text-warning">D</strong>
+                                                Grade Value: <strong class="text-warning">D</strong>
                                                 @elseif (number_format($gpa, 2) >= 0.7)
-                                                Total Grade Value: <strong class="text-danger">E</strong>
+                                                Grade Value: <strong class="text-danger">E</strong>
                                                 @elseif (number_format($gpa, 2) >= 0) 
-                                                Total Grade Value: <strong class="text-danger">F</strong>
+                                                Grade Value: <strong class="text-danger">F</strong>
                                                 @endif
                                             </td>
                                         </tr>
