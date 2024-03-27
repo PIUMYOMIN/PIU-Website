@@ -249,6 +249,7 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
     Route::get('/slides', [AdminSlideController::class, 'index'])->name('slide');
     Route::get('/slides/create', [AdminSlideController::class, 'create'])->name('slides.create');
     Route::post('/slides/store', [AdminSlideController::class, 'store'])->name('slides.store');
+    Route::get('/slides/details/{id}', [AdminSlideController::class, 'show'])->name('slides.show');
     Route::get('/slides/{slide:id}/edit', [AdminSlideController::class, 'edit'])->name('slides.edit');
     Route::patch('/slides/{slide:id}/update', [AdminSlideController::class, 'update'])->name('slides.update');
     Route::patch('/slide/{slide:id}/isActive', [AdminSlideController::class, 'isActive'])->name('slide.isActive');

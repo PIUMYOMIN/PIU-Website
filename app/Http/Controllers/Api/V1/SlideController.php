@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Slide;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SlideController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
         $slides = Slide::all();
         return response()->json($slides);
@@ -36,9 +37,14 @@ class SlideController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): \Illuminate\Http\JsonResponse
     {
-        //
+        try {
+            $slide = Slide::findOrFail($id);
+            return response()->json($slide);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json(['error' => 'Slide not found.'], 404);
+        }
     }
 
     /**
