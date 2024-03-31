@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a57da85560564bd9d584de010b8f22cf",
+    "content-hash": "405f5a65a12c094fbb203c9db683b215",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -3900,22 +3900,22 @@
         },
         {
             "name": "spatie/laravel-analytics",
-            "version": "5.2.1",
+            "version": "5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-analytics.git",
-                "reference": "7f8b5e8283c4df45ae3e8447298b8828c516b9ee"
+                "reference": "98e8c1ab8e858e781a087c87cdd0c34fd1524c06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-analytics/zipball/7f8b5e8283c4df45ae3e8447298b8828c516b9ee",
-                "reference": "7f8b5e8283c4df45ae3e8447298b8828c516b9ee",
+                "url": "https://api.github.com/repos/spatie/laravel-analytics/zipball/98e8c1ab8e858e781a087c87cdd0c34fd1524c06",
+                "reference": "98e8c1ab8e858e781a087c87cdd0c34fd1524c06",
                 "shasum": ""
             },
             "require": {
                 "google/analytics-data": "^0.9.4",
                 "laravel/framework": "^10.0|^11.0",
-                "nesbot/carbon": "^2.66",
+                "nesbot/carbon": "^2.66|^3.1.0",
                 "php": "^8.1",
                 "spatie/laravel-package-tools": "^1.13.7",
                 "symfony/cache": "^6.0|^7.0"
@@ -3966,7 +3966,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-analytics/tree/5.2.1"
+                "source": "https://github.com/spatie/laravel-analytics/tree/5.3.0"
             },
             "funding": [
                 {
@@ -3974,7 +3974,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2024-02-12T08:35:44+00:00"
+            "time": "2024-03-12T19:19:36+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",

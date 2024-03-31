@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\SeminarEnrollController;
 use App\Http\Controllers\Admin\AdminGradingController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use Spatie\Analytics\AnalyticsFacade as Analytics;
 
 //User Controllers
 use App\Http\Controllers\HomeController;
@@ -39,6 +40,7 @@ use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\SeminarController;
 use App\Http\Controllers\User\StudentController;
 use App\Http\Controllers\User\JobController;
+// use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
 
 /*
@@ -433,3 +435,9 @@ Route::get('/pravicy-policy',function () {
 });
 
 Route::get('/checkUserRole', [UserController::class, 'checkUserRole']);
+
+Route::get('/data',function(){
+    $analyticsData = Analytics::trackPageView();
+
+    dd($analyticsData[0]['pageViews']);
+});

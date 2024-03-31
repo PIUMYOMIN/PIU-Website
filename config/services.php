@@ -49,4 +49,7 @@ return [
         'redirect' => env('TWITTER_REDIRECT'),
     ],
 
+    'ga4' => [
+        'measurementId' => env('GA_MEASUREMENT_ID'),
+    ]
 ];
