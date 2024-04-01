@@ -27,10 +27,12 @@ use App\Http\Controllers\Api\V1\SlideController;
 // });
 
 Route::prefix('v1')->group(function(){
-    Route::resource('/courses',CourseController::class);
-    Route::resource('/news',NewsController::class);
-    Route::resource('/teams',TeamController::class);
-    Route::resource('/events',EventController::class);
-    Route::resource('/seminars',SeminarController::class);
-    Route::resource('/slides',SlideController::class);
+    Route::middleware(['cors'])->group(function(){
+        Route::resource('/courses',CourseController::class);
+        Route::resource('/news',NewsController::class);
+        Route::resource('/teams',TeamController::class);
+        Route::resource('/events',EventController::class);
+        Route::resource('/seminars',SeminarController::class);
+        Route::resource('/slides',SlideController::class);
+    });
 });
