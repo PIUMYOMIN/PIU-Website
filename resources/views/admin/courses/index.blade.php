@@ -7,7 +7,7 @@
             </li>
             @if (auth()->user()->can('Read and Write') ||
                     auth()->user()->can('Write Only'))
-                <li class="page-back"><a href="/admin/course/create"><i class="fa fa-plus" aria-hidden="true"></i> Add
+                <li class="page-back"><a href="/admin/courses/create"><i class="fa fa-plus" aria-hidden="true"></i> Add
                         Course</a>
                 </li>
             @endif

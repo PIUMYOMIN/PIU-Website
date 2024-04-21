@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\TeamController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\SeminarController;
 use App\Http\Controllers\Api\V1\SlideController;
+use App\Http\Controllers\Api\V1\UserController;
 
 
 /*
@@ -33,4 +34,9 @@ Route::prefix('v1')->group(function(){
     Route::resource('/events',EventController::class);
     Route::resource('/seminars',SeminarController::class);
     Route::resource('/slides',SlideController::class);
+    Route::post('/login',[UserController::class,'apiLogin']);
+});
+
+Route::middleware('auth:api')->prefix('v1')->group(function(){
+    Route::get('/user-details',[UserController::class,'userDetails']);
 });

@@ -35,7 +35,7 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="description" id="content" placeholder="Course Description">{{ old('description') }}</textarea>
+                                    <div name="description" id="editor" placeholder="Course Description">{{ old('description') }}</div>
                                     @error('description')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
@@ -43,7 +43,7 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="requirement" placeholder="Course Requirements">{{ old('requirement') }}</textarea>
+                                    <textarea name="requirement" id="editor" placeholder="Course Requirements">{{ old('requirement') }}</textarea>
                                     @error('requirement')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
@@ -161,4 +161,18 @@
             </div>
         </div>
     </div>
+    <script>
+	    initSample();
+    </script>
+    {{-- <script>
+{{-- $(document).ready(function(){
+    // Initialize CKEditor
+    CKEDITOR.replace('description');
+    CKEDITOR.replace('requirement');
+    CKEDITOR.replace('eligibility');
+    CKEDITOR.replace('fees');
+    CKEDITOR.replace('apply');
+});
+</script> --}} --}}
+
 </x-admin_layout>

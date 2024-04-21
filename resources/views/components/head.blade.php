@@ -13,14 +13,22 @@
         content="Phaung Daw Oo International University, PIU Myanmar, Phaung Daw Oo, PIU Buddhist Studies, Education for all">
     <!-- FAV ICON(BROWSER TAB ICON) -->
     <link rel="shortcut icon" href="{{ asset('images/fav.ico') }}" type="image/x-icon">
+
     <!-- GOOGLE FONT -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CJosefin+Sans:600,700" rel="stylesheet">
     <!-- FONTAWESOME ICONS -->
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+
     <!-- ALL CSS FILES -->
     <link href="{{ asset('css/materialize.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+
+    <!-- Ck editor -->
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/sample.js') }}"></script>
+    <script src="{{ asset('ckeditor/config.js') }}"></script>
+
     <!-- RESPONSIVE.CSS ONLY FOR MOBILE AND TABLET VIEWS -->
     <link href="{{ asset('css/style-mob.css') }}" rel="stylesheet" />
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>

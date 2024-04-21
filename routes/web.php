@@ -442,6 +442,10 @@ Route::get('/data',function(){
     dd($analyticsData[0]['pageViews']);
 });
 
+Route::get('/testing',function(){
+    return view('testing');
+});
+
 Route::any('{any}',function(){
     return view('error.404');
 })->where('any','.*');

@@ -171,6 +171,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         Spatie\Analytics\AnalyticsServiceProvider::class,
+         Laravel\Passport\PassportServiceProvider::class,
     ])->toArray(),
 
     /*

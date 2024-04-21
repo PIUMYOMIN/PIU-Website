@@ -171,4 +171,14 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+    // Initialize CKEditor
+    CKEDITOR.replace('description');
+    CKEDITOR.replace('requirement');
+    CKEDITOR.replace('eligibility');
+    CKEDITOR.replace('fees');
+    CKEDITOR.replace('apply');
+});
+    </script>
 </x-admin_layout>
