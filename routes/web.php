@@ -40,6 +40,7 @@ use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\SeminarController;
 use App\Http\Controllers\User\StudentController;
 use App\Http\Controllers\User\JobController;
+use App\Http\Controllers\User\TeamController;
 // use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
 
