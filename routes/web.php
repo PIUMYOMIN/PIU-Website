@@ -78,7 +78,7 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->grou
 
 //user details/delete
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/users/{user:id}/details', [UserController::class, 'show'])->name('users.details');
+Route::get('/users/{id}/details', [UserController::class, 'show'])->name('users.details');
 Route::delete('/users/{user:id}', [UserController::class, 'destroy'])->name('users.destroy');
 
 

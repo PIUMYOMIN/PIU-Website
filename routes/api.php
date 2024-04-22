@@ -38,5 +38,5 @@ Route::prefix('v1')->group(function(){
 });
 
 Route::middleware('auth:api')->prefix('v1')->group(function(){
-    Route::get('/user-details',[UserController::class,'userDetails']);
+    Route::resource('/users',UserController::class);
 });
