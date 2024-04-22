@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\SeminarController;
 use App\Http\Controllers\Api\V1\SlideController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Middleware\Cors;
 
 
 /*
@@ -27,16 +28,20 @@ use App\Http\Controllers\Api\V1\UserController;
 //     return $request->user();
 // });
 
-Route::prefix('v1')->group(function(){
-    Route::resource('/courses',CourseController::class);
-    Route::resource('/news',NewsController::class);
-    Route::resource('/teams',TeamController::class);
-    Route::resource('/events',EventController::class);
-    Route::resource('/seminars',SeminarController::class);
-    Route::resource('/slides',SlideController::class);
-    Route::post('/login',[UserController::class,'apiLogin']);
-});
+Route::middleware([Cors::class])->group(function () {
 
-Route::middleware('auth:api')->prefix('v1')->group(function(){
-    Route::resource('/users',UserController::class);
+    Route::prefix('v1')->group(function(){
+        Route::resource('/courses',CourseController::class);
+        Route::resource('/news',NewsController::class);
+        Route::resource('/teams',TeamController::class);
+        Route::resource('/events',EventController::class);
+        Route::resource('/seminars',SeminarController::class);
+        Route::resource('/slides',SlideController::class);
+        Route::post('/login',[UserController::class,'apiLogin']);
+    });
+
+    Route::middleware('auth:api')->prefix('v1')->group(function(){
+        Route::resource('/users',UserController::class);
+    });
+
 });
