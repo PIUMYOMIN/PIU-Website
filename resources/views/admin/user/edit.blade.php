@@ -24,6 +24,7 @@
                             <form action="{{ route('admin.users.edit.form.submit', $user->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
+                                <input type="hidden" name="email" value="{{ $user->email }}">
                                 <div class="row">
                                     <div class="input-field col s6">
                                         <input type="text" value="{{ $user->name }}" name="name"

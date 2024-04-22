@@ -75,98 +75,80 @@ Route::post('/admin/student/logout', [UserController::class, 'studentLogout'])->
 Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.index');
 
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
+    //user details/delete
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{id}/details', [UserController::class, 'show'])->name('users.details');
+    Route::delete('/users/{user:id}', [UserController::class, 'destroy'])->name('users.destroy');
 
-//user details/delete
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/users/{id}/details', [UserController::class, 'show'])->name('users.details');
-Route::delete('/users/{user:id}', [UserController::class, 'destroy'])->name('users.destroy');
+    //user role
+    Route::post('/user/{user:id}/roles', [UserController::class, 'assignRole'])->name('users.roles');
+    Route::delete('/user/{user}/roles/{role}', [UserController::class, 'removeRole'])->name('users.roles.removeRole');
 
+    //user permission
+    Route::post('/user/{user:id}/permissions', [UserController::class, 'givePermission'])->name('users.permissions');
+    Route::delete('/user/{user}/permissions/{permission}', [UserController::class, 'revokePermission'])->name('users.permissions.revokePermission');
 
-//user role
+    // Roles Routes
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::post('/roles/store', [RoleController::class, 'store'])->name('roles.store');
+    Route::get('/roles/{role:id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::patch('/roles/{role:id}/update', [RoleController::class, 'update'])->name('roles.update');
+    Route::post('/roles/{role:id}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions');
+    Route::delete('/roles/{role:id}/permissions/{permission:id}', [RoleController::class, 'revokePermission'])->name('roles.permissions.revoke');
 
-Route::post('/user/{user:id}/roles', [UserController::class, 'assignRole'])->name('users.roles');
-Route::delete('/user/{user}/roles/{role}', [UserController::class, 'removeRole'])->name('users.roles.removeRole');
+    // Permission Routes
+    Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+    Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
+    Route::post('/permissions/store', [PermissionController::class, 'store'])->name('permissions.store');
+    Route::get('/permissions/{permission:id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
+    Route::patch('/permissions/{permission:id}/update', [PermissionController::class, 'update'])->name('permissions.update');
+    Route::post('/permissions/{permission:id}/roles', [PermissionController::class, 'assignRole'])->name('permissions.roles');
+    Route::delete('/permissions/{permission:id}/role/{role:id}', [PermissionController::class, 'removeRole'])->name('permissions.roles.revoke');
 
+    // News Routes
+    Route::delete('/news/{new:slug}/delete', [AdminNewsController::class, 'destroy'])->name('news.delete');
 
-//user permission
+    // teams Routes
+    Route::get('/teams', [AdminTeamController::class, 'index'])->name('team.index');
+    Route::get('/teams/create', [AdminTeamController::class, 'create'])->name('team.create');
+    Route::post('/teams/form/submit', [AdminTeamController::class, 'store'])->name('team.form.submit');
+    Route::get('/teams/{slug}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
+    Route::patch('/teams/form/{slug}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
+    Route::delete('/teams/{slug}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
 
-Route::post('/user/{user:id}/permissions', [UserController::class, 'givePermission'])->name('users.permissions');
-Route::delete('/user/{user}/permissions/{permission}', [UserController::class, 'revokePermission'])->name('users.permissions.revokePermission');
+    //Slider
+    Route::delete('/slides/{slide:id}/delete', [AdminSlideController::class, 'delete'])->name('slides.delete');
 
+    //course comment
+    Route::post('/course/comment/create', [AdminCourseCommentController::class, 'store'])->name('course.comment.create');
+    Route::patch('/course/comment/{comment:id}/update', [AdminCourseCommentController::class, 'update'])->name('course.comment.update');
 
-// Roles Routes
+    //courses
+    Route::delete('/course/{course:id}/delete', [AdminCourseController::class, 'delete'])->name('course.delete');
 
-Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
-Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
-Route::post('/roles/store', [RoleController::class, 'store'])->name('roles.store');
-Route::get('/roles/{role:id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-Route::patch('/roles/{role:id}/update', [RoleController::class, 'update'])->name('roles.update');
-Route::post('/roles/{role:id}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions');
-Route::delete('/roles/{role:id}/permissions/{permission:id}', [RoleController::class, 'revokePermission'])->name('roles.permissions.revoke');
+    //seminar
+    Route::delete('/seminar/{seminar:id}/delete', [AdminSeminarController::class, 'delete'])->name('seminar.delete');
 
+    //seminar enroll
+    Route::get('/seminar-enquiry', [SeminarEnrollController::class, 'index'])->name('seminar.enroll.index');
+    Route::post('/seminar/enroll/submit', [SeminarEnrollController::class, 'store'])->name('seminar.enroll.submit');
 
-// Permission Routes
+    //event
+    Route::delete('/event/{event:id}/delete', [AdminEventController::class, 'delete'])->name('event.delete');
 
-Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
-Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
-Route::post('/permissions/store', [PermissionController::class, 'store'])->name('permissions.store');
-Route::get('/permissions/{permission:id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
-Route::patch('/permissions/{permission:id}/update', [PermissionController::class, 'update'])->name('permissions.update');
-Route::post('/permissions/{permission:id}/roles', [PermissionController::class, 'assignRole'])->name('permissions.roles');
-Route::delete('/permissions/{permission:id}/role/{role:id}', [PermissionController::class, 'removeRole'])->name('permissions.roles.revoke');
+    //event register
+    Route::get('/event-enquiry', [AdminEventRegisterController::class, 'index'])->name('event.register.index');
+    Route::post('/event/register/submit', [AdminEventRegisterController::class, 'store'])->name('event.register.submit');
 
+    //galleries
+    Route::delete('/gallery/{gallery:id}/delete', [AdminGalleryController::class, 'delete'])->name('gallery.delete');
 
-// News Routes
-Route::delete('/news/{new:slug}/delete', [AdminNewsController::class, 'destroy'])->name('news.delete');
+    //contact
+    Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
 
-// teams Routes
-Route::get('/teams', [AdminTeamController::class, 'index'])->name('team.index');
-Route::get('/teams/create', [AdminTeamController::class, 'create'])->name('team.create');
-Route::post('/teams/form/submit', [AdminTeamController::class, 'store'])->name('team.form.submit');
-Route::get('/teams/{slug}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
-Route::patch('/teams/form/{slug}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
-Route::delete('/teams/{slug}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
-
-
-//Slider
-Route::delete('/slides/{slide:id}/delete', [AdminSlideController::class, 'delete'])->name('slides.delete');
-
-
-//course comment
-Route::post('/course/comment/create', [AdminCourseCommentController::class, 'store'])->name('course.comment.create');
-Route::patch('/course/comment/{comment:id}/update', [AdminCourseCommentController::class, 'update'])->name('course.comment.update');
-
-
-//courses
-Route::delete('/course/{course:id}/delete', [AdminCourseController::class, 'delete'])->name('course.delete');
-
-
-//seminar
-Route::delete('/seminar/{seminar:id}/delete', [AdminSeminarController::class, 'delete'])->name('seminar.delete');
-
-
-//seminar enroll
-Route::get('/seminar-enquiry', [SeminarEnrollController::class, 'index'])->name('seminar.enroll.index');
-Route::post('/seminar/enroll/submit', [SeminarEnrollController::class, 'store'])->name('seminar.enroll.submit');
-
-
-//event
-Route::delete('/event/{event:id}/delete', [AdminEventController::class, 'delete'])->name('event.delete');
-
-//event register
-Route::get('/event-enquiry', [AdminEventRegisterController::class, 'index'])->name('event.register.index');
-Route::post('/event/register/submit', [AdminEventRegisterController::class, 'store'])->name('event.register.submit');
-
-
-//galleries
-Route::delete('/gallery/{gallery:id}/delete', [AdminGalleryController::class, 'delete'])->name('gallery.delete');
-
-//contact
-Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
-
-//assignments 
-Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::class, 'delete'])->name('assignment.delete');
-
+    //assignments 
+    Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::class, 'delete'])->name('assignment.delete');
 });
 
 Route::middleware(['auth', 'role:admin|registrar|faculty'])->name('admin.')->prefix('admin')->group(function () {
@@ -286,7 +268,7 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
 
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/users/profile/{user}/edit', [UserController::class, 'editUserProfile'])->name('users.profile.edit');
-    Route::patch('/users/{user:id}/edit/form/submit', [UserController::class, 'update'])->name('users.edit.form.submit');
+    Route::patch('/users/{id}/edit/form/submit', [UserController::class, 'update'])->name('users.edit.form.submit');
     Route::get('/users/password-change/{user:id}', [UserController::class, 'passwordChange'])->name('users.password-change');
     Route::post('/users/passwordUpdate/{user:id}', [UserController::class, 'passwordUpdate'])->name('users.passwordUpdate');
     Route::get('/users/{user:id}/update', [UserController::class, 'update'])->name('user.update');
@@ -323,7 +305,7 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
 //admin, manager, staff
 Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
 
-//course
+    //course
     Route::get('/courses', [AdminCourseController::class, 'index'])->name('courses.index');
     Route::get('/courses/create', [AdminCourseController::class, 'create'])->name('courses.create');
     Route::post('/courses/store', [AdminCourseController::class, 'store'])->name('courses.store');
@@ -332,8 +314,7 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.'
     Route::patch('/courses/{course:id}/isActive', [AdminCourseController::class, 'isActive'])->name('courses.isActive');
     Route::patch('/courses/{course:id}/application', [AdminCourseController::class, 'application'])->name('courses.application');
 
-
-//department
+    //department
     Route::get('/departments', [AdminDepartmentController::class, 'index'])->name('department.index');
     Route::get('/department/create', [AdminDepartmentController::class, 'create'])->name('department.create');
     Route::post('/department/store', [AdminDepartmentController::class, 'store'])->name('department.form.submit');
@@ -341,7 +322,7 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.'
     Route::patch('/department/{department:id}/update', [AdminDepartmentController::class, 'update'])->name('department.update');
 
 
-//position
+    //position
     Route::get('/positions', [AdminPositionController::class, 'index'])->name('position.index');
     Route::get('/position/create', [AdminPositionController::class, 'create'])->name('position.create');
     Route::post('/position/store', [AdminPositionController::class, 'store'])->name('position.form.submit');
@@ -349,14 +330,14 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.'
     Route::patch('/position/{position:id}/update', [AdminPositionController::class, 'update'])->name('position.update');
 
 
-//seminar
+    //seminar
     Route::get('/seminars', [AdminSeminarController::class, 'index'])->name('seminar.index');
     Route::get('/seminar/create', [AdminSeminarController::class, 'create'])->name('seminar.create');
     Route::post('/seminar/store', [AdminSeminarController::class, 'store'])->name('seminar.store');
     Route::get('/seminar/{seminar:id}/edit', [AdminSeminarController::class, 'edit'])->name('seminar.edit');
     Route::patch('/seminar/{seminar:id}/update', [AdminSeminarController::class, 'update'])->name('seminar.update');
 
-//module
+    //module
     Route::get('/modules', [AdminModuleController::class, 'index'])->name('modules.index');
     Route::get('/module/create', [AdminModuleController::class, 'create'])->name('module.create');
     Route::post('/module/store', [AdminModuleController::class, 'store'])->name('module.store');
@@ -364,7 +345,7 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.'
     Route::patch('/module/{module:id}/update', [AdminModuleController::class, 'update'])->name('module.update');
     Route::delete('/module/{module:id}/delete', [AdminModuleController::class, 'destroy'])->name('module.delete');
 
-//module
+    //module
     Route::get('/subjects', [AdminSubjectController::class, 'index'])->name('subjects.index');
     Route::get('/subjects/create', [AdminSubjectController::class, 'create'])->name('subjects.create');
     Route::post('/subjects/store', [AdminSubjectController::class, 'store'])->name('subjects.store');

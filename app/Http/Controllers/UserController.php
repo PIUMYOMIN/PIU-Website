@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Student;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
-use Exception;
-use Illuminate\Support\Str;
-use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Hash;
 use Mail;
-use App\Mail\ForgotPasswordMail;
-use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -26,7 +21,7 @@ class UserController extends Controller
 
         return view('admin.user.index', [
             'users' => $users,
-            'roles' => Role::all()
+            'roles' => Role::all(),
         ]);
     }
 
@@ -45,7 +40,7 @@ class UserController extends Controller
         // dd(request()->all());
         $data = $request->validate([
             'name' => 'required',
-            'email' => ['required','email',Rule::unique('users','email')],
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
             'phone' => 'nullable',
             'address' => 'nullable',
             'password' => 'required|min:8|max:25|confirmed',
@@ -58,7 +53,6 @@ class UserController extends Controller
         ]);
 
         $data['password'] = Hash::make($data['password']);
-
 
         if ($request->hasFile('picture')) {
             $imagePath = $request->file('picture')->store('user_profiles', 'public');
@@ -74,15 +68,15 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Registration successful! Please Login');
     }
 
-
     public function show(string $id)
     {
-        $user = User::where('user',$id)->firstOrFail();
-       return view('admin.user.show',[
-        'user' => $user,
-        'roles' => Role::all(),
-        'permissions' => Permission::all(),
-       ]);
+        $user = User::where('user', $id)->firstOrFail();
+        return view('admin.user.show', [
+            'user' => $user,
+            'roles' => Role::all(),
+            'permissions' => Permission::all(),
+        ]);
+
     }
 
     public function editUserProfile(User $user)
@@ -93,17 +87,20 @@ class UserController extends Controller
             return redirect()->back()->withErrors(['error' => 'You are not authorized to edit this profile.']);
         }
 
-       return view('admin.user.edit',[
-        'user' => $user
-       ]);
+        return view('admin.user.edit', [
+            'user' => $user,
+        ]);
+
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        // dd(request()->all());
+        $user = User::where('id', $id)->firstOrFail();
+        // dd($user);
+
         $data = $request->validate([
             'name' => 'nullable',
-            'email' => ["nullable", Rule::unique('users', 'email')->ignore($user->id)],
+            'email' => ['nullable', Rule::unique('users', 'email')->ignore($user->id)],
             'phone' => 'nullable',
             'address' => 'nullable',
             'city' => 'nullable',
@@ -115,67 +112,65 @@ class UserController extends Controller
             $imagePath = $request->file('picture')->store('user_profiles', 'public');
             $data['picture'] = $imagePath;
         } else {
-            unset($data['picture']);
+            $data['picture'] = $user->picture;
         }
 
         // dd($data);
 
+        // Update the user
         $user->update($data);
 
         return back()->with('success', 'User updated successfully');
     }
 
-public function user_login(Request $request)
-{
-    $identifier = $request->input('identifier');
-    $password = $request->input('password');
 
-    // Check if the identifier is an email
-    if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
-        // Attempt to find a user with the provided email
-        $user = User::where('email', $identifier)->first();
+    public function user_login(Request $request)
+    {
+        $identifier = $request->input('identifier');
+        $password = $request->input('password');
 
-        if ($user && Auth::attempt(['email' => $identifier, 'password' => $password])) {
-            Auth::login($user);
+        // Check if the identifier is an email
+        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            // Attempt to find a user with the provided email
+            $user = User::where('email', $identifier)->first();
 
-            if ($user->hasRole('admin')) {
-                return redirect('/admin')->with('success', 'Welcome back');
-            } elseif($user->hasRole('manager|faculty|registrar')) {
-                return redirect()->route('admin.users.profile.edit',[$user->id])->with('success', 'Welcome back');
-            } else {
-                return redirect('/')->with('success', 'Welcome back');
+            if ($user && Auth::attempt(['email' => $identifier, 'password' => $password])) {
+                Auth::login($user);
+
+                if ($user->hasRole('admin')) {
+                    return redirect('/admin')->with('success', 'Welcome back');
+                } elseif ($user->hasRole('manager|faculty|registrar')) {
+                    return redirect()->route('admin.users.profile.edit', [$user->id])->with('success', 'Welcome back');
+                } else {
+                    return redirect('/')->with('success', 'Welcome back');
+                }
+            }
+        } else {
+            // dd('hit');
+            // Attempt to find a student with the provided student_id
+            $student = Student::where('student_id', $identifier)->first();
+
+            if ($student && Auth::guard('student')->attempt(['student_id' => $identifier, 'password' => $password])) {
+                Auth::guard('student')->login($student);
+// Generate a random string
+                $randomString = Str::random(15);
+
+// Concatenate student ID with random string
+                $mixedIdentifier = $student->student_id . $randomString;
+// dd($mixedIdentifier);
+
+                // Redirect with the mixed identifier appended to the route
+                return redirect()->intended(route('admin.student.profile', ['identifier' => $mixedIdentifier]));
             }
         }
-    } else {
-        // dd('hit');
-        // Attempt to find a student with the provided student_id
-        $student = Student::where('student_id', $identifier)->first();
 
-        if ($student && Auth::guard('student')->attempt(['student_id' => $identifier, 'password' => $password])) {
-            Auth::guard('student')->login($student);
-
-            // Generate a random string
-            $randomString = Str::random(15);
-
-            // Concatenate student ID with random string
-            $mixedIdentifier = $student->student_id . $randomString;
-            // dd($mixedIdentifier);
-
-
-            // Redirect with the mixed identifier appended to the route
-            return redirect()->intended(route('admin.student.profile', ['identifier' => $mixedIdentifier]));
-        }
+        // If neither user nor student login is successful, redirect back with an error
+        return redirect('/login')->withErrors(['login' => 'Invalid login credentials.']);
     }
-
-    // If neither user nor student login is successful, redirect back with an error
-    return redirect('/login')->withErrors(['login' => 'Invalid login credentials.']);
-}
-
-
 
     public function assignRole(Request $request, User $user)
     {
-        if($user->hasRole($request->role)){
+        if ($user->hasRole($request->role)) {
             return back()->with('message', 'Role exit.');
         }
         $user->assignRole($request->role);
@@ -184,7 +179,7 @@ public function user_login(Request $request)
 
     public function givePermission(Request $request, User $user)
     {
-        if($user->hasPermissionTo($request->permission)){
+        if ($user->hasPermissionTo($request->permission)) {
             return back()->with('message', 'Permission already exit.');
         }
         $user->givePermissionTo($request->permission);
@@ -193,18 +188,17 @@ public function user_login(Request $request)
 
     public function giveRole(Request $request, User $user)
     {
-        if($user->hasRole($request->role)){
+        if ($user->hasRole($request->role)) {
             return back()->with('message', 'Role exit.');
         }
         $user->assignRole($request->role);
         return back()->with('message', 'Role assigned.');
     }
 
-
     //user role remove
     public function removeRole(User $user, Role $role)
     {
-        if($user->hasRole($role)){
+        if ($user->hasRole($role)) {
             $user->removeRole($role);
             return back()->with('message', 'Role removed.');
         }
@@ -214,20 +208,19 @@ public function user_login(Request $request)
 
     //user permission remove
     public function revokePermission(User $user, Permission $permission)
-{
-    if ($user->hasPermissionTo($permission)) {
-        $user->revokePermissionTo($permission);
-        return back()->with('message', 'Permission revoked successfully.');
+    {
+        if ($user->hasPermissionTo($permission)) {
+            $user->revokePermissionTo($permission);
+            return back()->with('message', 'Permission revoked successfully.');
+        }
+
+        return back()->with('message', 'Permission not found or not assigned to the user.');
     }
-
-    return back()->with('message', 'Permission not found or not assigned to the user.');
-}
-
 
     //user delete
     public function destroy(User $user)
     {
-        if($user->hasRole('admin')){
+        if ($user->hasRole('admin')) {
             return back()->with('message', 'You are an admin');
         }
 
@@ -235,7 +228,6 @@ public function user_login(Request $request)
 
         return back()->with('message', 'User deleted.');
     }
-
 
     //user logout
     public function logout()
@@ -261,11 +253,11 @@ public function user_login(Request $request)
     {
         $user = Socialite::driver('google')->user();
 
-        $exitingUser = User::where('email',$user->email)->first();
+        $exitingUser = User::where('email', $user->email)->first();
 
-        if($exitingUser){
+        if ($exitingUser) {
             auth()->login($exitingUser);
-        }else{
+        } else {
             $newUser = User::create([
                 'name' => $user->name,
                 'email' => $user->email,
@@ -280,7 +272,8 @@ public function user_login(Request $request)
         return redirect('/')->with('success', 'Welcome ' . auth()->user()->name);
     }
 
-    // facebook login redirect 
+    // facebook login redirect
+
     public function redirectToFacebook()
     {
         return Socialite::driver('facebook')->redirect();
@@ -297,9 +290,9 @@ public function user_login(Request $request)
 
         $exitingUser = User::where('email', $user->email)->first();
 
-        if($exitingUser){
+        if ($exitingUser) {
             auth()->login($exitingUser);
-        }else{
+        } else {
             $newUser = User::create([
                 'name' => $user->name,
                 'email' => $user->email ?? null,
@@ -314,7 +307,6 @@ public function user_login(Request $request)
 
         return redirect('/')->with('success', 'Welcome ' . auth()->user()->name);
     }
-
 
 // twitter redirect
 
@@ -336,9 +328,9 @@ public function user_login(Request $request)
 
         $exitingUser = User::where('email', $user->email)->first();
 
-        if($exitingUser){
+        if ($exitingUser) {
             auth()->login($exitingUser);
-        }else{
+        } else {
             $newUser = User::create([
                 'name' => $user->name,
                 'email' => $user->email ?? null,
@@ -356,18 +348,18 @@ public function user_login(Request $request)
 
     public function passwordChange(User $user)
     {
-        if($user->id !== auth()->user()->id){
+        if ($user->id !== auth()->user()->id) {
             abort(403);
         }
 
-        return view('admin.user.changePassword',[
-            'user' => $user
+        return view('admin.user.changePassword', [
+            'user' => $user,
         ]);
     }
 
     public function passwordUpdate(User $user)
     {
-        if($user->id !== auth()->user()->id){
+        if ($user->id !== auth()->user()->id) {
             abort(403);
         }
 
@@ -381,7 +373,7 @@ public function user_login(Request $request)
             $user->password = Hash::make($data['new_password']);
             $user->save();
 
-            return redirect()->route('admin.users.profile.edit', ['user' => $user->id])  ->with('success', 'Password updated successfully!');
+            return redirect()->route('admin.users.profile.edit', ['user' => $user->id])->with('success', 'Password updated successfully!');
         }
 
         // For users with a traditional password, check the old password
@@ -397,7 +389,6 @@ public function user_login(Request $request)
         // Redirect the user with a success message
         return redirect()->route('admin.users.profile.edit', ['user' => $user->id])->with('success', 'Password updated successfully!');
     }
-
 
     public function profile()
     {
@@ -422,8 +413,8 @@ public function user_login(Request $request)
             $user->update(['remember_token' => $token]);
             Mail::to($user->email)->send(new ForgotPasswordMail($user, $token));
             return redirect('auth/passwords/password_reset_link_sent')->with('status', 'We have e-mailed your password reset link!');
-        }else{
-            return redirect()->route('forget-password')->with('message','Email is not registered.');
+        } else {
+            return redirect()->route('forget-password')->with('message', 'Email is not registered.');
         }
 
         return redirect()->back()->withErrors(['email' => 'We could not find a user with that email address.']);
@@ -462,7 +453,7 @@ public function user_login(Request $request)
         return redirect('/login')->with('success', 'Welcome' . $user->name);
     }
 
-     public function checkUserRole()
+    public function checkUserRole()
     {
         // Get the authenticated user
         $user = Auth::user();
@@ -470,9 +461,9 @@ public function user_login(Request $request)
         // Check if the user has the 'admin' role
         if ($user->hasRole('admin')) {
             $roleName = "Admin";
-        } elseif($user->hasRole('Registrar')) {
+        } elseif ($user->hasRole('Registrar')) {
             $roleName = "Registrar";
-        }else{
+        } else {
             $roleName = "User";
         }
         return $roleName;
