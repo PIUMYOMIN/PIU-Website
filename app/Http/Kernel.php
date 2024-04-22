@@ -24,6 +24,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         'auth.api' => \App\Http\Middleware\AuthApiMiddleware::class,
+         \App\Http\Middleware\Cors::class,
     ];
 
     /**
