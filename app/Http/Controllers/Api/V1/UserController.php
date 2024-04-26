@@ -116,7 +116,11 @@ class UserController extends Controller
 
         $token = $user->createToken('MyToken')->accessToken;
 
-        return response()->json(['token' => $token]);
+        return response()->json([
+            'token' => $token,
+            'email' => $user->email,
+            'user' => $user->name
+        ]);
     } else {
         return response()->json(['error' => 'Unauthenticated'], 401);
     }
