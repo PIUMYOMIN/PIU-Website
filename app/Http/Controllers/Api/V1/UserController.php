@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Validator;
 class UserController extends Controller
 {
     /**
@@ -22,10 +23,29 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function register(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users|max:255',
+            'password' => 'required|min:8|max:25|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // Ensure to hash the password
+        ]);
+
+        $token = $user->createToken('auth_token')->accessToken;
+
+        return response()->json(['token' => $token], 201);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -63,9 +83,15 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return response()->noContent();
     }
 
     public function apiLogin(Request $request)

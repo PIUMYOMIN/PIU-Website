@@ -38,6 +38,7 @@ Route::middleware([Cors::class])->group(function () {
         Route::resource('/seminars',SeminarController::class);
         Route::resource('/slides',SlideController::class);
         Route::post('/login',[UserController::class,'apiLogin']);
+        Route::post('/register',[UserController::class,'register']);
     });
 
     Route::middleware('auth:api')->prefix('v1')->group(function(){

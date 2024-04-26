@@ -3,10 +3,8 @@
     <section>
         <div class="pro-cover">
         </div>
-        <x-profile-menu-tab :student="$student" :notificationCount="$notificationCount" :newAssignmentCount="$newAssignmentCount" />
         <div class="stu-db">
             <div class="container pg-inn">
-                <x-user-profile />
                 <div class="col-md-9">
                     <div class="udb">
                         <div class="udb-sec udb-cour">
