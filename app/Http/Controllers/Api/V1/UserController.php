@@ -119,7 +119,12 @@ class UserController extends Controller
         return response()->json([
             'token' => $token,
             'email' => $user->email,
-            'user' => $user->name
+            'name' => $user->name,
+            'phone' => $user->phone,
+            'address' => $user->address,
+            'city' => $user->city,
+            'country' => $user->country,
+            'picture' => $user->picture,
         ]);
     } else {
         return response()->json(['error' => 'Unauthenticated'], 401);
