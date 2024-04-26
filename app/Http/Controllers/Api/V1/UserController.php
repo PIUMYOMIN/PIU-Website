@@ -28,6 +28,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users|max:255',
+            'phone' => 'required|numeric|min:9',
             'password' => 'required|min:8|max:25|confirmed',
         ]);
 
@@ -38,7 +39,8 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // Ensure to hash the password
+            'phone' => $request->phone,
+            'password' => Hash::make($request->password),
         ]);
 
         $token = $user->createToken('auth_token')->accessToken;
