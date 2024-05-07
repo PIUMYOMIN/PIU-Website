@@ -17,9 +17,8 @@
             <div class="col-md-12">
                 <div class="box-inn-sp">
                     <div class="inn-title">
-                        <h4>Admission Forms</h4>
                         <select onchange="filterAdmissions(event)">
-                            <option disabled selected>Choose Your Program</option>
+                            <option disabled selected>Choose Program</option>
                             @foreach ($courses as $course)
                                 <option value="{{ $course->id }}">{{ $course->title }}</option>
                             @endforeach

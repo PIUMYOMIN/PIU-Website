@@ -20,7 +20,7 @@ $table->string('email');
             $table->string('country');
             $table->string('city');
             $table->string('address');
-            $table->string('dob');
+            $table->dob('dob');
             $table->string('profile');
             $table->string('zipcode');
             $table->string('gender');

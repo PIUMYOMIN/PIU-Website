@@ -71,8 +71,7 @@ class AdmissionController extends Controller
             'marital_sts' => 'required',
             'alumni_sts' => 'required',
             'student_id' => 'nullable',
-            'language_proficiency' => ($request->input('language_proficiency') === 'Yes') ? 'required|file|mimes:pdf,doc,docx' : 'nullable',
-
+            'language_proficiency' => 'nullable|file|mimes:pdf,doc,docx',
             'profile' => 'nullable|file|mimes:jpg,jpeg,png',
             'personal_statement' => 'required|file|mimes:pdf,doc,docx',
             'education_certificate' => 'required|file|mimes:pdf,doc,docx',
@@ -95,35 +94,33 @@ class AdmissionController extends Controller
         $formData['verification_token'] = Str::random(40);
 
         // Store the language_proficiency file if "Yes" is selected
-        if ($request->input('language_proficiency') === 'Yes') {
-            if ($request->hasFile('language_proficiency')) {
-                $formData['language_proficiency'] = $request->file('language_proficiency')->store('public/uploads');
-            }
-        } else {
-            $formData['language_proficiency'] = null;
+        if ($request->hasFile('language_proficiency')) {
+            $formData['language_proficiency'] = request->file('language_proficiency')->store('admission_forms_docs','public');
         }
 
         // Store the education_certificate file
         if ($request->hasFile('education_certificate')) {
-            $formData['education_certificate'] = $request->file('education_certificate')->store('public/uploads');
+            $formData['education_certificate'] = $request->file('education_certificate')->store('admission_forms_docs', 'public');
         }
 
         // Store the profile file
         if ($request->hasFile('profile')) {
-            $formData['profile'] = $request->file('profile')->store('public/uploads');
+            $formData['profile'] = $request->file('profile')->store('admission_forms_docs', 'public');
         }
 
         // Store the personal_statement file
         if ($request->hasFile('personal_statement')) {
-            $formData['personal_statement'] = $request->file('personal_statement')->store('public/uploads');
+            $formData['personal_statement'] = $request->file('personal_statement')->store('admission_forms_docs', 'public');
         }
 
         // Store the other_document file if exists
         if ($request->hasFile('other_document')) {
-            $formData['other_document'] = $request->file('other_document')->store('public/uploads');
+            $formData['other_document'] = $request->file('other_document')->store('admission_forms_docs', 'public');
         }
 
         $admission->fill(array_merge($validatedData, $formData));
+
+        dd($admission);
 
         $verificationToken = Str::random(40);
         $admission->verification_token = $verificationToken;
@@ -133,39 +130,44 @@ class AdmissionController extends Controller
         $courseId = $request->input('course_id');
         $adminEmail = '';
 
-    //Determine the admin email based on the course id
-    if ($courseId == 4) {
-        $adminEmail = 'oketama020@gmail.com';
-
-    } elseif ($courseId == 9) {
-        $adminEmail = 'moet.khaing@gmail.com';
-    } elseif ($courseId == 3) {
-        $adminEmail = 'ohmar.mme@gmail.com';
-
-    } elseif ($courseId == 8) {
-        $adminEmail = 'thantarhlaing.piu@gmail.com';
-
-    } elseif ($courseId == 7) {
-        $adminEmail = 'mayyimyint.pdopiu@gmail.com';
-
-    } elseif ($courseId == 3) {
-        $adminEmail = 'intellay@gmail.com';
-
-    } elseif ($courseId == 1) {
-        $adminEmail = 'thantarhlaing.piu@gmail.com';
-
-    } elseif ($courseId == 1) {
-        $adminEmail = 'thantarhlaing.piu@gmail.com';
+    switch ($courseId) {
+        case 1:
+            $adminEmail = 'thantarhlaing.piu@gmail.com';
+            break;
+        case 2:
+            $adminEmail = 'thantarhlaing.piu@gmail.com';
+            break;
+        case 3:
+            $adminEmail = 'intellay@gmail.com';
+            break;
+        case 4:
+            $adminEmail = 'oketama020@gmail.com';
+            break;
+        case 5:
+            $adminEmail = 'thantarhlaing.piu@gmail.com';
+            break;
+        case 6:
+            $adminEmail = 'ohmar.mme@gmail.com';
+            break;
+        case 7:
+            $adminEmail = 'mayyimyint.pdopiu@gmail.com';
+            break;
+        case 8:
+            $adminEmail = 'thantarhlaing.piu@gmail.com';
+            break;
+        case 9:
+            $adminEmail = 'moet.khaing@gmail.com';
+            break;
+        default:
+            $adminEmail = 'piuacademicaffairs@gmail.com';
     }
-
 
 
 // Send notification email to admin with CC
 
-Mail::to($adminEmail)
-    ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com','thantarhlaing.piu@gmail.com'])
-    ->send(new NewAdmissionFormSubmitted($admission));
-
+    Mail::to($adminEmail)
+        ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com','thantarhlaing.piu@gmail.com'])
+        ->send(new NewAdmissionFormSubmitted($admission));
 
         return redirect("/piu/admission/application-form-successfully-submited/{$verificationToken}")
             ->with('status', 'Your application has been submitted. Your application form is in progress. We will contact you after considering your application.');

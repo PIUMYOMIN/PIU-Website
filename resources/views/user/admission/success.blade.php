@@ -24,6 +24,7 @@
                                 <p>Name: {{ $admission->name }}</p>
                                 <p>Email: {{ $admission->email }}</p>
                                 <!-- Add other admission details as needed -->
+                                <a class="btn text-white" href="/">Back to Home</a>
                             </div>
                         </div>
                     @endif

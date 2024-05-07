@@ -5,15 +5,15 @@
             <div class="col-md-6 col-sm-12 col-xs-12">
                 <div class="all-title quote-title qu-new">
                     <h2>Requirements</h2>
-                    <p>Application for any diploma or bachelor's degree programs must:</p>
-                    <ul>
-                        <li>
+                    <p style="text-align: left; color:white;">Application for any diploma or bachelor's degree programs must:</p>
+                    <ul style="text-align: left">
+                        <li style="color: white">
                             - Show a strong interest in the respective area of study.
                         </li>
-                        <li>
+                        <li style="color: white">
                             - Fill out an application from, and
                         </li>
-                        <li>
+                        <li style="color: white">
                             - Provide all the requirement documents such as academic records, personal statement and
                             letters of recommedations, etc.
                         </li>

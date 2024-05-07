@@ -37,19 +37,22 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Alumni Status:</label>
                                 <div class="col-sm-9">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" value="Old_Student" name="alumni_sts" id="yes" required>
-            <label class="form-check-label" for="yes">Yes</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" value="New_Student" name="alumni_sts" id="no" required>
-            <label class="form-check-label" for="no">No</label>
-        </div>
-        <input type="text" name="student_id" id="student_id" style="display: none;" placeholder="Enter your student ID" required>
-        @error('alumni_sts')
-        <p class="text-danger">{{ $message }}</p>
-        @enderror
-    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="Old_Student"
+                                            name="alumni_sts" id="yes" required>
+                                        <label class="form-check-label" for="yes">Yes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="New_Student"
+                                            name="alumni_sts" id="no" required>
+                                        <label class="form-check-label" for="no">No</label>
+                                    </div>
+                                    <input type="text" name="student_id" id="student_id" style="display: none;"
+                                        placeholder="Enter your student ID" required>
+                                    @error('alumni_sts')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Sex:</label>
@@ -99,23 +102,29 @@
                                 </div>
                             </div>
                             <div class="form-group">
-        <label class="control-label col-sm-3">Have IELTS or TOEFL or Duolingo or PET or FCE or CAE</label>
-        <div class="col-sm-9">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" value="language_proficiency" name="language_proficiency" id="language_proficiency" required>
-                <label class="form-check-label" for="language_proficiency">Yes</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" value="" name="language_proficiency" id="none" required>
-                <label class="form-check-label" for="none">No</label>
-            </div>
+                                <label class="control-label col-sm-3">Do you have IELTS, TOEFL, or other English
+                                    Language Proficiency test scores?</label>
+                                <div class="col-sm-9">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="Yes"
+                                            id="has_language_proficiency" required>
+                                        <label class="form-check-label" for="has_language_proficiency">Yes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="No"
+                                            id="no_language_proficiency" required>
+                                        <label class="form-check-label" for="no_language_proficiency">No</label>
+                                    </div>
 
-            <input type="file" name="language_proficiency_file" id="language_proficiency_file" accept=".pdf,.doc,.docx" style="display: none;">
-            @error('language_proficiency_file')
-            <p class="text-danger">{{ $message }}</p>
-            @enderror
-        </div>
-    </div>
+                                    <input type="file" name="language_proficiency"
+                                        id="language_proficiency_file_input" accept=".pdf,.doc,.docx"
+                                        style="display: none;">
+                                    @error('language_proficiency')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Profile Image
                                     (Compulsory)
@@ -181,18 +190,17 @@
     <script>
         const yesRadio = document.getElementById("yes");
         const noRadio = document.getElementById("no");
-        const languageProficiencyRadio = document.getElementById("language_proficiency");
         const noneRadio = document.getElementById("none");
         const studentIdInput = document.getElementById("student_id");
-        const languageProficiencyFileInput = document.getElementById("language_proficiency_file");
+        const hasLanguageProficiencyRadio = document.getElementById("has_language_proficiency");
+        const languageProficiencyFileInput = document.getElementById("language_proficiency_file_input");
 
         studentIdInput.style.display = "none";
         languageProficiencyFileInput.style.display = "none";
 
         yesRadio.addEventListener("change", toggleStudentIdField);
         noRadio.addEventListener("change", toggleStudentIdField);
-        languageProficiencyRadio.addEventListener("change", toggleLanguageProficiencyField);
-        noneRadio.addEventListener("change", toggleLanguageProficiencyField);
+        hasLanguageProficiencyRadio.addEventListener("change", toggleLanguageProficiencyField);
 
         function toggleStudentIdField() {
             if (yesRadio.checked) {
@@ -206,10 +214,12 @@
         }
 
         function toggleLanguageProficiencyField() {
-            if (languageProficiencyRadio.checked) {
+            if (hasLanguageProficiencyRadio.checked) {
+                // Display the file input field when "Yes" is selected
                 languageProficiencyFileInput.style.display = "block";
                 languageProficiencyFileInput.setAttribute("required", "required");
             } else {
+                // Hide the file input field when "No" is selected
                 languageProficiencyFileInput.style.display = "none";
                 languageProficiencyFileInput.removeAttribute("required");
                 languageProficiencyFileInput.value = "";
