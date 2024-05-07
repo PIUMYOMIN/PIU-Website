@@ -109,14 +109,6 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->grou
     // News Routes
     Route::delete('/news/{new:slug}/delete', [AdminNewsController::class, 'destroy'])->name('news.delete');
 
-    // teams Routes
-    Route::get('/teams', [AdminTeamController::class, 'index'])->name('team.index');
-    Route::get('/teams/create', [AdminTeamController::class, 'create'])->name('team.create');
-    Route::post('/teams/form/submit', [AdminTeamController::class, 'store'])->name('team.form.submit');
-    Route::get('/teams/{slug}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
-    Route::patch('/teams/form/{slug}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
-    Route::delete('/teams/{slug}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
-
     //Slider
     Route::delete('/slides/{slide:id}/delete', [AdminSlideController::class, 'delete'])->name('slides.delete');
 
@@ -151,7 +143,17 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->grou
     Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::class, 'delete'])->name('assignment.delete');
 });
 
-Route::middleware(['auth', 'role:admin|registrar|faculty'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin|manager'])->name('admin.')->prefix('admin')->group(function () {
+    // teams Routes
+    Route::get('/teams', [AdminTeamController::class, 'index'])->name('team.index');
+    Route::get('/teams/create', [AdminTeamController::class, 'create'])->name('team.create');
+    Route::post('/teams/form/submit', [AdminTeamController::class, 'store'])->name('team.form.submit');
+    Route::get('/teams/{slug}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
+    Route::patch('/teams/form/{slug}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
+    Route::delete('/teams/{slug}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
+});
+
+Route::middleware(['auth', 'role:admin|manager|registrar|faculty'])->name('admin.')->prefix('admin')->group(function () {
     //students
     Route::get('/students', [AdminStudentController::class, 'index'])->name('student.index');
     Route::get('/student/create', [AdminStudentController::class, 'create'])->name('student.create');
@@ -303,7 +305,7 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
 });
 
 //admin, manager, staff
-Route::middleware(['auth', 'role:admin|manager|staff|registrar'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name('admin.')->prefix('admin')->group(function () {
 
     //course
     Route::get('/courses', [AdminCourseController::class, 'index'])->name('courses.index');

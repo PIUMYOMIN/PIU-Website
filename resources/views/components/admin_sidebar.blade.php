@@ -328,15 +328,16 @@
                             <li>
                                 <a href="/admin/students">All Students</a>
                             </li>
-                            @if (auth()->user() && auth()->user()->can('Read and Write') ||
-                    auth()->user()->can('Registrar'))
+                            @if (auth()->user()&& auth()->user()->can('Registrar'))
                             <li>
-                                <a href="/admin/student/create">Add New Students</a>
+                                <a href="/admin/student/create">New Students</a>
                             </li>
                             @endif
+                            @if (auth()->user()&& auth()->user()->can('Registrar') || auth()->user()->can('Faculty'))
                             <li>
                                 <a href="{{ route('admin.students.grading.create') }}">Add Student Grading</a>
                             </li>
+                            @endif
                             <li>
                                 <a href="/admin/students/grading/check">Student Grading</a>
                             </li>
