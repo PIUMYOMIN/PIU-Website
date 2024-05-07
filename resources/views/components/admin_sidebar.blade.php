@@ -328,7 +328,7 @@
                             <li>
                                 <a href="/admin/students">All Students</a>
                             </li>
-                            @if (auth()->user()&& auth()->user()->can('Registrar'))
+                            @if (auth()->user() && auth()->user()->can('Read and Write') || auth()->user()->can('Registrar'))
                             <li>
                                 <a href="/admin/student/create">New Students</a>
                             </li>

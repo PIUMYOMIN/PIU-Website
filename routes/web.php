@@ -136,9 +136,6 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->grou
     //galleries
     Route::delete('/gallery/{gallery:id}/delete', [AdminGalleryController::class, 'delete'])->name('gallery.delete');
 
-    //contact
-    Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
-
     //assignments 
     Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::class, 'delete'])->name('assignment.delete');
 });
@@ -151,6 +148,9 @@ Route::middleware(['auth', 'role:admin|manager'])->name('admin.')->prefix('admin
     Route::get('/teams/{slug}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
     Route::patch('/teams/form/{slug}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
     Route::delete('/teams/{slug}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
+
+    //contact
+    Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
 });
 
 Route::middleware(['auth', 'role:admin|manager|registrar|faculty'])->name('admin.')->prefix('admin')->group(function () {
