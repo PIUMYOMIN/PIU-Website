@@ -75,8 +75,9 @@ class UserController extends Controller
     }
 
 
-    public function show(User $user)
+    public function show($id)
     {
+        $user = User::where('id', $id)->firstOrFail();
        return view('admin.user.show',[
         'user' => $user,
         'roles' => Role::all(),
