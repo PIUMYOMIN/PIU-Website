@@ -32,7 +32,9 @@
                                         <th>Name</th>
                                         <th>Module Code</th>
                                         <th>Credit</th>
+                                        @if (auth()->user()->can('Read and Write') && auth()->user()->can('Read and Write'))
                                         <th>Edit</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,7 +45,9 @@
                                             <td>{{ $module->module_code }}</td>
                                             <td>{{ $module->credit }}</td>
                                             <td>
+                                                @if (auth()->user()->can('Read and Write') && auth()->user()->can('Read and Write'))
                                                 <a href="/admin/module/{{ $module->id }}/edit" class="ad-st-view">Edit</a>
+                                                @endif
                                                 @if (auth()->user()->can('Read and Write'))
                                                 <form action="/admin/module/{{ $module->id }}/delete" method="POST">
                                                     @csrf
