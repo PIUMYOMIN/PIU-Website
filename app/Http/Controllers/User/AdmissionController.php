@@ -95,7 +95,8 @@ class AdmissionController extends Controller
 
         // Store the language_proficiency file if "Yes" is selected
         if ($request->hasFile('language_proficiency')) {
-            $formData['language_proficiency'] = request->file('language_proficiency')->store('admission_forms_docs','public');
+            $filePath = $request->file('language_proficiency')->store('language_proficiency_docs','public');
+            $formData['language_proficiency'] = $filePath;
         }
 
         // Store the education_certificate file
@@ -119,8 +120,6 @@ class AdmissionController extends Controller
         }
 
         $admission->fill(array_merge($validatedData, $formData));
-
-        dd($admission);
 
         $verificationToken = Str::random(40);
         $admission->verification_token = $verificationToken;
