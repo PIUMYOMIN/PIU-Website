@@ -45,7 +45,7 @@
                     </div> -->
                     <div class="col-md-3 col-sm-4 col-xs-12">
                         <div class="ed-course-in">
-                            <a class="course-overlay" href="/courses">
+                            <a class="course-overlay" href="/our-courses">
                                 <img src="images/h-about1.jpg" alt="">
                                 <span>Courses</span>
                             </a>
@@ -191,10 +191,9 @@
                 <div class="col-md-4">
                     <div class="bot-gal h-vid ho-event-mob-bot-sp">
                         <h4>Video Gallery</h4>
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/6fHnGiyImAA"
-                            title="YouTube video player" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen></iframe>
+                        <video width="560" height="315"allowfullscreen>
+                            <source src={{ asset('vid/pcp_batch_8.mp4') }} type="video/mp4">
+                        </video>
                         <h5>Bachelor of Arts in Social Studies</h5>
                         <p>
                             Phaung Daw Oo International University (PIU) provides a Bachelor of Arts degree program in

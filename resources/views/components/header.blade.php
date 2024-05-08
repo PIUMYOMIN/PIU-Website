@@ -119,7 +119,7 @@
                                                 </div>
                                                 <div class="mm1-com mm1-s3">
                                                     <ul>
-                                                        <li><a href="/courses">Faculties</a></li>
+                                                        <li><a href="/our-courses">Faculties</a></li>
                                                         <li><a href="/about-us">About</a></li>
                                                         <li><a href="/news">News</a></li>
                                                         <li><a href="/seminars">Seminars</a></li>

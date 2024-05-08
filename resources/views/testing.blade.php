@@ -11,7 +11,7 @@
 </head>
 <body>
   <div>
-    <textarea id="editor"></textarea>
+    testing
   </div>
 </body>
 

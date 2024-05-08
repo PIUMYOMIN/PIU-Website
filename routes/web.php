@@ -358,7 +358,8 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
 });
 
 //course
-Route::get('/courses', [CourseController::class, 'index'])->name('course.index');
+Route::get('/our-courses', [CourseController::class, 'index'])->name('course.index');
+
 Route::get('/courses/{slug}', [CourseController::class, 'show']);
 Route::post('/search-course',[AdminCourseController::class,'search'])->name('search-course');
 
