@@ -191,7 +191,7 @@
                 <div class="col-md-4">
                     <div class="bot-gal h-vid ho-event-mob-bot-sp">
                         <h4>Video Gallery</h4>
-                        <video width="560" height="315"allowfullscreen>
+                        <video width="400" height="225" controls autoplay>
                             <source src={{ asset('vid/pcp_batch_8.mp4') }} type="video/mp4">
                         </video>
                         <h5>Bachelor of Arts in Social Studies</h5>
