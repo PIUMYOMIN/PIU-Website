@@ -311,6 +311,7 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
     Route::get('/courses', [AdminCourseController::class, 'index'])->name('courses.index');
     Route::get('/courses/create', [AdminCourseController::class, 'create'])->name('courses.create');
     Route::post('/courses/store', [AdminCourseController::class, 'store'])->name('courses.store');
+    Route::post('/courses/upload', [AdminCourseController::class, 'uploadImage'])->name('courses.upload');
     Route::get('/courses/{course:id}/edit', [AdminCourseController::class, 'edit'])->name('courses.edit');
     Route::patch('/courses/{course:id}/update', [AdminCourseController::class, 'update'])->name('courses.update');
     Route::patch('/courses/{course:id}/isActive', [AdminCourseController::class, 'isActive'])->name('courses.isActive');

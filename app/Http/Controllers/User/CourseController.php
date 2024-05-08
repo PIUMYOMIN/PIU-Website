@@ -9,7 +9,6 @@ use App\Models\CourseCategory;
 use App\Models\CourseComment;
 use App\Models\Event;
 use App\Models\Curriculum;
-use App\Http\Resources\CourseResource;
 
 class CourseController extends Controller
 {

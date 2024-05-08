@@ -35,7 +35,7 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="description" placeholder="Course Description">{{ old('description') }}</textarea>
+                                    <textarea name="description" id="editor" class="editor" placeholder="Course Description">{{ old('description') }}</textarea>
                                     @error('description')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
@@ -43,15 +43,7 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="requirement" placeholder="Course Requirements">{{ old('requirement') }}</textarea>
-                                    @error('requirement')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <textarea name="eligibility" placeholder="Eligibility">{{ old('eligibility') }}</textarea>
+                                    <textarea name="eligibility" id="editor" placeholder="Eligibility">{{ old('eligibility') }}</textarea>
                                     @error('eligibility')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
@@ -59,7 +51,15 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="fees" placeholder="Course Fees">{{ old('fees') }}</textarea>
+                                    <textarea name="requirement" id="editor" placeholder="Course Requirements">{{ old('requirement') }}</textarea>
+                                    @error('requirement')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <textarea name="fees" id="editor" placeholder="Course Fees">{{ old('fees') }}</textarea>
                                     @error('fees')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
@@ -67,7 +67,7 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea name="apply" placeholder="Application Process">{{ old('apply') }}</textarea>
+                                    <textarea name="apply" id="editor" placeholder="Application Process">{{ old('apply') }}</textarea>
                                     @error('apply')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
@@ -161,5 +161,12 @@
             </div>
         </div>
     </div>
+
+     <script>
+        CKEDITOR.replace('editor', {
+            filebrowserUploadUrl: "{{ route('admin.courses.upload', ['_token' => csrf_token()]) }}",
+            filebrowserUploadMethod: 'form',
+        });
+    </script>
 
 </x-admin_layout>

@@ -1,5 +1,5 @@
 <x-layout>
-  <section>
+    <section>
         <div class="container com-sp pad-bot-70 pg-inn">
             <div class="row">
                 <div class="cor">
@@ -12,7 +12,7 @@
                             </div>
                             <div class="ho-event">
                                 <ul>
-                                    @foreach ($events as $event) 
+                                    @foreach ($events as $event)
                                         <li>
                                             <div class="ho-ev-link ho-ev-link-full">
                                                 <a href="#">
@@ -37,28 +37,28 @@
                                 <span>Category: {{ optional($course->category)->name }}</span>
                                 <div class="share-btn">
                                     <ul>
-                                                    <li>
-                                                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}"
-                                                            onclick="window.open(this.href, '_blank', 'height=500,width=800'); return false;">
-                                                            <i class="fa fa-facebook fb1"></i> Share On Facebook
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="https://twitter.com/intent/tweet?url={{ url()->current() }}&text={{ $course->title }}&via=YourTwitterHandle"
-                                                            onclick="window.open(this.href, '_blank', 'height=500,width=800'); return false;">
-                                                            <i class="fa fa-twitter tw1"></i> Share On Twitter
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="https://plus.google.com/share?url={{ url()->current() }}"
-                                                            onclick="window.open(this.href, '_blank', 'height=500,width=800'); return false;">
-                                                            <i class="fa fa-google-plus gp1"></i> Share On Google Plus
-                                                        </a>
-                                                    </li>
-                                                </ul>
+                                        <li>
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}"
+                                                onclick="window.open(this.href, '_blank', 'height=500,width=800'); return false;">
+                                                <i class="fa fa-facebook fb1"></i> Share On Facebook
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://twitter.com/intent/tweet?url={{ url()->current() }}&text={{ $course->title }}&via=YourTwitterHandle"
+                                                onclick="window.open(this.href, '_blank', 'height=500,width=800'); return false;">
+                                                <i class="fa fa-twitter tw1"></i> Share On Twitter
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://plus.google.com/share?url={{ url()->current() }}"
+                                                onclick="window.open(this.href, '_blank', 'height=500,width=800'); return false;">
+                                                <i class="fa fa-google-plus gp1"></i> Share On Google Plus
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="cor-p4">
+                            <div class="cor-p4" style="word-break: break-word;">
                                 <h3>Course Details:</h3>
                                 <p>{!! $course->description !!}</p>
                             </div>
@@ -66,11 +66,14 @@
                                 <h3>Course Syllabus</h3>
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#home">
-									<img src="images/icon/cor4.png" alt=""> <span>Eligibility</span></a>
+                                            <img src="images/icon/cor4.png" alt=""> <span>Eligibility</span></a>
                                     </li>
-                                    <li><a data-toggle="tab" href="#menu1"><img src="images/icon/cor3.png" alt=""><span>Requirements</span></a></li>
-                                    <li><a data-toggle="tab" href="#menu2"><img src="images/icon/cor3.png" alt=""><span>Fees</span></a></li>
-                                    <li><a data-toggle="tab" href="#menu3"><img src="images/icon/cor1.png" alt=""><span>Apply</span></a></li>
+                                    <li><a data-toggle="tab" href="#menu1"><img src="images/icon/cor3.png"
+                                                alt=""><span>Requirements</span></a></li>
+                                    <li><a data-toggle="tab" href="#menu2"><img src="images/icon/cor3.png"
+                                                alt=""><span>Fees</span></a></li>
+                                    <li><a data-toggle="tab" href="#menu3"><img src="images/icon/cor1.png"
+                                                alt=""><span>Apply</span></a></li>
                                 </ul>
 
                                 <div class="tab-content">
@@ -90,23 +93,28 @@
                             </div>
                             <div class="cor-p4">
                                 <h3>A typical weekly timetable:</h3>
-                                <p> It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                <p> It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                    Ipsum passages, and more recently with desktop publishing software like Aldus
+                                    PageMaker including versions of Lorem Ipsum.</p>
                                 <ul class="collapsible" data-collapsible="accordion">
                                     <li>
                                         <div class="collapsible-header active">1st year</div>
                                         <div class="collapsible-body cor-tim-tab">
                                             <h4>First Year Curriculum</h4>
                                             <ul>
-                                                @foreach ($curriculums as $curriculum) 
-                                                    @if ($curriculum->year_id==1) 
-                                                        <li>{{$curriculum->title}}</li>
+                                                @foreach ($curriculums as $curriculum)
+                                                    @if ($curriculum->year_id == 1)
+                                                        <li>{{ $curriculum->title }}</li>
                                                     @endif
                                                 @endforeach
                                             </ul>
                                             <h4>Assessment</h4>
                                             <ul>
-                                                <li>Three written papers form the First University Examination, together with a submitted portfolio of two exam essays of 2,000 words for Introduction to English Language and Literature.</li>
-                                                <li>All exams must be passed, but marks do not count towards the final degree.</li>
+                                                <li>Three written papers form the First University Examination, together
+                                                    with a submitted portfolio of two exam essays of 2,000 words for
+                                                    Introduction to English Language and Literature.</li>
+                                                <li>All exams must be passed, but marks do not count towards the final
+                                                    degree.</li>
                                             </ul>
                                         </div>
                                     </li>
@@ -115,9 +123,9 @@
                                         <div class="collapsible-body cor-tim-tab">
                                             <h4>Second Year Curriculum</h4>
                                             <ul>
-                                                @foreach ($curriculums as $curriculum) 
-                                                    @if ($curriculum->year_id==2) 
-                                                        <li>{{$curriculum->title}}</li>
+                                                @foreach ($curriculums as $curriculum)
+                                                    @if ($curriculum->year_id == 2)
+                                                        <li>{{ $curriculum->title }}</li>
                                                     @endif
                                                 @endforeach
                                             </ul>
@@ -132,9 +140,9 @@
                                         <div class="collapsible-body cor-tim-tab">
                                             <h4>Third Year Curriculum</h4>
                                             <ul>
-                                                @foreach ($curriculums as $curriculum) 
-                                                    @if ($curriculum->year_id==3) 
-                                                        <li>{{$curriculum->title}}</li>
+                                                @foreach ($curriculums as $curriculum)
+                                                    @if ($curriculum->year_id == 3)
+                                                        <li>{{ $curriculum->title }}</li>
                                                     @endif
                                                 @endforeach
                                             </ul>
@@ -148,7 +156,7 @@
                             </div>
                             <div class="cor-p6">
                                 <h3>Student Reviews</h3>
-                                @foreach ($comments as $comment) 
+                                @foreach ($comments as $comment)
                                     <div class="cor-p6-revi">
                                         <div class="cor-p6-revi-left">
                                             <img src="images/4.jpg" alt="">
@@ -165,7 +173,8 @@
                                 <h3>Write Reviews</h3>
                                 <div class="cor-p7-revi">
                                     @auth
-                                        <form class="col s12" action="{{ route('admin.course.comment.create') }}" method="POST">
+                                        <form class="col s12" action="{{ route('admin.course.comment.create') }}"
+                                            method="POST">
                                             @csrf
                                             @method('POST')
                                             <div class="row">
@@ -198,18 +207,21 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-        <div class="input-field col s12">
-            <input type="hidden" name="course_link" class="validate" value="{{ url()->current() }}">
-        </div>
-    </div>
+                                                <div class="input-field col s12">
+                                                    <input type="hidden" name="course_link" class="validate"
+                                                        value="{{ url()->current() }}">
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="input-field col s12">
-                                                    <input type="submit" value="Submit" class="waves-effect waves-light btn-book">
+                                                    <input type="submit" value="Submit"
+                                                        class="waves-effect waves-light btn-book">
                                                 </div>
                                             </div>
                                         </form>
-                                        @else
-                                        <p>Please <a class="text-danger" href="#!" data-toggle="modal" data-target="#modal1">(login here)</a> to leave the comment.</p>
+                                    @else
+                                        <p>Please <a class="text-danger" href="#!" data-toggle="modal"
+                                                data-target="#modal1">(login here)</a> to leave the comment.</p>
                                     @endauth
                                 </div>
                             </div>

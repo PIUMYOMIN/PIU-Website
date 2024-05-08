@@ -24,10 +24,10 @@
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
 
-    <!-- Ck editor -->
+    <!-- CKeditor -->
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/sample.js') }}"></script>
     <script src="{{ asset('ckeditor/config.js') }}"></script>
+    {{-- <link rel="stylesheet" href="{{ asset('ckeditor/contents.css') }}"> --}}
 
     <!-- RESPONSIVE.CSS ONLY FOR MOBILE AND TABLET VIEWS -->
     <link href="{{ asset('css/style-mob.css') }}" rel="stylesheet" />
