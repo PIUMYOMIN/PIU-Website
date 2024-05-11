@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\SeminarController;
 use App\Http\Controllers\Api\V1\SlideController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\AdmissionController;
 use App\Http\Middleware\Cors;
 
 
@@ -39,6 +40,7 @@ Route::middleware([Cors::class])->group(function () {
         Route::resource('/slides',SlideController::class);
         Route::post('/login',[UserController::class,'apiLogin']);
         Route::post('/register',[UserController::class,'register']);
+        Route::post('/admissions',[AdmissionController::class,'store']);
     });
 
     Route::middleware('auth:api')->prefix('v1')->group(function(){

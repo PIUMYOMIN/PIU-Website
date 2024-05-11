@@ -14,13 +14,12 @@ return new class extends Migration
         Schema::create('admissions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-$table->string('email');
-
+            $table->string('email');
             $table->string('phone');
             $table->string('country');
             $table->string('city');
             $table->string('address');
-            $table->dob('dob');
+            $table->date('dob');
             $table->string('profile');
             $table->string('zipcode');
             $table->string('gender');
