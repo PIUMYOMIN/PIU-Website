@@ -33,7 +33,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <textarea name="body">{{ $new->body }}</textarea>
+                                                <textarea name="body" id="editor">{{ $new->body }}</textarea>
                                             </div>
                                             @error('body')
                                             <p class="text-danger">{{ $message }}</p>
@@ -66,4 +66,10 @@
                         </div>
                     </div>
                 </div>
+                <script>
+        CKEDITOR.replace('editor', {
+            filebrowserUploadUrl: "{{ route('admin.courses.upload', ['_token' => csrf_token()]) }}",
+            filebrowserUploadMethod: 'form',
+        });
+    </script>
 </x-admin_layout>

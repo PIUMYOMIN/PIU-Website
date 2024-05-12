@@ -28,7 +28,9 @@ class AdmissionController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {   
+        $test = request()->all();
+        return response()->json(['message' => 'Data accepted', 'data' => $test]);
         // Validation rules for admission fields
         $validatedData = $request->validate([
             'name' => 'required|string',
@@ -54,16 +56,18 @@ class AdmissionController extends Controller
 
         $validatedData['verification_token'] = Str::random(40);
 
-        try {
-            // Create a new admission
-            $admission = Admission::create($validatedData);
+        return response()->json(['message' => 'Validation successful', 'data' => $validatedData]);
 
-            // Return a success response with the created admission
-            return response()->json(['message' => 'Admission created successfully', 'data' => $admission], 201);
-        } catch (\Exception $e) {
-            // Return an error response if something went wrong
-            return response()->json(['message' => 'Failed to create admission', 'error' => $e->getMessage()], 500);
-        }
+        // try {
+        //     // Create a new admission
+        //     $admission = Admission::create($validatedData);
+
+        //     // Return a success response with the created admission
+        //     return response()->json(['message' => 'Admission created successfully', 'data' => $admission], 201);
+        // } catch (\Exception $e) {
+        //     // Return an error response if something went wrong
+        //     return response()->json(['message' => 'Failed to create admission', 'error' => $e->getMessage()], 500);
+        // }
     }
 
     /**

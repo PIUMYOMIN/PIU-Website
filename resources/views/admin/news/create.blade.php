@@ -34,7 +34,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <textarea name="body"></textarea>
+                                                <textarea name="body" id="editor"></textarea>
                                                 <label class="">Event Descriptions</label>
                                             </div>
                                             @error('body')
@@ -66,4 +66,10 @@
                         </div>
                     </div>
                 </div>
+                <script>
+        CKEDITOR.replace('editor', {
+            filebrowserUploadUrl: "{{ route('admin.courses.upload', ['_token' => csrf_token()]) }}",
+            filebrowserUploadMethod: 'form',
+        });
+    </script>
 </x-admin_layout>
