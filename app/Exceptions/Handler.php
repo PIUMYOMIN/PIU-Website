@@ -32,18 +32,18 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
-    protected function unauthenticated($request, AuthenticationException $exception){
-        return response()->json(
-            [
-                'errors'=>[
-                    'status' => 401,
-                    'message' => 'Unauthenticated',
-                ]
-            ]
-        );
-    }
+    // protected function unauthenticated($request, AuthenticationException $exception){
+    //     return response()->json(
+    //         [
+    //             'errors'=>[
+    //                 'status' => 401,
+    //                 'message' => 'Unauthenticated',
+    //             ]
+    //         ]
+    //     );
+    // }
 
-    public function render($request, Throwable $exception){
-        return parent::render($request, $exception);
-    }
+    // public function render($request, Throwable $exception){
+    //     return parent::render($request, $exception);
+    // }
 }
