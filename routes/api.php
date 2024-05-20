@@ -38,9 +38,10 @@ Route::middleware([Cors::class])->group(function () {
         Route::resource('/events',EventController::class);
         Route::resource('/seminars',SeminarController::class);
         Route::resource('/slides',SlideController::class);
+        Route::resource('/gallery',SlideController::class);
         Route::post('/login',[UserController::class,'apiLogin']);
         Route::post('/register',[UserController::class,'register']);
-        Route::post('/admissions',[AdmissionController::class,'store']);
+        Route::post('/application-form/submit',[AdmissionController::class,'store']);
     });
 
     Route::middleware('auth:api')->prefix('v1')->group(function(){

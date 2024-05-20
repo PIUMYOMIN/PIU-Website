@@ -1,5 +1,20 @@
 <x-layout>
     <!--SECTION START-->
+    <style>
+        /* Custom CSS for table borders */
+        table {
+          border-collapse: collapse;
+          border: 1px solid #000;
+          /* Add border to all tables */
+        }
+
+        table td, table th {
+            border: 1px solid #000;
+            /* Add border to table cells */
+            padding: 8px;
+            /* Add padding to table cells for better spacing */
+        }
+    </style>
     <section>
         <div class="container com-sp">
             <div class="row">
@@ -36,7 +51,7 @@
                                                 </ul>
                                             </div>
                                             <img src="{{ asset('storage/' . $news->image) }}" alt="">
-                                            <p>{{ $news->body }}</p>
+                                            <p>{!! $news->body !!}</p>
                                         </div>
                                     </li>
                                 </ul>

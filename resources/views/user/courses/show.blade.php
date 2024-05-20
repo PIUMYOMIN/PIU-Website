@@ -1,4 +1,19 @@
 <x-layout>
+    <style>
+        /* Custom CSS for table borders */
+        table {
+          border-collapse: collapse;
+          border: 1px solid #000;
+          /* Add border to all tables */
+        }
+
+        table td, table th {
+            border: 1px solid #000;
+            /* Add border to table cells */
+            padding: 8px;
+            /* Add padding to table cells for better spacing */
+        }
+    </style>
     <section>
         <div class="container com-sp pad-bot-70 pg-inn">
             <div class="row">
