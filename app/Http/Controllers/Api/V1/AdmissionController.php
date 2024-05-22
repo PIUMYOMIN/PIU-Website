@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\Admission;
-use App\Http\Controllers\Api\V1\Validator;
+use App\Mail\NewAdmissionFormSubmitted;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
+use App\Models\Course;
 
 class AdmissionController extends Controller
 {
@@ -30,60 +34,79 @@ class AdmissionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = request('profile');
-        return response()->json(['message' => 'Data Accepted', 'data' => $data]);
-        // Validate the incoming request data
+        // Validate the incoming request data for both first and second forms
         $validatedData = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'required|string',
+            // First form fields
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email',
+            'phone' => 'required|string|max:11',
+            'address' => 'required|string',
             'country' => 'required|string',
             'city' => 'required|string',
-            'address' => 'required|string',
-            'dob' => 'required|date_format:Y-m-d',
             'zipcode' => 'required|string',
+            'course_id' => ['required', Rule::exists('courses', 'id')],
             'gender' => 'required|string',
+            'dob' => 'required|date_format:Y-m-d',
             'national_id' => 'required',
             'marital_sts' => 'required',
             'alumni_sts' => 'required',
             'student_id' => 'nullable',
-            'profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'language_proficiency' => 'nullable|file|mimes:pdf,doc,docx',
+            'profile' => 'nullable|file|mimes:jpg,jpeg,png',
             'personal_statement' => 'required|file|mimes:pdf,doc,docx',
             'education_certificate' => 'required|file|mimes:pdf,doc,docx',
             'other_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
-            'course_id' => 'required',
         ]);
 
         // Generate a verification token
-        $validatedData['verification_token'] = Str::random(40);
+        $verificationToken = Str::random(40);
 
-        // Process file uploads
-        $profilePath = $request->file('profile') ? $request->file('profile')->store('uploads/profiles', 'public') : null;
-        $languageProficiencyPath = $request->file('language_proficiency') ? $request->file('language_proficiency')->store('uploads/language_proficiency', 'public') : null;
-        $personalStatementPath = $request->file('personal_statement')->store('uploads/personal_statements', 'public');
-        $educationCertificatePath = $request->file('education_certificate')->store('uploads/education_certificates', 'public');
-        $otherDocumentPath = $request->file('other_document') ? $request->file('other_document')->store('uploads/other_documents', 'public') : null;
+        // Store the language_proficiency file if "Yes" is selected
+        if ($request->hasFile('language_proficiency')) {
+            $filePath = $request->file('language_proficiency')->store('language_proficiency_docs', 'public');
+            $validatedData['language_proficiency'] = $filePath;
+        }
 
-        // Store file paths in the validated data
-        $validatedData['profile'] = $profilePath;
-        $validatedData['language_proficiency'] = $languageProficiencyPath;
-        $validatedData['personal_statement'] = $personalStatementPath;
-        $validatedData['education_certificate'] = $educationCertificatePath;
-        $validatedData['other_document'] = $otherDocumentPath;
+        // Store the personal_statement file if "Yes" is selected
+        if ($request->hasFile('personal_statement')) {
+            $filePath = $request->file('personal_statement')->store('personal_statement_docs', 'public');
+            $validatedData['personal_statement'] = $filePath;
+        }
 
-        return response()->json(['message' => 'Data Accepted', 'data' => $validatedData]);
+        // Store the other_document file if "Yes" is selected
+        if ($request->hasFile('other_document')) {
+            $filePath = $request->file('other_document')->store('other_document_docs', 'public');
+            $validatedData['other_document'] = $filePath;
+        }
 
-        // try {
-        //     // Create a new admission record
-        //     $admission = Admission::create($validatedData);
+        // Save the admission data
+        $admission = Admission::create($validatedData);
 
-        //     // Return a success response with the created admission data
-        //     return response()->json(['message' => 'Admission created successfully', 'data' => $admission], 201);
-        // } catch (\Exception $e) {
-        //     // Return an error response if something went wrong
-        //     return response()->json(['message' => 'Failed to create admission', 'error' => $e->getMessage()], 500);
-        // }
+        // Send notification email to admin
+        $adminEmail = $this->getFacultyEmail($request->input('course_id'));
+        Mail::to($adminEmail)
+            ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com', 'thantarhlaing.piu@gmail.com'])
+            ->send(new NewAdmissionFormSubmitted($admission));
+
+        return response()->json(['message' => 'Admission form submitted successfully', 'data' => $admission]);
+    }
+
+    protected function getFacultyEmail($courseId)
+    {
+        // Implement your logic to determine faculty email based on the $courseId
+        // For example:
+        switch ($courseId) {
+            case 4:
+                return 'myominthu819@gmail.com';
+            case 7:
+                return 'lwinmarkhaing27@gmail.com';
+            case 8:
+                return 'mgmyomin819g@gmail.com';
+            case 9:
+                return 'infinitylearn44g@gmail.com';
+            default:
+                return 'piu.webdeveloper@gmail.com';
+        }
     }
 
     /**
