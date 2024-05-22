@@ -9,6 +9,7 @@ use App\Models\Admission;
 use App\Mail\NewAdmissionFormSubmitted;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 use App\Models\Course;
 
 class AdmissionController extends Controller
