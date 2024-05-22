@@ -39,7 +39,7 @@ class AdmissionController extends Controller
         $validatedData = $request->validate([
             // First form fields
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email',
+            'email' => 'required|string|email|unique:admissions,email',
             'phone' => 'required|string|max:11',
             'address' => 'required|string',
             'country' => 'required|string',
@@ -48,10 +48,10 @@ class AdmissionController extends Controller
             'course_id' => ['required', Rule::exists('courses', 'id')],
             'gender' => 'required|string',
             'dob' => 'required|date_format:Y-m-d',
-            'national_id' => 'required',
-            'marital_sts' => 'required',
-            'alumni_sts' => 'required',
-            'student_id' => 'nullable',
+            'national_id' => 'required|string',
+            'marital_sts' => 'required|string',
+            'alumni_sts' => 'required|string',
+            'student_id' => 'nullable|string',
             'language_proficiency' => 'nullable|file|mimes:pdf,doc,docx',
             'profile' => 'nullable|file|mimes:jpg,jpeg,png',
             'personal_statement' => 'required|file|mimes:pdf,doc,docx',
@@ -59,24 +59,32 @@ class AdmissionController extends Controller
             'other_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
         ]);
 
-        // Generate a verification token
-        $verificationToken = Str::random(40);
+        // Generate a verification token and add it to the validated data
+        $validatedData['verification_token'] = Str::random(40);
 
-        // Store the language_proficiency file if "Yes" is selected
+        // Store the files and update the validated data with file paths
         if ($request->hasFile('language_proficiency')) {
             $filePath = $request->file('language_proficiency')->store('language_proficiency_docs', 'public');
             $validatedData['language_proficiency'] = $filePath;
         }
 
-        // Store the personal_statement file if "Yes" is selected
+        if ($request->hasFile('education_certificate')) {
+            $filePath = $request->file('education_certificate')->store('admission_forms_docs', 'public');
+            $validatedData['education_certificate'] = $filePath;
+        }
+
+        if ($request->hasFile('profile')) {
+            $filePath = $request->file('profile')->store('admission_forms_docs', 'public');
+            $validatedData['profile'] = $filePath;
+        }
+
         if ($request->hasFile('personal_statement')) {
-            $filePath = $request->file('personal_statement')->store('personal_statement_docs', 'public');
+            $filePath = $request->file('personal_statement')->store('admission_forms_docs', 'public');
             $validatedData['personal_statement'] = $filePath;
         }
 
-        // Store the other_document file if "Yes" is selected
         if ($request->hasFile('other_document')) {
-            $filePath = $request->file('other_document')->store('other_document_docs', 'public');
+            $filePath = $request->file('other_document')->store('admission_forms_docs', 'public');
             $validatedData['other_document'] = $filePath;
         }
 
@@ -95,19 +103,37 @@ class AdmissionController extends Controller
     protected function getFacultyEmail($courseId)
     {
         // Implement your logic to determine faculty email based on the $courseId
-        // For example:
         switch ($courseId) {
-            case 4:
-                return 'myominthu819@gmail.com';
-            case 7:
-                return 'lwinmarkhaing27@gmail.com';
-            case 8:
-                return 'mgmyomin819g@gmail.com';
-            case 9:
-                return 'infinitylearn44g@gmail.com';
-            default:
-                return 'piu.webdeveloper@gmail.com';
-        }
+        case 1:
+            $adminEmail = 'thantarhlaing.piu@gmail.com';
+            break;
+        case 2:
+            $adminEmail = 'thantarhlaing.piu@gmail.com';
+            break;
+        case 3:
+            $adminEmail = 'intellay@gmail.com';
+            break;
+        case 4:
+            $adminEmail = 'oketama020@gmail.com';
+            break;
+        case 5:
+            $adminEmail = 'thantarhlaing.piu@gmail.com';
+            break;
+        case 6:
+            $adminEmail = 'ohmar.mme@gmail.com';
+            break;
+        case 7:
+            $adminEmail = 'mayyimyint.pdopiu@gmail.com';
+            break;
+        case 8:
+            $adminEmail = 'thantarhlaing.piu@gmail.com';
+            break;
+        case 9:
+            $adminEmail = 'moet.khaing@gmail.com';
+            break;
+        default:
+            $adminEmail = 'piuacademicaffairs@gmail.com';
+    }
     }
 
     /**
