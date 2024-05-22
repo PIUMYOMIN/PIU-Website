@@ -64,7 +64,7 @@ class AdmissionController extends Controller
 
         // Store the files and update the validated data with file paths
         if ($request->hasFile('language_proficiency')) {
-            $filePath = $request->file('language_proficiency')->store('language_proficiency_docs', 'public');
+            $filePath = $request->file('language_proficiency')->store('admission_forms_docs', 'public');
             $validatedData['language_proficiency'] = $filePath;
         }
 
@@ -104,37 +104,37 @@ class AdmissionController extends Controller
     {
         // Implement your logic to determine faculty email based on the $courseId
         switch ($courseId) {
-        case 1:
-            $adminEmail = 'thantarhlaing.piu@gmail.com';
-            break;
-        case 2:
-            $adminEmail = 'thantarhlaing.piu@gmail.com';
-            break;
-        case 3:
-            $adminEmail = 'intellay@gmail.com';
-            break;
-        case 4:
-            $adminEmail = 'oketama020@gmail.com';
-            break;
-        case 5:
-            $adminEmail = 'thantarhlaing.piu@gmail.com';
-            break;
-        case 6:
-            $adminEmail = 'ohmar.mme@gmail.com';
-            break;
-        case 7:
-            $adminEmail = 'mayyimyint.pdopiu@gmail.com';
-            break;
-        case 8:
-            $adminEmail = 'thantarhlaing.piu@gmail.com';
-            break;
-        case 9:
-            $adminEmail = 'moet.khaing@gmail.com';
-            break;
-        default:
-            $adminEmail = 'piuacademicaffairs@gmail.com';
-    }
-    }
+            case 1:
+                $adminEmail = 'thantarhlaing.piu@gmail.com';
+                break;
+            case 2:
+                $adminEmail = 'thantarhlaing.piu@gmail.com';
+                break;
+            case 3:
+                $adminEmail = 'intellay@gmail.com';
+                break;
+            case 4:
+                $adminEmail = 'oketama020@gmail.com';
+                break;
+            case 5:
+                $adminEmail = 'thantarhlaing.piu@gmail.com';
+                break;
+            case 6:
+                $adminEmail = 'ohmar.mme@gmail.com';
+                break;
+            case 7:
+                $adminEmail = 'mayyimyint.pdopiu@gmail.com';
+                break;
+            case 8:
+                $adminEmail = 'thantarhlaing.piu@gmail.com';
+                break;
+            case 9:
+                $adminEmail = 'moet.khaing@gmail.com';
+                break;
+            default:
+                $adminEmail = 'piuacademicaffairs@gmail.com';
+            }
+        }
 
     /**
      * Display the specified resource.
