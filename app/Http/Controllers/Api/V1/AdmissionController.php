@@ -45,7 +45,7 @@ class AdmissionController extends Controller
             'country' => 'required|string',
             'city' => 'required|string',
             'zipcode' => 'required|string',
-            'course_id' => ['required', Rule::exists('courses', 'id')],
+            'course_id' => 'required',
             'gender' => 'required|string',
             'dob' => 'required|date_format:Y-m-d',
             'national_id' => 'required|string',
@@ -87,6 +87,8 @@ class AdmissionController extends Controller
             $filePath = $request->file('other_document')->store('admission_forms_docs', 'public');
             $validatedData['other_document'] = $filePath;
         }
+
+        dd($validatedData);
 
         // Save the admission data
         $admission = Admission::create($validatedData);

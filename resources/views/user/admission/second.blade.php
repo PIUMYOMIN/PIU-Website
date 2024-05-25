@@ -72,7 +72,7 @@
                                 <label class="control-label col-sm-3">Date Of Birth:</label>
                                 <div class="col-sm-9">
                                     <input type="date" name="dob" value="{{ old('dob') }}"
-                                        class="form-control" placeholder="Zip Code" required>
+                                        class="form-control" placeholder="Date of Birth" required>
                                     @error('dob')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
