@@ -88,8 +88,6 @@ class AdmissionController extends Controller
             $validatedData['other_document'] = $filePath;
         }
 
-        dd($validatedData);
-
         // Save the admission data
         $admission = Admission::create($validatedData);
 
