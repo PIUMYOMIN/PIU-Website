@@ -88,6 +88,8 @@ class AdmissionController extends Controller
             $validatedData['other_document'] = $filePath;
         }
 
+        return response()->json(['message' => 'Admission form submitted successfully', 'data' => $validatedData]);
+
         // Save the admission data
         $admission = Admission::create($validatedData);
 
