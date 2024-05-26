@@ -37,7 +37,6 @@ class AdmissionController extends Controller
     {
         // Validate the incoming request data for both first and second forms
         $validatedData = $request->validate([
-            // First form fields
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:admissions,email',
             'phone' => 'required|string|max:11',
@@ -59,10 +58,8 @@ class AdmissionController extends Controller
             'other_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
         ]);
 
-        // Generate a verification token and add it to the validated data
         $validatedData['verification_token'] = Str::random(40);
 
-        // Store the files and update the validated data with file paths
         if ($request->hasFile('language_proficiency')) {
             $filePath = $request->file('language_proficiency')->store('admission_forms_docs', 'public');
             $validatedData['language_proficiency'] = $filePath;
@@ -88,8 +85,6 @@ class AdmissionController extends Controller
             $validatedData['other_document'] = $filePath;
         }
 
-        return response()->json(['message' => 'Admission form submitted successfully', 'data' => $validatedData]);
-
         // Save the admission data
         $admission = Admission::create($validatedData);
 
@@ -104,40 +99,29 @@ class AdmissionController extends Controller
 
     protected function getFacultyEmail($courseId)
     {
-        // Implement your logic to determine faculty email based on the $courseId
         switch ($courseId) {
             case 1:
-                $adminEmail = 'thantarhlaing.piu@gmail.com';
-                break;
+                return 'thantarhlaing.piu@gmail.com';
             case 2:
-                $adminEmail = 'thantarhlaing.piu@gmail.com';
-                break;
+                return 'thantarhlaing.piu@gmail.com';
             case 3:
-                $adminEmail = 'intellay@gmail.com';
-                break;
+                return 'intellay@gmail.com';
             case 4:
-                $adminEmail = 'oketama020@gmail.com';
-                break;
+                return 'oketama020@gmail.com';
             case 5:
-                $adminEmail = 'thantarhlaing.piu@gmail.com';
-                break;
+                return 'thantarhlaing.piu@gmail.com';
             case 6:
-                $adminEmail = 'ohmar.mme@gmail.com';
-                break;
+                return 'ohmar.mme@gmail.com';
             case 7:
-                $adminEmail = 'mayyimyint.pdopiu@gmail.com';
-                break;
+                return 'mayyimyint.pdopiu@gmail.com';
             case 8:
-                $adminEmail = 'thantarhlaing.piu@gmail.com';
-                break;
+                return 'thantarhlaing.piu@gmail.com';
             case 9:
-                $adminEmail = 'moet.khaing@gmail.com';
-                break;
+                return 'moet.khaing@gmail.com';
             default:
-                $adminEmail = 'piuacademicaffairs@gmail.com';
-            }
+                return 'piuacademicaffairs@gmail.com';
         }
-
+    }
     /**
      * Display the specified resource.
      */
