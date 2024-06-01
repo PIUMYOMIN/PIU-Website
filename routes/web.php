@@ -148,6 +148,7 @@ Route::middleware(['auth', 'role:admin|manager'])->name('admin.')->prefix('admin
     Route::get('/teams/{slug}/edit', [AdminTeamController::class, 'edit'])->name('team.edit');
     Route::patch('/teams/form/{slug}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
     Route::delete('/teams/{slug}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
+    Route::patch('/teams/{team:id}/isActive', [AdminTeamController::class, 'isActive'])->name('team.isActive');
 
     //contact
     Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');

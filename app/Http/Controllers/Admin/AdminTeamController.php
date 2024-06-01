@@ -104,6 +104,12 @@ class AdminTeamController extends Controller
     {
         $team = Team::where('slug',$slug)->firstOrFail();
         $team->delete();
+        return redirect()->back();
+    }
+
+    public function isActive(Request $request, Team $team)
+    {
+        $team->update(['is_active' => !$team->is_active]);
 
         return redirect()->back();
     }

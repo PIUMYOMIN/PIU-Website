@@ -34,7 +34,6 @@
                                         <th>Phone</th>
                                         <th>Country</th>
                                         <th>City</th>
-                                        <th>Address</th>
                                         <th>Department</th>
                                         <th>Position</th>
                                         <th>Status</th>
@@ -54,12 +53,27 @@
                                             <td>{{ $team->phone }}</td>
                                             <td>{{ $team->country }}</td>
                                             <td>{{ $team->city }}</td>
-                                            <td>{{ $team->address }}</td>
                                             <td>{{ $team->department->name }}</td>
                                             <td>{{ $team->position->name }}</td>
+                                            @if (auth()->user()->can('Read and Write') ||
+                                            auth()->user()->can('Write') ||
+                                            auth()->user()->can('Manager'))
                                             <td>
-                                                <span class="label label-success">Active</span>
+                                                <form method="POST"
+                                                    action="/admin/teams/{{ $team->id }}/isActive">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" name="is_active"
+                                                            id="isActive_{{ $team->id }}" role="switch"
+                                                            {{ $team->is_active ? 'checked' : '' }}
+                                                            onchange="this.form.submit()">
+                                                        <label
+                                                            class="form-check-label"for="isActive_{{ $team->id }}"></label>
+                                                    </div>
+                                                </form>
                                             </td>
+                                            @endif
                                             <td>
                                                 <a href="{{ route('admin.team.edit', [$team->slug]) }}"
                                                     class="ad-st-view">Edit</a>

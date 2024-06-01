@@ -13,7 +13,10 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $teams = Team::all();
+        $teams = Team::where('is_active',1)
+        ->with('department')
+        ->with('position')
+        ->latest()->get();
         return response()->json($teams);
     }
 
