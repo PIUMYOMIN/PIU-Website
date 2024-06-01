@@ -89,33 +89,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s6">
-                                    <textarea type="text" name="education" >{{ old('education') }}</textarea>
+                                <div class="input-field col s12">
+                                    <textarea type="text" id="editor" name="description" >{{ old('description') }}</textarea>
                                     <label class="">Education</label>
-                                    @error('education')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                <div class="input-field col s6">
-                                    <textarea name="experience">{{ old('experience') }}</textarea>
-                                    <label class="">Experience</label>
-                                    @error('experience')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <textarea name="carrier" class="validate">{{ old('carrier') }}</textarea>
-                                    <label class="">Carrier</label>
-                                    @error('carrier')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                <div class="input-field col s6">
-                                    <textarea name="role" class="validate">{{ old('role') }}</textarea>
-                                    <label class="">Role</label>
-                                    @error('role')
+                                    @error('description')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
@@ -172,4 +149,10 @@
             </div>
         </div>
     </div>
+    <script>
+        CKEDITOR.replace('editor', {
+            filebrowserUploadUrl: "{{ route('admin.courses.upload', ['_token' => csrf_token()]) }}",
+            filebrowserUploadMethod: 'form',
+        });
+    </script>
 </x-admin_layout>
