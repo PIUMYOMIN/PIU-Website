@@ -41,7 +41,10 @@ class TeamController extends Controller
      */
     public function show(string $slug)
     {
-        $team = Team::where('slug',$slug)->firstOrFail();
+        $team = Team::where('slug',$slug)
+        ->with('position')
+        ->with('department')
+        ->firstOrFail();
         return response()->json($team);
     }
 
