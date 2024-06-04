@@ -35,7 +35,7 @@ Route::middleware([Cors::class])->group(function () {
     Route::prefix('v1')->group(function(){
         Route::resource('/courses',CourseController::class);
         Route::resource('/news',NewsController::class);
-        Route::resource('/teams',TeamController::class);
+        Route::resource('/team',TeamController::class);
         Route::resource('/events',EventController::class);
         Route::resource('/seminars',SeminarController::class);
         Route::resource('/slides',SlideController::class);
