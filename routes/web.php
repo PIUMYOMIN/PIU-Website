@@ -369,8 +369,8 @@ Route::get('/news', [NewsController::class, 'index']);
 Route::get('/news/{slug}', [NewsController::class, 'show']);
 
 //teams
-Route::get('/teams', [TeamController::class, 'index']);
-Route::get('/teams/{slug}', [TeamController::class, 'show']);
+Route::get('/team', [TeamController::class, 'index']);
+Route::get('/team/{slug}', [TeamController::class, 'show']);
 
 //seminar
 Route::get('/seminars/{seminar:slug}', [SeminarController::class, 'show'])->name('seminar.show');
