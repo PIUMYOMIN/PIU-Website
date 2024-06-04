@@ -19,10 +19,14 @@ class TeamController extends Controller
         ]);
     }
 
-    public function show(Team $team)
+    public function show($slug)
     {
-       return view('user.team.show',[
+       $team = Team::where('slug',$slug)->firstOrFail();
+
+       return view('user.teams.show',[
         'team' => $team,
+        'position' => Position::all(),
+        'department' => Department::all()
        ]);
     }
 }
