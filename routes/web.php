@@ -55,9 +55,9 @@ use Spatie\Analytics\Period;
 |
  */
 
-Route::get('/', [HomeController::class, 'index']);
+// Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/login', [UserController::class, 'login'])->middleware('guest')->name('login');
+Route::get('/', [UserController::class, 'login'])->middleware('guest')->name('login');
 Route::post('/users/login/form/submit', [UserController::class, 'user_login'])->name('users.login.form.submit');
 
 Route::get('/register', [UserController::class, 'register'])->middleware('guest')->name('register');
