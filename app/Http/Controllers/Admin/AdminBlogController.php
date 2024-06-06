@@ -4,74 +4,81 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Campus;
-use Illuminate\validation\Rule;
+use Illuminate\Validation\Rule;
+use App\Models\Blog;
 
-class AdminCampusController extends Controller
+class AdminBlogController extends Controller
 {
     public function index()
     {
-       return view('admin.campus.index',[
-        'campuses' => Campus::all()
+       return view('admin.blog.index',[
+        'blogs' => Blog::latest()->get()
        ]);
     }
 
     public function create()
     {
-        return view('admin.campus.create');
+        return view('admin.blog.create');
     }
 
     public function store(Request $request)
     {
-       $formData = request()->validate([
-            'name' => ['required',Rule::unique('campuses','name')],
+        $formData = request()->validate([
+            'title' => ['required',Rule::unique('blogs','title')],
             'description' => 'required',
-            'location' => 'required',
         ]);
 
         if($request->hasFile('image')){
-            $filePath = $request->file('image')->store('campuses','public');
+            $filePath = $request->file('image')->store('blogs','public');
             $formData['image'] = $filePath;
         };
 
-        Campus::create($formData);
+        $formData['user_id'] = auth()->user()->id;
 
-        return redirect('/admin/campus');
+        Blog::create($formData);
+
+        return redirect('/admin/blogs');
     }
 
     public function edit($id)
     {
-        $campus = Campus::where('id',$id)->firstOrFail();
-       return view('admin.campus.edit',[
-        'campus' => $campus
+        $blog = Blog::where('id',$id)->firstOrFail();
+       return view('admin.blog.edit',[
+        'blog' => $blog
        ]);
     }
 
     public function update(Request $request, $id)
     {
-        $campus = Campus::where('id',$id)->firstOrFail();
+        $blog = Blog::where('id',$id)->firstOrFail();
        $formData = request()->validate([
-            'name' => ['required',Rule::unique('campuses','name')],
+            'title' => ['required',Rule::unique('blogs','title')->ignore($blog->id)],
             'description' => 'required',
-            'location' => 'required',
         ]);
 
         if($request->hasFile('image')){
-            $filePath = $request->file('image')->store('campuses','public');
+            $filePath = $request->file('image')->store('blogs','public');
             $formData['image'] = $filePath;
         };
 
-        $campus->update($formData);
+        $blog->update($formData);
 
-        return redirect('/admin/campus');
+        return redirect('/admin/blogs');
     }
 
     public function destroy($id)
     {
-        $campus = Campus::where('id',$id)->firstOrFail();
-        $campus->delete();
+        $blog = Blog::where('id',$id)->firstOrFail();
+        $blog->delete();
 
         return back();
+    }
+
+    public function isActive(Request $request, Blog $blog)
+    {
+        $blog->update(['is_active' => !$blog->is_active]);
+
+        return redirect()->back();
     }
 
     public function uploadImage(Request $request)
@@ -81,9 +88,9 @@ class AdminCampusController extends Controller
             $fileName = pathinfo($originName, PATHINFO_FILENAME);
             $extension = $request->file('upload')->getClientOriginalExtension();
             $fileName = $fileName . '_'. time(). '.'.$extension;
-            $request->file('upload')->move(public_path('campus'),$fileName);
+            $request->file('upload')->move(public_path('blogs'),$fileName);
             $CKEditorFuncNum = $request->input('CKEditorFuncNum');
-            $url = asset('campus/'.$fileName);
+            $url = asset('blogs/'.$fileName);
             $msg = 'Image successfully uploaded';
             $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>"; 
             // return responce()->json(['fileName' => $filename, 'uploaded'=>1, 'url'=>$url]);

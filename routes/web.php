@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminCourseCategoryController;
 use App\Http\Controllers\Admin\AdminCourseCommentController;
 use App\Http\Controllers\Admin\AdminCourseController;
+use App\Http\Controllers\Admin\AdminCampusController;
 use App\Http\Controllers\Admin\AdminDepartmentController;
 use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminEventRegisterController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\Admin\AdminModuleController;
 use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminStudentController;
+use App\Http\Controllers\Admin\AdminBlogController;
 use App\Http\Controllers\Admin\AdminSubjectController;
 use App\Http\Controllers\Admin\AdminCurriculumController;
 use App\Http\Controllers\Admin\AdminAssignmentController;
@@ -150,6 +152,25 @@ Route::middleware(['auth', 'role:admin|manager'])->name('admin.')->prefix('admin
     Route::patch('/teams/form/{slug}/update', [AdminTeamController::class, 'update'])->name('team.edit.form.submit');
     Route::delete('/teams/{slug}/delete', [AdminTeamController::class, 'destroy'])->name('team.delete');
     Route::patch('/teams/{team:id}/isActive', [AdminTeamController::class, 'isActive'])->name('team.isActive');
+
+    //Blogs
+    Route::get('/blogs', [AdminBlogController::class, 'index'])->name('blog.index');
+    Route::get('/blogs/create', [AdminBlogController::class, 'create'])->name('blog.create');
+    Route::post('/blogs/form/submit', [AdminBlogController::class, 'store'])->name('blog.form.submit');
+    Route::get('/blogs/{blog:id}/edit', [AdminBlogController::class, 'edit'])->name('blog.edit');
+    Route::patch('/blogs/form/{blog:id}/update', [AdminBlogController::class, 'update'])->name('blog.update');
+    Route::delete('/blogs/{blog:id}/delete', [AdminBlogController::class, 'destroy'])->name('blog.delete');
+    Route::post('/blogs/upload', [AdminBlogController::class, 'uploadImage'])->name('blog.upload');
+    Route::patch('/blogs/{blog:id}/isActive', [AdminBlogController::class, 'isActive'])->name('blog.isActive');
+
+    //Campus
+    Route::get('/campus', [AdminCampusController::class, 'index'])->name('campus.index');
+    Route::get('/campus/create', [AdminCampusController::class, 'create'])->name('campus.create');
+    Route::post('/campus/form/submit', [AdminCampusController::class, 'store'])->name('campus.form.submit');
+    Route::get('/campus/{blog:id}/edit', [AdminCampusController::class, 'edit'])->name('campus.edit');
+    Route::patch('/campus/form/{blog:id}/update', [AdminCampusController::class, 'update'])->name('campus.update');
+    Route::delete('/campus/{blog:id}/delete', [AdminCampusController::class, 'destroy'])->name('campus.delete');
+    Route::post('/campus/upload', [AdminCampusController::class, 'uploadImage'])->name('campus.upload');
 
     //contact
     Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');

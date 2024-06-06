@@ -117,6 +117,44 @@
                         </ul>
                     </div>
                 </li>
+                <li>
+                    <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-edit"
+                            aria-hidden="true"></i>
+                        All Blogs</a>
+                    <div class="collapsible-body left-sub-menu">
+                        <ul>
+                            <li>
+                                <a href="/admin/blogs">All Blogs</a>
+                            </li>
+                            @if (auth()->user()->can('Read and Write') ||
+                                    auth()->user()->can('Write') ||
+                                    auth()->user()->can('Manager'))
+                                <li>
+                                    <a href="/admin/blogs/create">New Blog</a>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="collapsible-header"><i class="fa fa-pencil"
+                            aria-hidden="true"></i>
+                        All Campus</a>
+                    <div class="collapsible-body left-sub-menu">
+                        <ul>
+                            <li>
+                                <a href="/admin/campus">All Campus</a>
+                            </li>
+                            @if (auth()->user()->can('Read and Write') ||
+                                    auth()->user()->can('Write') ||
+                                    auth()->user()->can('Manager'))
+                                <li>
+                                    <a href="/admin/campus/create">New Blog</a>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                </li>
                 @if (auth()->user()->can('Read and Write') ||
                         auth()->user()->can('Write') ||
                         auth()->user()->can('Read') ||

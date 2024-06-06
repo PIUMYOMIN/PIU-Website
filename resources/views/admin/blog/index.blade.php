@@ -7,8 +7,8 @@
             </li>
             @if (auth()->user()->can('Read and Write') ||
                     auth()->user()->can('Write Only'))
-                <li class="page-back"><a href="/admin/campus/create"><i class="fa fa-plus" aria-hidden="true"></i> New
-                        Campus</a>
+                <li class="page-back"><a href="/admin/blogs/create"><i class="fa fa-plus" aria-hidden="true"></i> New
+                        Blog</a>
                 </li>
             @endif
         </ul>
@@ -20,8 +20,8 @@
             <div class="col-md-12">
                 <div class="box-inn-sp">
                     <div class="inn-title">
-                        <h4>campus Details</h4>
-                        <p>All about campuss, program structure, fees, best campus lists (ranking), syllabus, teaching
+                        <h4>blog Details</h4>
+                        <p>All about blogs, program structure, fees, best blog lists (ranking), syllabus, teaching
                             techniques and other details.</p>
                     </div>
                     <div class="tab-inn">
@@ -30,34 +30,58 @@
                                 <thead>
                                     <tr>
                                         <th>Image</th>
-                                        <th>Name</th>
-                                        <th>Location</th>
+                                        <th>Blog Title</th>
+                                        <th>By</th>
+                                        @if (auth()->user()->can('Read and Write') ||
+                                            auth()->user()->can('Write') ||
+                                            auth()->user()->can('Manager'))
+                                        <th>Active</th>
                                         <th>View</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($campuses as $campus)
+                                    @foreach ($blogs as $blog)
                                         <tr>
                                             <td>
                                                 <span class="list-img">
-                                                    <img src="{{ asset('storage/' . $campus->image) }}" alt="">
+                                                    <img src="{{ asset('storage/' . $blog->image) }}" alt="">
                                                 </span>
                                             </td>
                                             <td>
-                                              <span class="list-enq-name">{{ $campus->name }}</span>
+                                              <span class="list-enq-name">{{ $blog->title }}</span>
                                             </td>
                                             <td>
-                                              <span>{{ $campus->location }}</span>
+                                                {{ optional($blog->user)->name }}
                                             </td>
+                                            @if (auth()->user()->can('Read and Write') ||
+                                            auth()->user()->can('Write') ||
+                                            auth()->user()->can('Manager'))
+                                            <td>
+                                                <form method="POST"
+                                                    action="/admin/blogs/{{ $blog->id }}/isActive">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" name="is_active"
+                                                            id="isActive_{{ $blog->id }}" role="switch"
+                                                            {{ $blog->is_active ? 'checked' : '' }}
+                                                            onchange="this.form.submit()">
+                                                        <label
+                                                            class="form-check-label"for="isActive_{{ $blog->id }}"></label>
+                                                    </div>
+                                                </form>
+                                            </td>
+                                            @endif
                                             <td>
                                                 @if (auth()->user()->can('Read and Write') ||
                                                     auth()->user()->can('Write') ||
                                                     auth()->user()->can('Manager'))
-                                                <a href="{{ route('admin.campus.edit', [$campus->id]) }}"
+                                                <a href="{{ route('admin.blog.edit', [$blog->id]) }}"
                                                     class="ad-st-view">Edit</a>
                                                     @endif
                                                 @if (auth()->user()->can('Read and Write'))
-                                                    <form action="{{ route('admin.campus.delete', [$campus->id]) }}"
+                                                    <form action="{{ route('admin.blog.delete', [$blog->id]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')

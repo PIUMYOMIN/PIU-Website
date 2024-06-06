@@ -51,8 +51,8 @@ class AdminCourseController extends Controller
        $data['slug'] = Str::slug($data['title']);
 
        if($request->hasFile('image')){
-            $filePatch = $request->file('image')->store('course_images','public');
-            $data['image'] = $filePatch;
+            $filePath = $request->file('image')->store('course_images','public');
+            $data['image'] = $filePath;
        }
 
        $data['user_id'] = auth()->user()->id;

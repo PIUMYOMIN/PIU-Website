@@ -3,9 +3,9 @@
         <ul>
             <li><a href="index-2.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
             </li>
-            <li class="active-bre"><a href="#"> Edit Campus</a>
+            <li class="active-bre"><a href="#"> New Blog</a>
             </li>
-            <li class="page-back"><a href="/admin/campus"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
+            <li class="page-back"><a href="/admin/blogs"><i class="fa fa-backward" aria-hidden="true"></i> Back</a>
             </li>
         </ul>
     </div>
@@ -16,36 +16,27 @@
             <div class="col-md-12">
                 <div class="box-inn-sp admin-form">
                     <div class="inn-title">
-                        <h4>Edit Campus</h4>
+                        <h4>Edit Blog</h4>
                         <p>Here you can edit your website basic details URL, Phone, Email, Address, User and password
                             and more</p>
                     </div>
                     <div class="tab-inn">
-                        <form action="{{ route('admin.campus.update',[$campus->id]) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.blog.update',[$blog->id]) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input type="text" name="name" value="{{$campus->name}}" class="validate" required>
-                                    <label class="">Campus Name</label>
-                                    @error('name')
+                                    <input type="text" name="title" value="{{$blog->title}}" class="validate" required>
+                                    <label class="">Blog Title</label>
+                                    @error('title')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input type="text" name="location" value="{{$campus->location}}" class="validate" required>
-                                    <label class="">campus Title</label>
-                                    @error('location')
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <textarea name="description" id="editor">{{ $campus->description }}</textarea>
-                                    <label class="">Campus Descriptions</label>
+                                    <textarea name="description" id="editor">{{ $blog->description }}</textarea>
+                                    <label class="">blog Descriptions</label>
                                     @error('description')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
@@ -58,13 +49,13 @@
                                         <input type="file" name="image">
                                     </div>
                                     <div class="file-path-wrapper">
-                                        <input class="file-path validate" type="text" placeholder="Campus Thumbnail">
+                                        <input class="file-path validate" type="text" placeholder="Blog Thumbnail">
                                     </div>
                                     @error('image')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                     <img
-                                      src="{{ asset('storage/'. $campus->image ) }}"
+                                      src="{{ asset('storage/'. $blog->image ) }}"
                                       class="img-fluid rounded-top"
                                       alt="" width="200"
                                     />
@@ -84,7 +75,7 @@
     </div>
     <script>
         CKEDITOR.replace('editor', {
-            filebrowserUploadUrl: "{{ route('admin.campus.upload', ['_token' => csrf_token()]) }}",
+            filebrowserUploadUrl: "{{ route('admin.blog.upload', ['_token' => csrf_token()]) }}",
             filebrowserUploadMethod: 'form',
         });
     </script>
