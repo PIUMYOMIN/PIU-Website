@@ -76,6 +76,7 @@
                                 </div>
                                 <div class="tab-inn">
                                     <div class="table-responsive table-desi">
+                                        @if (auth()->user()->can('Read and Write'))
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
@@ -117,6 +118,7 @@
                                                     @endforeach
                                             </tbody>
                                         </table>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -135,6 +137,7 @@
                                 </div>
                                 <div class="tab-inn">
                                     <div class="table-responsive table-desi">
+                                        @if (auth()->user()->can('Read and Write'))
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
@@ -174,6 +177,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

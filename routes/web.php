@@ -72,8 +72,8 @@ Route::patch('/reset-password/update', [UserController::class, 'forgotPasswordUp
 Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admin.auth.logout');
 Route::post('/admin/student/logout', [UserController::class, 'studentLogout'])->name('admin.student.logout');
 
-// Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.index');
-Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth'])->name('admin.index');
+Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.index');
+// Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth'])->name('admin.index');
 
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
     //user details/delete
