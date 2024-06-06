@@ -71,7 +71,7 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->back()->with('success', 'Registration successful! Please Login');
+        return redirect('/admin')->with('success', 'Registration successful! Please Login');
     }
 
 
@@ -143,7 +143,7 @@ public function user_login(Request $request)
             } elseif($user->hasRole('manager|faculty|registrar')) {
                 return redirect()->route('admin.users.profile.edit',[$user->id])->with('success', 'Welcome back');
             } else {
-                return redirect('/')->with('success', 'Welcome back');
+                return redirect('/admin')->with('success', 'Welcome back');
             }
         }
     } else {

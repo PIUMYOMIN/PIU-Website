@@ -72,7 +72,8 @@ Route::patch('/reset-password/update', [UserController::class, 'forgotPasswordUp
 Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admin.auth.logout');
 Route::post('/admin/student/logout', [UserController::class, 'studentLogout'])->name('admin.student.logout');
 
-Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.index');
+// Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.index');
+Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth'])->name('admin.index');
 
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
     //user details/delete
@@ -167,6 +168,7 @@ Route::middleware(['auth', 'role:admin|manager|registrar|faculty'])->name('admin
     Route::get('/students/study-course/{course_id}', [AdminStudentController::class,'filterCourse'])->middleware('auth');
 
     // assignment
+    Route::get('/assignments', [AdminAssignmentController::class, 'index'])->name('assignments');
     Route::get('/assignment/create', [AdminAssignmentController::class, 'create'])->name('assignment.create');
     Route::post('/assignment/store', [AdminAssignmentController::class, 'store'])->name('assignment.form.submit');
     Route::get('/assignment/{assignment:id}/edit', [AdminAssignmentController::class, 'edit'])->name('assignment.edit');
@@ -190,7 +192,6 @@ Route::patch('/admin/student/profile/{identifier}/passwordUpdate', [AdminStudent
 
 
 // assignment for both admin, registrar and student
-Route::get('/admin/assignments', [AdminAssignmentController::class, 'index'])->name('assignments');
 Route::get('/admin/student/assignment/{slug}/details', [AdminAssignmentController::class, 'details'])->name('admin.student.assignment.details');
 Route::get('/admin/student/assignment/{slug}/submit', [StudentAssignmentController::class, 'submit'])->name('admin.student.assignment.submit');
 Route::post('/admin/student/assignment/{slug}/turn', [StudentAssignmentController::class, 'turn'])->name('admin.student.assignment.turn');
