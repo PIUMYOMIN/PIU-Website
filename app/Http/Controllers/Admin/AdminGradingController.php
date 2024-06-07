@@ -112,26 +112,21 @@ class AdminGradingController extends Controller
     }
 
 
-    public function firstSemesterGrading(Student $student, Semester $semester)
+    public function semesterGrading(Student $student, Semester $semester, Year $year)
     {
+        $gradings = Grading::where([
+        'student_id' => $student->id,
+        'semester_id' => $semester->id,
+        'year_id' => $year->id,
+    ])->get();
        return view('admin.students.grading.show',[
             'student' => $student,
             'semester' => $semester,
+            'year' => $year,
             'gradings' => Grading::where([
                 'student_id' => $student->id,
                 'semester_id' => $semester->id,
-            ])->get()
-       ]);
-    }
-
-    public function secondSemesterGrading(Student $student, Semester $semester)
-    {
-       return view('admin.students.grading.show',[
-            'student' => $student,
-            'semester' => $semester,
-            'gradings' => Grading::where([
-                'student_id' => $student->id,
-                'semester_id' => $semester->id,
+                'year_id' => $year->id,
             ])->get()
        ]);
     }
@@ -176,6 +171,30 @@ class AdminGradingController extends Controller
                     ->get();
 
         return response()->json($students);
+    }
+
+
+    public function studentGrading($id)
+    {
+        $student = Student::where('id',$id)->firstOrFail();
+        return view('admin.students.grading.grading',[
+            'student' => $student,
+            'years' => Year::all()
+        ]);
+    }
+
+    public function studentGradingByYear($studentId, $yearId)
+    {
+        $student = Student::where('id',$studentId)->findOrFail($studentId);
+        $year = Year::where('id',$yearId)->firstOrFail();
+        $gradings = Grading::where('student_id', $studentId)
+                       ->where('year_id', $yearId)
+                       ->get();
+        return view('admin.students.grading.studentGradingYearlyResult',[
+            'student' => $student,
+            'year' => $year,
+            'gradings' => $gradings,
+        ]);
     }
 
 }

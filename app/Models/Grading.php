@@ -45,4 +45,19 @@ class Grading extends Model
     {
         return $this->belongsTo(Assignment::class);
     }
+
+    public function years()
+    {
+        return $this->belongsToMany(Year::class, 'student_course_years')->withPivot('course_id');
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'student_course_years')->withPivot('year_id');
+    }
+
+    public function gradings()
+    {
+        return $this->hasMany(Grading::class);
+    }
 }

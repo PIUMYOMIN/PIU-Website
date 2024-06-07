@@ -27,22 +27,24 @@
                                             <th>#</th>
                                             <th>Student Name</th>
                                             <th>Studied Course</th>
-                                            <th>Academic Year</th>
-                                            <th>View</th>
+                                            <th>Year</th>
+                                            <th>First Semester</th>
+                                            <th>Second Semester</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($students as $student)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                        <tr>
+                                                <td>#</td>
                                                 <td>{{ $student->fname }} {{ $student->lname }}</td>
                                                 <td>{{ $student->course->title }}</td>
-                                                <td>{{ $student->year->name }}</td>
+                                                <td>{{ $year->name }}</td>
                                                 <td>
-                                                  <a href="{{ route('admin.student.grading',['id' => $student->id]) }}" class="ad-st-view">View</a>
+                                                  <a href="{{ route('admin.student.semester.grading.view',['student' => $student->id, 'semester' => 1, 'year' => $year->id]) }}" class="ad-st-view">First Semester</a>
+                                                </td>
+                                                <td>
+                                                  <a href="{{ route('admin.student.semester.grading.view',['student' => $student->id, 'semester' => 2, 'year' => $year->id]) }}" class="ad-st-view">Second Semester</a>
                                                 </td>
                                             </tr>
-                                        @endforeach
                                     </tbody>
                                 </table>
 

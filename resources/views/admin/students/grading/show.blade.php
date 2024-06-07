@@ -46,6 +46,7 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $grading->student->fname }} {{ $grading->student->lname }}</td>
                                             <td>{{ $grading->course->title }}</td>
+                                            <td>{{ $grading->year->name }}</td>
                                             <td>{{ $grading->semester->name }}</td>
                                             <td>{{ $grading->assignment->name }}</td>
                                             <td>{{ $grading->module->module_code }}</td>

@@ -307,19 +307,20 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
     Route::get('/admissions/filter/{courseId}', [AdminAdmissionController::class, 'filterByCourse']);
 
     // student grading
-    Route::get('students/grading/create', [AdminGradingController::class, 'index'])->name('students.grading.create');
+    Route::get('student/grading/{id}', [AdminGradingController::class, 'studentGrading'])->name('student.grading');
+    Route::get('student/grading/byYear/{studentId:id}/{yearId:id}', [AdminGradingController::class, 'studentGradingByYear'])->name('student.grading.byYear');
     Route::get('students/grading/check', [AdminGradingController::class, 'viewGrading']);
+    Route::get('students/grading/create', [AdminGradingController::class, 'index'])->name('students.grading.create');
     Route::get('/students/grading/study-course/{course_id}', [AdminGradingController::class,'filterCourse'])->middleware('auth');
 
     //first semester
     Route::get('students/first_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'firstSemesterGradingAdd'])->name('students.first_semester.grading.add');
     Route::post('students/first_semester/grading/create/{student}/{semester_id}', [AdminGradingController::class, 'storeFirstSemester'])->name('students.grades.storeFirstSemester');
-    Route::get('students/first_semester/grading/view/{student:id}/{semester}', [AdminGradingController::class, 'firstSemesterGrading'])->name('students.first_semester.grading.view');
+    Route::get('student/semester/grading/view/{student}/{semester}/{year}', [AdminGradingController::class, 'semesterGrading'])->name('student.semester.grading.view');
 
     //second semester
     Route::get('students/second_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'secondSemesterGradingAdd'])->name('students.second_semester.grading.add');
     Route::post('students/second_semester/grading/create/{student}/{semester_id}', [AdminGradingController::class, 'storeSecondSemester'])->name('students.grades.storeSeconodSemester');
-    Route::get('students/second_semester/grading/view/{student:id}/{semester}', [AdminGradingController::class, 'secondSemesterGrading'])->name('students.second_semester.grading.view');
 
     //grading edit
     Route::get('student/{student}/grading/{grading}/semester/{semester}/edit',[AdminGradingController::class,'edit'])->name('student.grading.edit');

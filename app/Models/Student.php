@@ -67,4 +67,9 @@ class Student extends Model implements Authenticatable
         return $this->belongsTo(User::class);
     }
 
+    public function gradings()
+    {
+        return $this->hasMany(Grading::class);
+    }
+
 }
