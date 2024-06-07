@@ -71,7 +71,8 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        return redirect('/admin')->back()->with('success', 'Registration successful! Please Login');
+        // return redirect('/admin')->back()->with('success', 'Registration successful! Please Login');
+        return redirect()->route('admin.users.profile.edit',[$user->id])->with('success', 'Welcome back');
     }
 
 

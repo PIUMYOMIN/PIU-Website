@@ -5,9 +5,9 @@
    <section>
 		<div class="ad-log-main">
 			<div class="ad-log-in">
-				<div class="ad-log-in-logo">
+				{{-- <div class="ad-log-in-logo">
 					<a href="index-2.html"><img src="images/logo.png" alt=""></a>
-				</div>
+				</div> --}}
 				<div class="ad-log-in-con">
 			<div class="log-in-pop-right" style="width:100% !important;">
                     <h4>Register</h4>
