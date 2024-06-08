@@ -9,7 +9,9 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\SeminarController;
 use App\Http\Controllers\Api\V1\SlideController;
 use App\Http\Controllers\Api\V1\GalleryController;
+use App\Http\Controllers\Api\V1\DepartmentController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\PositionController;
 use App\Http\Controllers\Api\V1\AdmissionController;
 use App\Http\Controllers\Api\V1\BlogController;
 use App\Http\Controllers\Api\V1\CampusController;
@@ -44,6 +46,8 @@ Route::middleware([Cors::class])->group(function () {
         Route::resource('/gallery',GalleryController::class);
         Route::resource('/blogs',BlogController::class);
         Route::resource('/campus',CampusController::class);
+        Route::resource('/departments',DepartmentController::class);
+        Route::resource('/positions',PositionController::class);
         Route::post('/login',[UserController::class,'apiLogin']);
         Route::post('/register',[UserController::class,'register']);
         Route::post('/application-form/submit',[AdmissionController::class,'store']);

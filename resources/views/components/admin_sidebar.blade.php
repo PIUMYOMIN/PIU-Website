@@ -108,7 +108,7 @@
                                     auth()->user()->can('Write') ||
                                     auth()->user()->can('Manager'))
                                 <li>
-                                    <a href="/admin/courses/create">Add New Course</a>
+                                    <a href="/admin/courses/create">New Course</a>
                                 </li>
                                 <li>
                                     <a href="/admin/course-categories">Course Category</a>
@@ -188,13 +188,13 @@
                         <div class="collapsible-body left-sub-menu">
                             <ul>
                                 <li>
-                                    <a href="/admin/curriculums">Modules</a>
+                                    <a href="/admin/curriculums">Curriculums</a>
                                 </li>
                                 @if (auth()->user()->can('Read and Write') ||
                                         auth()->user()->can('Write') ||
                                         auth()->user()->can('Manager'))
                                     <li>
-                                        <a href="/admin/curriculum/create">Add New Curriculum</a>
+                                        <a href="/admin/curriculum/create">New Curriculum</a>
                                     </li>
                                 @endif
                             </ul>
@@ -255,7 +255,7 @@
                                     auth()->user()->can('Write') ||
                                     auth()->user()->can('Manager'))
                                 <li>
-                                    <a href="/admin/department/create">Add New Department</a>
+                                    <a href="/admin/department/create">New Department</a>
                                 </li>
                             @endif
                         </ul>
@@ -279,7 +279,7 @@
                                     auth()->user()->can('Write') ||
                                     auth()->user()->can('Manager'))
                                 <li>
-                                    <a href="/admin/position/create">Add New Position</a>
+                                    <a href="/admin/position/create">New Position</a>
                                 </li>
                             @endif
                         </ul>
@@ -333,7 +333,7 @@
                                 <a href="/admin/galleries">All Gallery Images</a>
                             </li>
                             <li>
-                                <a href="/admin/gallery/create">Add New Gallery</a>
+                                <a href="/admin/gallery/create">Add Photo</a>
                             </li>
                         </ul>
                     </div>
@@ -368,7 +368,7 @@
                             </li>
                             @if (auth()->user() && auth()->user()->can('Read and Write') || auth()->user()->can('Registrar'))
                             <li>
-                                <a href="/admin/student/create">New Students</a>
+                                <a href="/admin/student/create">New Student</a>
                             </li>
                             @endif
                             @if (auth()->user() && auth()->user()->can('Registrar') || auth()->user()->can('Faculty') || auth()->user()->can('Read and Write'))
@@ -441,7 +441,7 @@
                                         auth()->user()->can('Manager') ||
                                         auth()->user()->can('Registrar'))
                                     <li>
-                                        <a href="/admin/module/create">Add New Module</a>
+                                        <a href="/admin/module/create">New Module</a>
                                     </li>
                                 @endif
                             </ul>
@@ -469,7 +469,7 @@
                                         auth()->user()->can('Faculty') ||
                                         auth()->user()->can('Registrar'))
                                     <li>
-                                        <a href="/admin/subjects/create">Add New Subject</a>
+                                        <a href="/admin/subjects/create">New Subject</a>
                                     </li>
                                 @endif
                             </ul>

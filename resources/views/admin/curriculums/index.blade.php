@@ -6,7 +6,7 @@
             <li class="active-bre"><a href="#"> Curriculums</a>
             </li>
             <li class="page-back">
-                <a href="/admin/curriculum/create"><i class="fa fa-plus" aria-hidden="true"></i> Add Curriculums</a>
+                <a href="/admin/curriculum/create"><i class="fa fa-plus" aria-hidden="true"></i> New Curriculums</a>
             </li>
         </ul>
     </div>

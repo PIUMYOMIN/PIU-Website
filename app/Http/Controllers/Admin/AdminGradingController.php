@@ -25,16 +25,14 @@ class AdminGradingController extends Controller
 
     public function create()
     {
-        return view('admin.students.grading.create',[
-            'student' 
-        ]);
+        return view('admin.students.grading.create');
     }
 
-    public function firstSemesterGradingAdd(Student $student, Semester $semester_id)
+    public function addGradingPoint(Student $student, Semester $semester)
     {
         return view('admin.students.grading.create',[
             'student' => $student,
-            'semester_id' => $semester_id,
+            'semester' => $semester,
             'courses' => Course::all(),
             'semesters' => Semester::all(),
             'modules' => Module::all(),
@@ -43,7 +41,7 @@ class AdminGradingController extends Controller
         ]);
     }
 
-    public function storeFirstSemester(Request $request, Student $student, Semester $semester_id)
+    public function gradingStore(Request $request, Student $student, Semester $semester)
     {
         $formData = $request->validate([
             'user_id' => 'required',
@@ -58,42 +56,7 @@ class AdminGradingController extends Controller
         ]);
 
         $formData['term_id'] = $request->has('term_id') ? $request->term_id : null;
-        $formData['semester_id'] = $request->has('semester_id') ? $request->semester_id : null;
-        $formData['user_id'] = auth()->user()->id;
-        Grading::create($formData);
-
-        return redirect('admin/students/grading/check');
-    }
-
-    public function secondSemesterGradingAdd(Student $student, Semester $semester_id)
-    {
-        return view('admin.students.grading.create',[
-            'student' => $student,
-            'semester_id' => $semester_id,
-            'courses' => Course::all(),
-            'semesters' => Semester::all(),
-            'modules' => Module::all(),
-            'assignments' => Assignment::all(),
-            'years' => Year::latest()->get(),
-        ]);
-    }
-
-    public function storeSecondSemester(Request $request, Student $student, Semester $semester_id)
-    {
-        $formData = $request->validate([
-            'user_id' => 'required',
-            'student_id' => 'required',
-            'course_id' => 'required',
-            'module_id' => 'required',
-            'year_id' => 'required',
-            'assignment_id' => 'required',
-            'mark' => 'required|numeric|max:100',
-            'grade_point' => 'required|numeric',
-            'grade_value' => 'required',
-        ]);
-
-        $formData['term_id'] = $request->has('term_id') ? $request->term_id : null;
-        $formData['semester_id'] = $request->has('semester_id') ? $request->semester_id : null;
+        $formData['semester_id'] = $request->input('semester_id') ?: $semester->id;
         $formData['user_id'] = auth()->user()->id;
         Grading::create($formData);
 

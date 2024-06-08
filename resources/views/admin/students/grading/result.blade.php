@@ -17,7 +17,14 @@
                     <div class="box-inn-sp">
                         <div class="inn-title">
                             <h4>Student Grading List</h4>
-                            <p>All about students like name, student id, phone, email, country, city and more</p>
+                            <div>
+                                <select onchange="filterstudent(event)">
+                                <option disabled selected>Filter</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                @endforeach
+                            </select>
+                            </div>
                         </div>
                         <div class="tab-inn">
                             <div class="table-responsive table-desi">
@@ -26,18 +33,18 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Student Name</th>
-                                            <th>Studied Course</th>
-                                            <th>Academic Year</th>
+                                            <th>Studied Program</th>
+                                            <th>Student ID</th>
                                             <th>View</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="studentsTableBody">
                                         @foreach ($students as $student)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $student->fname }} {{ $student->lname }}</td>
                                                 <td>{{ $student->course->title }}</td>
-                                                <td>{{ $student->year->name }}</td>
+                                                <td>{{ $student->student_id }}</td>
                                                 <td>
                                                   <a href="{{ route('admin.student.grading',['id' => $student->id]) }}" class="ad-st-view">View</a>
                                                 </td>
@@ -52,4 +59,41 @@
                 </div>
             </div>
         </div>
+        <script>
+        function filterstudent(event) {
+            const selectedCourseId = event.target.value;
+            fetch(`/admin/students/grading/study-course/${selectedCourseId}`).then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch students');
+            }
+            return response.json();
+        })
+        .then(data => displayStudent(data))
+        .catch(error => {
+            console.error(error);
+            // Handle the error, e.g., display a message to the user
+        });
+}
+
+function displayStudent(students) {
+    const tableBody = document.getElementById('studentsTableBody');
+    tableBody.innerHTML = '';
+    let iteration = 0;
+
+    students.forEach(student => {
+        iteration++;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${iteration}</td>
+            <td>${student.fname} ${student.lname}</td>
+            <td>${student.student_id}</td>
+            <td>${student.course.title}</td>
+            <td>
+                <a href="/admin/student/grading/${student.id}" class="ad-st-view">View</a>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+    </script>
 </x-admin_layout>

@@ -26,7 +26,7 @@
                         </div>
                         <div class="tab-inn">
                             <div class="table-responsive table-desi">
-                                <table class="table table-hover" id="studentsTableBody">
+                                <table class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -37,7 +37,7 @@
                                             <th>Second Semester</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="studentsTableBody">
                                         @foreach ($students as $student)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -45,10 +45,10 @@
                                                 <td>{{ $student->student_id }}</td>
                                                 <td>{{ $student->course->title }}</td>
                                                 <td>
-                                                  <a href="{{ route('admin.students.first_semester.grading.add',['student' => $student->id, 'semester_id' => 1]) }}" class="ad-st-view">First Semester</a>
+                                                  <a href="{{ route('admin.student.grading.create',['student' => $student->id, 'semester' => 1]) }}" class="ad-st-view">First Semester</a>
                                                 </td>
                                                 <td>
-                                                  <a href="{{ route('admin.students.second_semester.grading.add',['student' => $student->id, 'semester_id' => 2]) }}" class="ad-st-view">Second Semester</a>
+                                                  <a href="{{ route('admin.student.grading.create',['student' => $student->id, 'semester' => 2]) }}" class="ad-st-view">Second Semester</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -91,13 +91,10 @@ function displayStudent(students) {
             <td>${student.student_id}</td>
             <td>${student.course.title}</td>
             <td>
-                <a href="/admin/students/first_semester/grading/add/${student.id}/1" class="ad-st-view">First Semester</a>
+                <a href="/admin/student/grading/create/${student.id}/1" class="ad-st-view">First Semester</a>
             </td>
             <td>
-                <a href="/admin/students/second_semester/grading/add/${student.id}/2" class="ad-st-view">Second Semester</a>
-            </td>
-            <td>
-                <a href="/admin/students/profile/${student.id}/details" class="ad-st-view">View</a>
+                <a href="/admin/student/grading/create/${student.id}/2" class="ad-st-view">Second Semester</a>
             </td>
         `;
         tableBody.appendChild(row);

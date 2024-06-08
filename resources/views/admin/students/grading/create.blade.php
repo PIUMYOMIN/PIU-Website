@@ -21,11 +21,11 @@
                                 <div class="box-inn-sp">
                                     <div class="bor">
                                         <form
-                                            action="{{ route('admin.students.grades.storeFirstSemester', ['student' => $student->id, 'semester_id' => $semester_id]) }}"
+                                            action="{{ route('admin.student.grading.store', ['student' => $student->id, 'semester' => $semester]) }}"
                                             method="POST" id="first-semester-form">
                                             @csrf
                                             <input type="hidden" name="student_id" value="{{ $student->id }}">
-                                            <input type="hidden" name="semester_id" value="{{ $semester_id->id }}">
+                                            <input type="hidden" name="semester_id" value="{{ $semester->id }}">
                                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                                             <div class="row">
                                                 <div class="input-field col s12">
@@ -49,6 +49,7 @@
                                                         </div>
                                                         <div class="input-field col s6">
                                                             <select class="input-field col s12" name="year_id" required>
+                                                                <option value="" selected disabled>Choose Year</option>
                                                                 @foreach ($years as $year)
                                                                     <option
                                                                         {{ $year->id == old('year_id') ? 'selected' : '' }}

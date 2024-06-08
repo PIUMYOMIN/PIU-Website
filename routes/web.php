@@ -314,12 +314,13 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
     Route::get('/students/grading/study-course/{course_id}', [AdminGradingController::class,'filterCourse'])->middleware('auth');
 
     //first semester
-    Route::get('students/first_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'firstSemesterGradingAdd'])->name('students.first_semester.grading.add');
-    Route::post('students/first_semester/grading/create/{student}/{semester_id}', [AdminGradingController::class, 'storeFirstSemester'])->name('students.grades.storeFirstSemester');
+    // Route::get('students/first_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'firstSemesterGradingAdd'])->name('students.first_semester.grading.add');
+    Route::get('student/grading/create/{student}/{semester}', [AdminGradingController::class, 'addGradingPoint'])->name('student.grading.create');
+    Route::post('student/grading/store/{student}/{semester}', [AdminGradingController::class, 'gradingStore'])->name('student.grading.store');
     Route::get('student/semester/grading/view/{student}/{semester}/{year}', [AdminGradingController::class, 'semesterGrading'])->name('student.semester.grading.view');
 
     //second semester
-    Route::get('students/second_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'secondSemesterGradingAdd'])->name('students.second_semester.grading.add');
+    // Route::get('students/second_semester/grading/add/{student:id}/{semester_id}', [AdminGradingController::class, 'secondSemesterGradingAdd'])->name('students.second_semester.grading.add');
     Route::post('students/second_semester/grading/create/{student}/{semester_id}', [AdminGradingController::class, 'storeSecondSemester'])->name('students.grades.storeSeconodSemester');
 
     //grading edit
@@ -382,79 +383,79 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
 });
 
 //course
-Route::get('/our-courses', [CourseController::class, 'index'])->name('course.index');
+// Route::get('/our-courses', [CourseController::class, 'index'])->name('course.index');
 
-Route::get('/courses/{slug}', [CourseController::class, 'show']);
-Route::post('/search-course',[AdminCourseController::class,'search'])->name('search-course');
+// Route::get('/courses/{slug}', [CourseController::class, 'show']);
+// Route::post('/search-course',[AdminCourseController::class,'search'])->name('search-course');
 
 //news
-Route::get('/news', [NewsController::class, 'index']);
-Route::get('/news/{slug}', [NewsController::class, 'show']);
+// Route::get('/news', [NewsController::class, 'index']);
+// Route::get('/news/{slug}', [NewsController::class, 'show']);
 
 //teams
-Route::get('/team', [TeamController::class, 'index']);
-Route::get('/team/{slug}', [TeamController::class, 'show']);
+// Route::get('/team', [TeamController::class, 'index']);
+// Route::get('/team/{slug}', [TeamController::class, 'show']);
 
 //seminar
-Route::get('/seminars/{seminar:slug}', [SeminarController::class, 'show'])->name('seminar.show');
+// Route::get('/seminars/{seminar:slug}', [SeminarController::class, 'show'])->name('seminar.show');
 
 //event
-Route::get('/events', [EventController::class, 'index'])->name('event.index');
-Route::get('/events/{event:slug}', [EventController::class, 'show'])->name('event.show');
-Route::get('/events/{slug}/register', [EventController::class, 'register'])->name('events.register');
+// Route::get('/events', [EventController::class, 'index'])->name('event.index');
+// Route::get('/events/{event:slug}', [EventController::class, 'show'])->name('event.show');
+// Route::get('/events/{slug}/register', [EventController::class, 'register'])->name('events.register');
 
 //job
-Route::get('/jobs', [JobController::class, 'index'])->name('job.index');
-Route::get('/jobs/{id}', [JobController::class, 'show'])->name('job.show');
+// Route::get('/jobs', [JobController::class, 'index'])->name('job.index');
+// Route::get('/jobs/{id}', [JobController::class, 'show'])->name('job.show');
 
 
 //Contact Form
-Route::get('/contact-us', [ContactController::class, 'index']);
-Route::post('/contact/form/submit', [ContactController::class, 'store'])->name('contact.form.submit');
+// Route::get('/contact-us', [ContactController::class, 'index']);
+// Route::post('/contact/form/submit', [ContactController::class, 'store'])->name('contact.form.submit');
 
 //Admission
-Route::get('/piu/admission/application-form', [AdmissionController::class, 'create']);
-Route::post('/piu/application/first-form', [AdmissionController::class, 'storeFirst'])->name('piu.application.first-form');
-Route::get('/piu/application/second-form', [AdmissionController::class, 'second']);
-Route::post('/piu/application/second-form', [AdmissionController::class, 'storeSecond'])->name('piu.application.second-form');
-Route::get('/piu/admission/application-form-successfully-submited/{token}', [AdmissionController::class, 'success']);
-Route::get('/admin/admissions/{admission:id}/details', [AdmissionController::class, 'show']);
+// Route::get('/piu/admission/application-form', [AdmissionController::class, 'create']);
+// Route::post('/piu/application/first-form', [AdmissionController::class, 'storeFirst'])->name('piu.application.first-form');
+// Route::get('/piu/application/second-form', [AdmissionController::class, 'second']);
+// Route::post('/piu/application/second-form', [AdmissionController::class, 'storeSecond'])->name('piu.application.second-form');
+// Route::get('/piu/admission/application-form-successfully-submited/{token}', [AdmissionController::class, 'success']);
+// Route::get('/admin/admissions/{admission:id}/details', [AdmissionController::class, 'show']);
 
 // google login
-Route::get('/auth/google/user/redirect', [UserController::class, 'redirectToGoogle'])->name('auth.google.user.redirect');
-Route::get('/auth/google/user/callback', [UserController::class, 'googleCallback'])->name('googleCallback');
+// Route::get('/auth/google/user/redirect', [UserController::class, 'redirectToGoogle'])->name('auth.google.user.redirect');
+// Route::get('/auth/google/user/callback', [UserController::class, 'googleCallback'])->name('googleCallback');
 
 //facebook login
-Route::get('/auth/facebook/user/redirect', [UserController::class, 'redirectToFacebook'])->name('auth.facebook.user.redirect');
-Route::get('/auth/facebook/user/callback', [UserController::class, 'facebookCallback'])->name('facebookCallback');
+// Route::get('/auth/facebook/user/redirect', [UserController::class, 'redirectToFacebook'])->name('auth.facebook.user.redirect');
+// Route::get('/auth/facebook/user/callback', [UserController::class, 'facebookCallback'])->name('facebookCallback');
 
 //twitter login
-Route::get('/auth/twitter/user/redirect', [UserController::class, 'redirectToTwitter'])->name('auth.twitter.user.redirect');
-Route::get('/auth/twitter/user/callback', [UserController::class, 'twitterCallback'])->name('twitterCallback');
+// Route::get('/auth/twitter/user/redirect', [UserController::class, 'redirectToTwitter'])->name('auth.twitter.user.redirect');
+// Route::get('/auth/twitter/user/callback', [UserController::class, 'twitterCallback'])->name('twitterCallback');
 
-Route::get('/about-us', function () {
-    return view('user.about.index');
-});
+// Route::get('/about-us', function () {
+//     return view('user.about.index');
+// });
 
-Route::get('/president-of-piu',function () {
-    return view('user.about.president');
-});
+// Route::get('/president-of-piu',function () {
+//     return view('user.about.president');
+// });
 
-Route::get('/pravicy-policy',function () {
-    return view('user.pravicy.index');
-});
+// Route::get('/pravicy-policy',function () {
+//     return view('user.pravicy.index');
+// });
 
 Route::get('/checkUserRole', [UserController::class, 'checkUserRole']);
 
-Route::get('/data',function(){
-    $analyticsData = Analytics::trackPageView();
+// Route::get('/data',function(){
+//     $analyticsData = Analytics::trackPageView();
 
-    dd($analyticsData[0]['pageViews']);
-});
+//     dd($analyticsData[0]['pageViews']);
+// });
 
-Route::get('/testing',function(){
-    return view('testing');
-});
+// Route::get('/testing',function(){
+//     return view('testing');
+// });
 
 Route::any('{any}',function(){
     return view('error.404');
