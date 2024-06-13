@@ -53,12 +53,13 @@ class AdminSlideController extends Controller
         ]);
     }
 
-    public function update(Request $request, Slide $slide)
+    public function update(Request $request, $id)
     {
+        $slide = Slide::where('id',$id)->firstOrFail();
         $data = request()->validate([
             'title' => ['required', Rule::unique('slides','title')->ignore($slide->id)],
             'image_tag' => 'required',
-            'tag_link' => 'required|url',
+            'tag_link' => 'nullable',
             'description' => 'nullable',
             'slide_image' => 'required|image|mimes:png,jpg,jpeg'
         ]);

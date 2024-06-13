@@ -31,6 +31,7 @@
                                         <th>Link 1</th>
                                         <th>Link 2</th>
                                         <th>Modified By</th>
+                                        <th>Active/Inactive</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -50,6 +51,21 @@
                                             <td>{{ $gallery->location }}</td>
                                             <td>
                                                 <span class="label label-success">{{ $gallery->user->name }}</span>
+                                            </td>
+                                            <td>
+                                                <form method="POST"
+                                                    action="{{ route('admin.gallery.isActive', ['gallery' => $gallery->id]) }}">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" name="is_active"
+                                                            id="isActive_{{ $gallery->id }}" role="switch"
+                                                            {{ $gallery->is_active ? 'checked' : '' }}
+                                                            onchange="this.form.submit()">
+                                                        <label class="form-check-label"
+                                                            for="isActive_{{ $gallery->id }}">Active / Inactive</label>
+                                                    </div>
+                                                </form>
                                             </td>
                                             <td>
                                                 <a href="{{ route('admin.gallery.edit', [$gallery->id]) }}"

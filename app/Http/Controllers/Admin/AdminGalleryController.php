@@ -75,4 +75,12 @@ class AdminGalleryController extends Controller
 
         return redirect('/admin/galleries');
     }
+
+    public function isActive(Request $request, Gallery $gallery)
+    {
+
+        $gallery->update(['is_active' => !$gallery->is_active]);
+
+        return redirect()->back();
+    }
 }

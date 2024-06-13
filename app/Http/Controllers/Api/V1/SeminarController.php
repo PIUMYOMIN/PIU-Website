@@ -13,7 +13,7 @@ class SeminarController extends Controller
      */
     public function index()
     {
-        $seminars = Seminar::all();
+        $seminars = Seminar::latest()->get();
         return response()->json($seminars);
     }
 

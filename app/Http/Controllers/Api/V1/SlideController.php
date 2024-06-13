@@ -14,7 +14,7 @@ class SlideController extends Controller
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $slides = Slide::all();
+        $slides = Slide::where('is_active',true)->latest()->get();
         return response()->json($slides);
     }
 

@@ -13,7 +13,7 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $galleries = Gallery::all();
+        $galleries = Gallery::where('is_active',true)->latest()->get();
         return response()->json($galleries);
     }
 

@@ -245,6 +245,7 @@ Route::middleware(['auth', 'role:admin|manager|staff'])->name('admin.')->prefix(
     Route::post('/gallery/store', [AdminGalleryController::class, 'store'])->name('gallery.store');
     Route::get('/gallery/{gallery:id}/edit', [AdminGalleryController::class, 'edit'])->name('gallery.edit');
     Route::patch('/gallery/{gallery:id}/update', [AdminGalleryController::class, 'update'])->name('gallery.update');
+    Route::patch('/fallery/{gallery:id}/isActive', [AdminGalleryController::class, 'isActive'])->name('gallery.isActive');
 
 
     //seminars
