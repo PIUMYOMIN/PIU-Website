@@ -33,7 +33,7 @@
                                             <td>:</td>
                                             <td>
                                                 <a href="/storage/{{ $admission->profile }}" download>
-                                                    <img src="/storage/{{ $admission->profile }}"
+                                                    <img src="{{ asset('storage/' . $admission->profile) }}"
                                                         alt="{{ $admission->profile }}" width="80">
                                                 </a>
                                             </td>
