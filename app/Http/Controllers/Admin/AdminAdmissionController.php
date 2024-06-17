@@ -12,7 +12,7 @@ class AdminAdmissionController extends Controller
     {
         $activeCourses = Course::where('application_sts', true)->get();
         return view('admin.admissions.index', [
-            'admissions' => Admission::all(),
+            'admissions' => Admission::latest()->get(),
             'courses' => $activeCourses,
         ]);
     }
