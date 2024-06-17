@@ -107,6 +107,29 @@
                     // Handle the error, e.g., display a message to the user
                 });
         }
+
+        function displayAdmissions(students) {
+            const tableBody = document.getElementById('admissionsTableBody');
+            tableBody.innerHTML = '';
+            let iteration = 0;
+
+            admissions.forEach(admission => {
+                iteration++;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${iteration}</td>
+            <td>${admission.name}</td>
+            <td>${admission.course.title}</td>
+            <td>${admission.personal_statement}</td>
+            <td>${admission.education_certificate}</td>
+            <td>${admission.other_document}</td>
+            <td>
+                <a href="/admin/admissions/${admission.id}/details" class="ad-st-view">View</a>
+            </td>
+        `;
+                tableBody.appendChild(row);
+            });
+        }
     </script>
 
 </x-admin_layout>
