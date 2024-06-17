@@ -21,7 +21,9 @@ class AdminAdmissionController extends Controller
     {
         $course = Course::findOrFail($courseId);
 
-        $admissions = Admission::where('course_id', $courseId)->get();
+        $admissions = Admission::with(['course'])
+        ->where('course_id', $courseId)->get()
+        ->get();
 
         return response()->json($admissions);
     }
