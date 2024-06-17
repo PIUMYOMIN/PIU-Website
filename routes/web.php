@@ -420,7 +420,7 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
 // Route::get('/piu/application/second-form', [AdmissionController::class, 'second']);
 // Route::post('/piu/application/second-form', [AdmissionController::class, 'storeSecond'])->name('piu.application.second-form');
 // Route::get('/piu/admission/application-form-successfully-submited/{token}', [AdmissionController::class, 'success']);
-// Route::get('/admin/admissions/{admission:id}/details', [AdmissionController::class, 'show']);
+Route::get('/admin/admissions/{admission:id}/details', [AdmissionController::class, 'show']);
 
 // google login
 // Route::get('/auth/google/user/redirect', [UserController::class, 'redirectToGoogle'])->name('auth.google.user.redirect');
