@@ -108,7 +108,7 @@
                 });
         }
 
-        function displayAdmissions(students) {
+        function displayAdmissions(admissions) {
             const tableBody = document.getElementById('admissionsTableBody');
             tableBody.innerHTML = '';
             let iteration = 0;
