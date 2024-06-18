@@ -107,7 +107,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Language Proficiency</td>
+                                            <td>Personal Statement</td>
                                             <td>:</td>
                                             <td>
                                                 @if ($admission->personal_statement)
@@ -120,6 +120,8 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td>Education Certificate</td>
+                                            <td>:</td>
                                             <td>
                                                 @if ($admission->education_certificate)
                                                     <a href="{{ asset('storage/' . $admission->education_certificate) }}"
@@ -131,6 +133,8 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td>Language Proficiency</td>
+                                            <td>:</td>
                                             <td>
                                                 @if ($admission->language_proficiency)
                                                     <a href="{{ asset('storage/' . $admission->language_proficiency) }}"
@@ -142,6 +146,8 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td>Other Document</td>
+                                            <td>:</td>
                                             <td>
                                                 @if ($admission->other_document)
                                                     <a href="{{ asset('storage/' . $admission->other_document) }}"
