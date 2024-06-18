@@ -118,6 +118,8 @@
                                                     No document found.
                                                 @endif
                                             </td>
+                                        </tr>
+                                        <tr>
                                             <td>
                                                 @if ($admission->education_certificate)
                                                     <a href="{{ asset('storage/' . $admission->education_certificate) }}"
@@ -127,6 +129,8 @@
                                                     No document found.
                                                 @endif
                                             </td>
+                                        </tr>
+                                        <tr>
                                             <td>
                                                 @if ($admission->language_proficiency)
                                                     <a href="{{ asset('storage/' . $admission->language_proficiency) }}"
@@ -136,6 +140,8 @@
                                                     No document found.
                                                 @endif
                                             </td>
+                                        </tr>
+                                        <tr>
                                             <td>
                                                 @if ($admission->other_document)
                                                     <a href="{{ asset('storage/' . $admission->other_document) }}"
