@@ -110,9 +110,37 @@
                                             <td>Language Proficiency</td>
                                             <td>:</td>
                                             <td>
+                                                @if ($admission->personal_statement)
+                                                    <a href="{{ asset('storage/' . $admission->personal_statement) }}"
+                                                        download>Language Proficiency Document</a>
+                                                        <p>{{ $admission->personal_statement }}</p>
+                                                @else
+                                                    No document found.
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($admission->education_certificate)
+                                                    <a href="{{ asset('storage/' . $admission->education_certificate) }}"
+                                                        download>Language Proficiency Document</a>
+                                                        <p>{{ $admission->education_certificate }}</p>
+                                                @else
+                                                    No document found.
+                                                @endif
+                                            </td>
+                                            <td>
                                                 @if ($admission->language_proficiency)
                                                     <a href="{{ asset('storage/' . $admission->language_proficiency) }}"
                                                         download>Language Proficiency Document</a>
+                                                        <p>{{ $admission->language_proficiency }}</p>
+                                                @else
+                                                    No document found.
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($admission->other_document)
+                                                    <a href="{{ asset('storage/' . $admission->other_document) }}"
+                                                        download>Language Proficiency Document</a>
+                                                        <p>{{ $admission->other_document }}</p>
                                                 @else
                                                     No document found.
                                                 @endif
