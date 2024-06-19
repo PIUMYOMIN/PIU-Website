@@ -112,8 +112,7 @@
                                             <td>
                                                 @if ($admission->other_document)
                                                     <a href="{{ asset('storage/' . $admission->other_document) }}"
-                                                        download>Other Document</a>
-                                                        <p>{{ $admission->other_document }}</p>
+                                                        download>Download Other Document</a>
                                                 @else
                                                     No document found.
                                                 @endif
