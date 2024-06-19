@@ -116,7 +116,7 @@
                                                         <p>{{ $admission->personal_statement }}</p>
                                                 @else
                                                     No document found.
-                                                @endif
+                                                @endif 
                                             </td>
                                         </tr>
                                         <tr>
