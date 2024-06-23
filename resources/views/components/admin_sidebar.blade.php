@@ -389,7 +389,7 @@
                             aria-hidden="true"></i> Mail Box</a>
                     <div class="collapsible-body left-sub-menu">
                         <ul>
-                            <li><a href="/admin/contact-mails">All Contacts</a></li>
+                            <li><a href="/admin/contact-mails">All Contact Mails</a></li>
                         </ul>
                     </div>
                 </li>

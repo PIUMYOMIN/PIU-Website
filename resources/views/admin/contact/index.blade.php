@@ -40,7 +40,9 @@
                                             <td>{{ $contact->email }}</td>
                                             <td>{{ $contact->phone }}</td>
                                             <td>{{ Str::limit($contact->message, 120, '...') }}</td>
-                                            <td><a href="admin-view-enquiry.html" class="ad-st-view">View</a></td>
+                                            <td>
+                                                <a href="#!" class="ad-st-view">View</a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

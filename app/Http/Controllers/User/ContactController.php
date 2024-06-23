@@ -23,7 +23,7 @@ class ContactController extends Controller
         'phone' => 'required',
         'country' => 'required',
         'message' => 'required',
-        'g-recaptcha-response' => 'required|captcha',
+        // 'g-recaptcha-response' => 'required|captcha',
        ]);
 
         Contact::Create([

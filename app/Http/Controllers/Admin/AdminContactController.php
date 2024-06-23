@@ -13,7 +13,7 @@ class AdminContactController extends Controller
     public function index()
     {
        return view('admin.contact.index',[
-        'contacts' => Contact::all(),
+        'contacts' => Contact::latest()->get(),
        ]);
     }
 }
