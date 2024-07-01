@@ -13,6 +13,8 @@ class ContactController extends Controller
 {
     public function store(Request $request)
     {
+        $formData = request()->all();
+        return response()->json($formData);
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
@@ -21,8 +23,6 @@ class ContactController extends Controller
             'message' => 'required',
             'reCapt' => 'required|captcha',
         ]);
-
-        return response()->json($validator);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
