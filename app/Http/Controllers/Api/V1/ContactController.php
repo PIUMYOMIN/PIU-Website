@@ -19,8 +19,10 @@ class ContactController extends Controller
             'phone' => 'required',
             'country'=> 'required',
             'message' => 'required',
-            'reCapt' => 'required|captcha',
+            // 'reCapt' => 'required|captcha',
         ]);
+
+        return response()->json($validator->errors(), 422);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

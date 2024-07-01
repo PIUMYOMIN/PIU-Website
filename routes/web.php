@@ -460,5 +460,5 @@ Route::get('/checkUserRole', [UserController::class, 'checkUserRole']);
 // });
 
 Route::any('{any}',function(){
-    return view('error.404');
+    return view('user.auth.login');
 })->where('any','.*');
