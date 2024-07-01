@@ -19,7 +19,7 @@ class ContactController extends Controller
             'phone' => 'required',
             'country'=> 'required',
             'message' => 'required',
-            // 'g-recaptcha-response' => 'required|captcha',
+            'reCapt' => 'required|captcha',
         ]);
 
         if ($validator->fails()) {
