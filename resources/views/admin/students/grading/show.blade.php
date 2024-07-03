@@ -71,7 +71,7 @@
                                     @endforeach
                                     @if ($gradings->count() > 0)
                                         <tr>
-                                            <td colspan="6"></td>
+                                            <td colspan="7"></td>
                                             <td>Total Credits: <strong class="text-danger">{{ $totalCredits }}</strong>
                                             </td>
                                             <td>
