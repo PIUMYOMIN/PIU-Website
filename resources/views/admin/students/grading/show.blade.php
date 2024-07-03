@@ -27,6 +27,7 @@
                                         <th>#</th>
                                         <th>Student Name</th>
                                         <th>Study Program</th>
+                                        <th>Academic Year</th>
                                         <th>Semester</th>
                                         <th>Assignment</th>
                                         <th>Module Code</th>
