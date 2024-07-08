@@ -16,4 +16,12 @@ class AdminContactController extends Controller
         'contacts' => Contact::latest()->get(),
        ]);
     }
+
+    public function show(string $id)
+    {
+        $contact = Contact::where('id', $id)->firstOrFail();
+       return view('admin.contact.show',[
+        'contact' => $contact
+       ]);
+    }
 }

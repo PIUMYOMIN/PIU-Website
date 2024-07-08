@@ -41,7 +41,7 @@
                                             <td>{{ $contact->phone }}</td>
                                             <td>{{ Str::limit($contact->message, 120, '...') }}</td>
                                             <td>
-                                                <a href="#!" class="ad-st-view">View</a>
+                                                <a href="{{ route('admin.contact.show', [$contact->id]) }}" class="ad-st-view">View</a>
                                             </td>
                                         </tr>
                                     @endforeach

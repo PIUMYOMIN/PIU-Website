@@ -27,7 +27,7 @@
                                 <div class="dash-book dash-b-2">
                                     <h5>Admission</h5>
                                     <h4>{{ $admissions->count() }}</h4>
-                                    <a href="#">View more</a>
+                                    <a href="/admin/admission/application-forms">View more</a>
                                 </div>
                             </li>
                             <li>

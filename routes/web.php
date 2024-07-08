@@ -174,6 +174,7 @@ Route::middleware(['auth', 'role:admin|manager'])->name('admin.')->prefix('admin
 
     //contact
     Route::get('/contact-mails', [AdminContactController::class, 'index'])->name('contact.index');
+    Route::get('/contact/{id}/show', [AdminContactController::class, 'show'])->name('contact.show');
 });
 
 Route::middleware(['auth', 'role:admin|manager|registrar|faculty'])->name('admin.')->prefix('admin')->group(function () {
