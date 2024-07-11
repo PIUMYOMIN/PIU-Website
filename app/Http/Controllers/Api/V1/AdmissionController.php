@@ -67,9 +67,6 @@ class AdmissionController extends Controller
         // Process file uploads
         $this->handleFileUploads($request, $validatedData);
 
-        // Save the admission data
-        $admission = Admission::create($validatedData);
-
         if ($request->hasFile('language_proficiency')) {
             $filePath = $request->file('language_proficiency')->store('admission_forms_docs', 'public');
             $validatedData['language_proficiency'] = $filePath;
