@@ -63,6 +63,9 @@ class AdmissionController extends Controller
         // Log the validated data
         Log::info('Validated data:', $validatedData);
 
+        // Save the admission data
+        $admission = Admission::create($validatedData);
+
         if ($request->hasFile('language_proficiency')) {
             $filePath = $request->file('language_proficiency')->store('admission_forms_docs', 'public');
             $validatedData['language_proficiency'] = $filePath;
@@ -87,9 +90,6 @@ class AdmissionController extends Controller
             $filePath = $request->file('other_document')->store('admission_forms_docs', 'public');
             $validatedData['other_document'] = $filePath;
         }
-
-        // Save the admission data
-        $admission = Admission::create($validatedData);
 
         // Send notification email to admin
         $adminEmail = $this->getFacultyEmail($request->input('course_id'));
