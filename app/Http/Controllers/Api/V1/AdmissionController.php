@@ -97,7 +97,7 @@ class AdmissionController extends Controller
             ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com', 'thantarhlaing.piu@gmail.com'])
             ->send(new NewAdmissionFormSubmitted($admission));
 
-        return response()->json(['message' => 'Admission form submitted successfully', 'data' => $admission],200);
+        return response()->json(['status' => 200,'message' => 'Admission form submitted successfully', 'data' => $admission]);
     }
 
     protected function getFacultyEmail($courseId)
