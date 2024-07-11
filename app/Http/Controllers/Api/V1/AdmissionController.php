@@ -35,7 +35,8 @@ class AdmissionController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the incoming request data for both first and second forms
+        try{
+            // Validate the incoming request data for both first and second forms
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:admissions,email',
@@ -98,6 +99,9 @@ class AdmissionController extends Controller
             ->send(new NewAdmissionFormSubmitted($admission));
 
         return response()->json(['status' => 200,'message' => 'Admission form submitted successfully', 'data' => $admission]);
+        }catch(\Exception $e){
+            return response()->json(['status' => 500, 'error' => $e->getMessage()]);
+        }
     }
 
     protected function getFacultyEmail($courseId)
