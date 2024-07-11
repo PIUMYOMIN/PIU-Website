@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use App\Models\Course;
+use Illuminate\Support\Facades\Log;
 
 class AdmissionController extends Controller
 {
@@ -35,6 +36,7 @@ class AdmissionController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info('Incoming request data:', $request->all());
         // Validate the incoming request data for both first and second forms
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
