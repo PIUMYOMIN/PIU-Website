@@ -64,9 +64,6 @@ class AdmissionController extends Controller
         // Log the validated data
         Log::info('Validated data:', $validatedData);
 
-        // Process file uploads
-        $this->handleFileUploads($request, $validatedData);
-
         if ($request->hasFile('language_proficiency')) {
             $filePath = $request->file('language_proficiency')->store('admission_forms_docs', 'public');
             $validatedData['language_proficiency'] = $filePath;
