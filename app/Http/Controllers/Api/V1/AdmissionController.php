@@ -35,8 +35,6 @@ class AdmissionController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = request()->all();
-        return response()->json($validate);
         // Validate the incoming request data for both first and second forms
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
