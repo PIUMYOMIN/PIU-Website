@@ -36,27 +36,24 @@ use App\Http\Middleware\Cors;
 // });
 
 Route::middleware([Cors::class])->group(function () {
-
-    Route::prefix('v1')->group(function(){
-        Route::resource('/courses',CourseController::class);
-        Route::resource('/news',NewsController::class);
-        Route::resource('/team',TeamController::class);
-        Route::resource('/events',EventController::class);
-        Route::resource('/seminars',SeminarController::class);
-        Route::resource('/slides',SlideController::class);
-        Route::resource('/gallery',GalleryController::class);
-        Route::resource('/blogs',BlogController::class);
-        Route::resource('/campus',CampusController::class);
-        Route::resource('/departments',DepartmentController::class);
-        Route::resource('/positions',PositionController::class);
-        Route::post('/login',[UserController::class,'apiLogin']);
-        Route::post('/register',[UserController::class,'register']);
-        Route::post('/application-form/submit',[AdmissionController::class,'store']);
-        Route::post('/contact-form-submit',[ContactController::class,'store']);
+    Route::prefix('v1')->group(function () {
+        Route::resource('/courses', CourseController::class);
+        Route::resource('/news', NewsController::class);
+        Route::resource('/team', TeamController::class);
+        Route::resource('/events', EventController::class);
+        Route::resource('/seminars', SeminarController::class);
+        Route::resource('/slides', SlideController::class);
+        Route::resource('/gallery', GalleryController::class);
+        Route::resource('/blogs', BlogController::class);
+        Route::resource('/campus', CampusController::class);
+        Route::resource('/departments', DepartmentController::class);
+        Route::resource('/positions', PositionController::class);
+        Route::post('/login', [UserController::class, 'apiLogin']);
+        Route::post('/register', [UserController::class, 'register']);
+        Route::post('/application-form/submit', [AdmissionController::class, 'store']);
     });
 
-    Route::middleware('auth:api')->prefix('v1')->group(function(){
-        Route::resource('/users',UserController::class);
+    Route::middleware('auth:api')->prefix('v1')->group(function () {
+        Route::resource('/users', UserController::class);
     });
-
 });
