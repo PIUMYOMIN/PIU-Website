@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use App\Models\Course;
-use Illuminate\Support\Facades\Log;
 
 class AdmissionController extends Controller
 {
