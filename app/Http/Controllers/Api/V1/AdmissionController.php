@@ -92,14 +92,14 @@ class AdmissionController extends Controller
             $validatedData['other_document'] = $filePath;
         }
 
-        // Save the admission data
-        $admission = Admission::create($validatedData);
-
         // Send notification email to admin
         $adminEmail = $this->getFacultyEmail($request->input('course_id'));
         Mail::to($adminEmail)
             ->cc(['piu.webdeveloper@gmail.com', 'myatmonthu.aug@gmail.com', 'piuacademicaffairs@gmail.com', 'thantarhlaing.piu@gmail.com'])
             ->send(new NewAdmissionFormSubmitted($admission));
+
+        // Save the admission data
+        $admission = Admission::create($validatedData);
 
         return response()->json(['message' => 'Admission form submitted successfully', 'data' => $admission]);
     }
