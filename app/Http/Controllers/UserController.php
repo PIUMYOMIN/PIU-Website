@@ -37,6 +37,12 @@ class UserController extends Controller
 
     public function login()
     {
+        $auth = Auth()->user();
+
+        if($auth){
+            return view("admin.index");
+        }
+
         return view('user.auth.login');
     }
 

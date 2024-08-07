@@ -59,7 +59,7 @@ use Spatie\Analytics\Period;
 
 // Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/', [UserController::class, 'login'])->middleware('guest')->name('login');
+Route::get('/login', [UserController::class, 'login'])->middleware('guest')->name('login');
 Route::post('/users/login/form/submit', [UserController::class, 'user_login'])->name('users.login.form.submit');
 
 Route::get('/register', [UserController::class, 'register'])->middleware('guest')->name('register');
@@ -76,6 +76,7 @@ Route::post('/admin/student/logout', [UserController::class, 'studentLogout'])->
 
 Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.index');
 // Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth'])->name('admin.index');
+
 
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
     //user details/delete
@@ -413,7 +414,7 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
 
 //Contact Form
 // Route::get('/contact-us', [ContactController::class, 'index']);
-// Route::post('/contact/form/submit', [ContactController::class, 'store'])->name('contact.form.submit');
+Route::post('/contact/form-submit', [ContactController::class, 'store'])->name('contact.form.submit');
 
 //Admission
 // Route::get('/piu/admission/application-form', [AdmissionController::class, 'create']);
@@ -460,5 +461,5 @@ Route::get('/checkUserRole', [UserController::class, 'checkUserRole']);
 // });
 
 Route::any('{any}',function(){
-    return view('user.auth.login');
+    return redirect('/admin');
 })->where('any','.*');

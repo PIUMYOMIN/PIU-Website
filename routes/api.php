@@ -51,6 +51,7 @@ Route::middleware([Cors::class])->group(function () {
         Route::post('/login', [UserController::class, 'apiLogin']);
         Route::post('/register', [UserController::class, 'register']);
         Route::post('/application-form/submit', [AdmissionController::class, 'store']);
+        Route::post('/contact/form-submit',[ContactController::class,'store']);
     });
 
     Route::middleware('auth:api')->prefix('v1')->group(function () {

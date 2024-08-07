@@ -11,6 +11,7 @@ use App\Models\Course;
 use App\Models\Student;
 use App\Models\Contact;
 use App\Models\Admission;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -18,6 +19,15 @@ class AdminController extends Controller
     {
         // $mostVisitedPages = Analytics::fetchMostVisitedPages(Period::days(7));
         // $visitorPages = Analytics::fetchVisitorsAndPageViews(Period::days(7));
+         $user = Auth::user();
+         $userId = $user->id;
+         dd($userId);
+        if ($user->hasRole('admin')) {
+                return redirect('/admin')->with('success', 'Welcome back');
+            } elseif($user->hasAnyRole('manager','faculty','registrar')) {
+                dd('hit');
+                return redirect()->route('admin.users.profile.edit',[$user->id])->with('success', 'Welcome back');
+            }
        return view('admin.index',[
         'course' => Course::all(),
         'courses' => Course::latest()->get(),
