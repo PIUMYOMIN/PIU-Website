@@ -79,7 +79,6 @@ Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'ro
 
 
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     //user details/delete
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{id}/details', [UserController::class, 'show'])->name('users.details');
@@ -462,5 +461,5 @@ Route::get('/checkUserRole', [UserController::class, 'checkUserRole']);
 // });
 
 Route::any('{any}',function(){
-    return redirect('/');
+    return view('error.404');
 })->where('any','.*');

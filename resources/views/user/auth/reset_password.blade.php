@@ -36,7 +36,7 @@
                             </div>
                             <div>
                                 <div class="input-field s4">
-                                    <input type="submit" value="Register" class="waves-effect waves-light log-in-btn">
+                                    <input type="submit" value="Update" class="waves-effect waves-light log-in-btn">
                                 </div>
                             </div>
                         </form>
