@@ -82,7 +82,7 @@
 										<div class="file-path-wrapper">
 											<input class="file-path validate" type="text" placeholder="Profile Image">
 										</div>
-                                        <img src="{{ asset('storage/'.$user->picture) }}" alt="{{ $user->picture }}" width="200">
+                                        <img src="{{ $user->picture && filter_var($user->picture, FILTER_VALIDATE_URL) ? $user->picture : asset('storage/' . $user->picture) }}" alt="Profile Picture" width="200">
 									</div>
                                     @error('picture')
                                         <p class="text-danger">{{ $message }}</p>

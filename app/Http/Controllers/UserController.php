@@ -11,8 +11,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Mail;
 use App\Mail\ForgotPasswordMail;
@@ -105,32 +107,47 @@ class UserController extends Controller
        ]);
     }
 
-    public function update(Request $request, User $user)
-    {
-        // dd(request()->all());
-        $data = $request->validate([
-            'name' => 'nullable',
-            'email' => ["nullable", Rule::unique('users', 'email')->ignore($user->id)],
-            'phone' => 'nullable',
-            'address' => 'nullable',
-            'city' => 'nullable',
-            'country' => 'nullable',
-            'picture' => 'nullable|image|mimes:jpg,jpeg,png',
-        ]);
+    public function update(Request $request, $id)
+{
+    $user = User::where('id', $id)->firstOrFail();
+    // Validate the input data
+    $data = $request->validate([
+        'name' => 'nullable|string|max:255',
+        'email' => ["nullable", "email", Rule::unique('users', 'email')->ignore($user->id)],
+        'phone' => 'nullable|string|max:20',
+        'address' => 'nullable|string|max:255',
+        'city' => 'nullable|string|max:100',
+        'country' => 'nullable|string|max:100',
+        'picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        if ($request->hasFile('picture')) {
-            $imagePath = $request->file('picture')->store('user_profiles', 'public');
-            $data['picture'] = $imagePath;
-        } else {
-            unset($data['picture']);
+    if ($request->hasFile('picture')) {
+        // Delete old image if it exists
+        if ($user->picture) {
+            Storage::disk('public')->delete($user->picture);
         }
 
-        // dd($data);
-
-        $user->update($data);
-
-        return back()->with('success', 'User updated successfully');
+        // Store new image
+        $imagePath = $request->file('picture')->store('user_profiles', 'public');
+        $data['picture'] = $imagePath;
+    } else {
+        // If no new picture, keep the old picture
+        unset($data['picture']);
     }
+
+    // Update the user with the new data
+    $user->update($data);
+
+    // Log the user update
+    Log::info('User updated successfully.', [
+        'user_id' => $user->id,
+        'name' => $user->name,
+        'email' => $user->email,
+        'updated_data' => $data
+    ]);
+
+    return back()->with('success', 'User updated successfully');
+}
 
 public function user_login(Request $request)
 {
@@ -272,6 +289,13 @@ public function user_login(Request $request)
 
         if($exitingUser){
             auth()->login($exitingUser);
+            if ($exitingUser->hasRole('admin')) {
+                return redirect('/admin')->with('success', 'Welcome back');
+            } elseif($exitingUser->hasRole('manager|faculty|registrar')) {
+                return redirect()->route('admin.users.profile.edit',[$exitingUser->id])->with('success', 'Welcome back');
+            } else {
+                return redirect()->route('admin.users.profile.edit',[$exitingUser->id])->with('success', 'Welcome back');
+            }
         }else{
             $newUser = User::create([
                 'name' => $user->name,
@@ -281,10 +305,19 @@ public function user_login(Request $request)
                 'provider_id' => $user->id,
             ]);
 
+            // dd($newUser);
+
             auth()->login($newUser);
+            if ($newUser->hasRole('admin')) {
+                return redirect('/admin')->with('success', 'Welcome back');
+            } elseif($newUser->hasRole('manager|faculty|registrar')) {
+                return redirect()->route('admin.users.profile.edit',[$newUser->id])->with('success', 'Welcome back');
+            } else {
+                return redirect()->route('admin.users.profile.edit',[$newUser->id])->with('success', 'Welcome back');
+            }
         }
 
-        return redirect('/')->with('success', 'Welcome ' . auth()->user()->name);
+        // return redirect('/')->with('success', 'Welcome ' . auth()->user()->name);
     }
 
     // facebook login redirect 
@@ -306,6 +339,13 @@ public function user_login(Request $request)
 
         if($exitingUser){
             auth()->login($exitingUser);
+            if ($exitingUser->hasRole('admin')) {
+                return redirect('/admin')->with('success', 'Welcome back');
+            } elseif($exitingUser->hasRole('manager|faculty|registrar')) {
+                return redirect()->route('admin.users.profile.edit',[$exitingUser->id])->with('success', 'Welcome back');
+            } else {
+                return redirect()->route('admin.users.profile.edit',[$exitingUser->id])->with('success', 'Welcome back');
+            }
         }else{
             $newUser = User::create([
                 'name' => $user->name,
@@ -317,9 +357,14 @@ public function user_login(Request $request)
             ]);
 
             auth()->login($newUser);
+            if ($newUser->hasRole('admin')) {
+                return redirect('/admin')->with('success', 'Welcome back');
+            } elseif($newUser->hasRole('manager|faculty|registrar')) {
+                return redirect()->route('admin.users.profile.edit',[$newUser->id])->with('success', 'Welcome back');
+            } else {
+                return redirect()->route('admin.users.profile.edit',[$newUser->id])->with('success', 'Welcome back');
+            }
         }
-
-        return redirect('/')->with('success', 'Welcome ' . auth()->user()->name);
     }
 
 
@@ -334,17 +379,24 @@ public function user_login(Request $request)
     public function twitterCallback()
     {
         $user = Socialite::driver('twitter')->user();
-        dd($user);
         try {
             $user = Socialite::driver('twitter')->user();
         } catch (Exception $e) {
+        Log::error('Twitter authentication failed', ['error' => $e->getMessage()]);
             return redirect('/')->with('error', 'Failed to authenticate with Twitter.');
-        };
+        }
 
         $exitingUser = User::where('email', $user->email)->first();
 
         if($exitingUser){
             auth()->login($exitingUser);
+            if ($exitingUser->hasRole('admin')) {
+                return redirect('/admin')->with('success', 'Welcome back');
+            } elseif($exitingUser->hasRole('manager|faculty|registrar')) {
+                return redirect()->route('admin.users.profile.edit',[$exitingUser->id])->with('success', 'Welcome back');
+            } else {
+                return redirect()->route('admin.users.profile.edit',[$exitingUser->id])->with('success', 'Welcome back');
+            }
         }else{
             $newUser = User::create([
                 'name' => $user->name,
@@ -356,9 +408,16 @@ public function user_login(Request $request)
             ]);
 
             auth()->login($newUser);
+            if ($newUser->hasRole('admin')) {
+                return redirect('/admin')->with('success', 'Welcome back');
+            } elseif($newUser->hasRole('manager|faculty|registrar')) {
+                return redirect()->route('admin.users.profile.edit',[$newUser->id])->with('success', 'Welcome back');
+            } else {
+                return redirect()->route('admin.users.profile.edit',[$newUser->id])->with('success', 'Welcome back');
+            }
         }
 
-        return redirect('/')->with('success', 'Welcome ' . auth()->user()->name);
+        // return redirect('/')->with('success', 'Welcome ' . auth()->user()->name);
     }
 
     public function passwordChange(User $user)
