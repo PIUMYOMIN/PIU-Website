@@ -142,16 +142,13 @@ public function user_login(Request $request)
         // Attempt to find a user with the provided email
         $user = User::where('email', $identifier)->first();
 
-        if ($user && Auth::attempt(['email' => $identifier, 'password' => $password])) {
-            Auth::login($user);
-            if ($user->hasRole('admin')) {
+        if ($user->hasRole('admin')) {
                 return redirect('/admin')->with('success', 'Welcome back');
             } elseif($user->hasRole('manager|faculty|registrar')) {
                 return redirect()->route('admin.users.profile.edit',[$user->id])->with('success', 'Welcome back');
             } else {
-                return redirect()->route('/');
+                return redirect()->route('admin.users.profile.edit',[$user->id])->with('success', 'Welcome back');
             }
-        }
     } else {
         // dd('hit');
         // Attempt to find a student with the provided student_id
