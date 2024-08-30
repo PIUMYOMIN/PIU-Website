@@ -425,16 +425,16 @@ Route::post('/contact/form-submit', [ContactController::class, 'store'])->name('
 Route::get('/admin/admissions/{admission:id}/details', [AdmissionController::class, 'show']);
 
 // google login
-// Route::get('/auth/google/user/redirect', [UserController::class, 'redirectToGoogle'])->name('auth.google.user.redirect');
-// Route::get('/auth/google/user/callback', [UserController::class, 'googleCallback'])->name('googleCallback');
+Route::get('/auth/google/user/redirect', [UserController::class, 'redirectToGoogle'])->name('auth.google.user.redirect');
+Route::get('/auth/google/user/callback', [UserController::class, 'googleCallback'])->name('googleCallback');
 
 //facebook login
-// Route::get('/auth/facebook/user/redirect', [UserController::class, 'redirectToFacebook'])->name('auth.facebook.user.redirect');
-// Route::get('/auth/facebook/user/callback', [UserController::class, 'facebookCallback'])->name('facebookCallback');
+Route::get('/auth/facebook/user/redirect', [UserController::class, 'redirectToFacebook'])->name('auth.facebook.user.redirect');
+Route::get('/auth/facebook/user/callback', [UserController::class, 'facebookCallback'])->name('facebookCallback');
 
 //twitter login
-// Route::get('/auth/twitter/user/redirect', [UserController::class, 'redirectToTwitter'])->name('auth.twitter.user.redirect');
-// Route::get('/auth/twitter/user/callback', [UserController::class, 'twitterCallback'])->name('twitterCallback');
+Route::get('/auth/twitter/user/redirect', [UserController::class, 'redirectToTwitter'])->name('auth.twitter.user.redirect');
+Route::get('/auth/twitter/user/callback', [UserController::class, 'twitterCallback'])->name('twitterCallback');
 
 // Route::get('/about-us', function () {
 //     return view('user.about.index');
