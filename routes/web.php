@@ -59,7 +59,7 @@ use Spatie\Analytics\Period;
 
 // Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/login', [UserController::class, 'login'])->middleware('guest')->name('login');
+Route::get('/', [UserController::class, 'login'])->middleware('guest');
 Route::post('/users/login/form/submit', [UserController::class, 'user_login'])->name('users.login.form.submit');
 
 Route::get('/register', [UserController::class, 'register'])->middleware('guest')->name('register');
@@ -74,11 +74,12 @@ Route::patch('/reset-password/update', [UserController::class, 'forgotPasswordUp
 Route::post('/admin/auth/logout', [UserController::class, 'logout'])->name('admin.auth.logout');
 Route::post('/admin/student/logout', [UserController::class, 'studentLogout'])->name('admin.student.logout');
 
-Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.index');
+// Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.index');
 // Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth'])->name('admin.index');
 
 
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     //user details/delete
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{id}/details', [UserController::class, 'show'])->name('users.details');
@@ -461,5 +462,5 @@ Route::get('/checkUserRole', [UserController::class, 'checkUserRole']);
 // });
 
 Route::any('{any}',function(){
-    return redirect('/admin');
+    return redirect('/');
 })->where('any','.*');

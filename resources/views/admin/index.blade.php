@@ -19,7 +19,7 @@
                             <li>
                                 <div class="dash-book dash-b-1">
                                     <h5>All Courses</h5>
-                                    <h4>{{ $course->count() }}</h4>
+                                    <h4>{{ $courses->count() }}</h4>
                                     <a href="/admin/courses">View more</a>
                                 </div>
                             </li>
@@ -33,7 +33,7 @@
                             <li>
                                 <div class="dash-book dash-b-3">
                                     <h5>Students</h5>
-                                    <h4>{{ $student->count() }}</h4>
+                                    <h4>{{ $students->count() }}</h4>
                                     <a href="/admin/students">View more</a>
                                 </div>
                             </li>

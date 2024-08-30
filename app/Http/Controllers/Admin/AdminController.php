@@ -21,18 +21,16 @@ class AdminController extends Controller
         // $visitorPages = Analytics::fetchVisitorsAndPageViews(Period::days(7));
          $user = Auth::user();
          $userId = $user->id;
-         dd($userId);
+        //  dd($userId);
         if ($user->hasRole('admin')) {
                 return redirect('/admin')->with('success', 'Welcome back');
             } elseif($user->hasAnyRole('manager','faculty','registrar')) {
-                dd('hit');
+                // dd('hit');
                 return redirect()->route('admin.users.profile.edit',[$user->id])->with('success', 'Welcome back');
             }
        return view('admin.index',[
-        'course' => Course::all(),
-        'courses' => Course::latest()->get(),
+        'courses' => Course::all(),
         'student' => Student::all(),
-        'students' => Student::latest()->take(10)->get(),
         'users' => User::all(),
         'contacts' => Contact::all(),
         'admissions' => Admission::all(),
