@@ -15,7 +15,9 @@ class TeamController extends Controller
     {
         $teams = Team::where('is_active',1)
         ->with('department')
-        ->with('position');
+        ->with('position')
+        ->orderBy('created_at', 'desc')
+        ->get();
         return response()->json($teams);
     }
 
