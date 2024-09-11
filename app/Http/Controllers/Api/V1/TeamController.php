@@ -15,8 +15,7 @@ class TeamController extends Controller
     {
         $teams = Team::where('is_active',1)
         ->with('department')
-        ->with('position')
-        ->latest()->get();
+        ->with('position');
         return response()->json($teams);
     }
 

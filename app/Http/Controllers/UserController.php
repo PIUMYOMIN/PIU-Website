@@ -380,11 +380,11 @@ public function user_login(Request $request)
     {
         $user = Socialite::driver('twitter')->user();
         try {
-            $user = Socialite::driver('twitter')->user();
-        } catch (Exception $e) {
+        $user = Socialite::driver('twitter')->user();
+    } catch (\Exception $e) {
         Log::error('Twitter authentication failed', ['error' => $e->getMessage()]);
-            return redirect('/')->with('error', 'Failed to authenticate with Twitter.');
-        }
+        return redirect('/')->with('error', 'Failed to authenticate with Twitter.');
+    }
 
         $exitingUser = User::where('email', $user->email)->first();
 
