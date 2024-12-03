@@ -61,6 +61,15 @@
                                                         'grading' => $grading,
                                                         'semester' => $grading->semester,
                                                     ]) }}" class="ad-st-view">Edit</a>
+                                                @if (auth()->user() &&
+                                                    auth()->user()->can('Read and Write'))
+                                                    <a
+                                                    href="{{ route('admin.student.grading.delete', [
+                                                        'student' => $grading->student,
+                                                        'grading' => $grading,
+                                                        'semester' => $grading->semester,
+                                                    ]) }}" class="ad-st-view">delete</a>
+                                                @endif
                                             </td>
                                         </tr>
                                         <?php

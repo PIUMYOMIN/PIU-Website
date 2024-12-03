@@ -143,6 +143,9 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->grou
 
     //assignments 
     Route::delete('/assignment/{assignment:id}/delete', [AdminAssignmentController::class, 'delete'])->name('assignment.delete');
+
+    //student grading delete
+    Route::get('student/{student}/grading/{grading}/semester/{semester}/delete',[AdminGradingController::class,'delete'])->name('student.grading.delete');
 });
 
 Route::middleware(['auth', 'role:admin|manager'])->name('admin.')->prefix('admin')->group(function () {

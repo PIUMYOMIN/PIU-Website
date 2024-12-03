@@ -94,6 +94,8 @@ class AdminGradingController extends Controller
        ]);
     }
 
+
+    //edit
     public function edit(Request $request, Student $student, Grading $grading, Semester $semester)
     {
         return view('admin.students.grading.edit', [
@@ -105,6 +107,14 @@ class AdminGradingController extends Controller
             'assignments' => Assignment::all(),
             'years' => Year::latest()->get(),
         ]);
+    }
+
+    //delete
+    public function delete(Request $request, Student $student, Grading $grading, Semester $semester)
+    {
+        $grading->delete();
+
+        return redirect()->back();
     }
 
     public function update(Request $request, Student $student, Grading $grading, Semester $semester)
