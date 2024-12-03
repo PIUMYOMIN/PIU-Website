@@ -9,6 +9,8 @@ use App\Models\Course;
 use App\Models\Year;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use App\Models\StudentJoinedCourse;
+use App\Models\Grading;
 use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
@@ -16,11 +18,6 @@ class StudentController extends Controller
     public function index($identifier)
 {
     // dd($identifier);
-    // Validate the format of the identifier
-    // if (!preg_match('/^[A-Z]{3}\d{6}[A-Za-z0-9]{15}$/', $identifier)) {
-    //     abort(404);
-    // }
-
 
     // Extract the student ID from the identifier
     $student_id = substr($identifier, 0, 7);
@@ -30,18 +27,115 @@ class StudentController extends Controller
     // Retrieve the student data based on the extracted student ID
     $student = Student::where('student_id', $student_id)->firstOrFail();
 
-    // dd($student->student_id,auth()->guard('student')->user()->student_id);
+    // dd($student);
+
+    // Ensure authenticated user is correctly retrieved
+    $studentAuth = auth()->guard('student')->user();
 
     // Verify that the extracted student ID matches the retrieved student record
-    if ($student->student_id !== auth()->guard('student')->user()->student_id) {
+    if ($studentAuth && $student->student_id !== auth()->guard('student')->user()->student_id) {
         abort(404); // Identifier integrity check failed
     }
 
-    return view('admin.student_profile.profile', [
+    return view('student.profile', [
         'student' => $student,
         'identifier' => $identifier
     ]);
 }
+
+// Dashboard Route
+    public function dashboard($identifier)
+    {
+        // Extract the student ID from the identifier
+        $student_id = substr($identifier, 0, 7);
+
+        // dd($student_id);
+
+        // Fetch the student details
+        $student = Student::where('student_id', $student_id)->firstOrFail();
+
+        if ($student->student_id !== auth()->guard('student')->user()->student_id) {
+            abort(404); // Identifier integrity check failed
+        }
+
+        $joinedCourses = StudentJoinedCourse::with('course')
+        ->where('student_id', $student->id)
+        ->get();
+
+        // $gradings = Grading::with('gradings')
+        // ->where('student_id',$student->id)
+        // ->get();
+
+        $gradings = Grading::where('student_id',$student->id)
+        ->get();
+
+        return view('student.dashboard', [
+            'student' => $student,
+            'identifier' => $identifier,
+            'joinedCourses' => $joinedCourses,
+            'gradings' => $gradings
+        ]);
+    }
+
+    public function courses($identifier)
+    {
+        // Extract the student ID from the identifier
+        $student_id = substr($identifier, 0, 7);
+
+        // dd($student_id);
+
+        // Fetch the student details
+        $student = Student::where('student_id', $student_id)->firstOrFail();
+
+        if ($student->student_id !== auth()->guard('student')->user()->student_id) {
+            abort(404); // Identifier integrity check failed
+        }
+
+        return view('student.courses', [
+            'student' => $student,
+            'identifier' => $identifier // Keep the identifier consistent
+        ]);
+    }
+
+    public function exams($identifier)
+    {
+        // Extract the student ID from the identifier
+        $student_id = substr($identifier, 0, 7);
+
+        // dd($student_id);
+
+        // Fetch the student details
+        $student = Student::where('student_id', $student_id)->firstOrFail();
+
+        if ($student->student_id !== auth()->guard('student')->user()->student_id) {
+            abort(404); // Identifier integrity check failed
+        }
+
+        return view('student.exams', [
+            'student' => $student,
+            'identifier' => $identifier // Keep the identifier consistent
+        ]);
+    }
+
+    public function timeLine($identifier)
+    {
+        // Extract the student ID from the identifier
+        $student_id = substr($identifier, 0, 7);
+
+        // dd($student_id);
+
+        // Fetch the student details
+        $student = Student::where('student_id', $student_id)->firstOrFail();
+
+        if ($student->student_id !== auth()->guard('student')->user()->student_id) {
+            abort(404); // Identifier integrity check failed
+        }
+
+        return view('student.time_line', [
+            'student' => $student,
+            'identifier' => $identifier // Keep the identifier consistent
+        ]);
+    }
 
 // student edit page
     public function edit($identifier)

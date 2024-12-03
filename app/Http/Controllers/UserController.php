@@ -154,6 +154,10 @@ public function user_login(Request $request)
     $identifier = $request->input('identifier');
     $password = $request->input('password');
 
+    // Debugging output
+    \Log::info('Identifier: ' . $identifier);
+    \Log::info('Password: ' . $password);
+
     // Check if the identifier is an email
     if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
         // Attempt to find a user with the provided email
@@ -171,23 +175,30 @@ public function user_login(Request $request)
             }
         }
     } else {
-        // dd('hit');
         // Attempt to find a student with the provided student_id
         $student = Student::where('student_id', $identifier)->first();
 
-        if ($student && Auth::guard('student')->attempt(['student_id' => $identifier, 'password' => $password])) {
-            Auth::guard('student')->login($student);
+        // dd($identifier,$password);
+        // dd($student); 
 
-            // Generate a random string
-            $randomString = Str::random(15);
+        if ($student) {
+            // Use Hash::check to verify the password
+            if (Hash::check($password, $student->password)) {
+                // Log the student in using the 'student' guard
+                Auth::guard('student')->login($student);
+                \Log::info('Student logged in: ' . $student->student_id);
 
-            // Concatenate student ID with random string
-            $mixedIdentifier = $student->student_id . $randomString;
-            // dd($mixedIdentifier);
+                // Generate a random string
+                $randomString = Str::random(15);
 
+                // Concatenate student ID with the random string
+                $mixedIdentifier = $student->student_id . $randomString;
 
-            // Redirect with the mixed identifier appended to the route
-            return redirect()->intended(route('admin.student.profile', ['identifier' => $mixedIdentifier]));
+                // Redirect with the mixed identifier appended to the route
+                return redirect()->intended(route('student.profile', ['identifier' => $mixedIdentifier]))->with('success', 'Welcome back!');
+            } else {
+                return redirect('/login')->withErrors(['login' => 'Invalid login credentials.']);
+            }
         }
     }
 

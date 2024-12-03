@@ -8,7 +8,7 @@ use App\Models\Student;
 use App\Models\Year;
 use App\Models\Course;
 use App\Models\User;
-use App\Models\StudentCourseYear;
+use App\Models\StudentJoinedCourse;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
@@ -81,12 +81,9 @@ class AdminStudentController extends Controller
 
     public function show(Student $student)
     {
-        $joinedCourses = $student->courses()->with('years')->get();
         return view('admin.students.show', [
          'student' => $student,
          'courses' => Course::all(),
-         'years' => Year::all(),
-         'joinedCourses' => $joinedCourses,
         ]);
     }
 
@@ -164,16 +161,20 @@ class AdminStudentController extends Controller
     }
 
     public function addCourse(Request $request, Student $student)
-    {
-        $formData = $request->validate([
-            'course_id' => 'required',
-            'year_id' => 'required',
-        ]);
+{
+    $formData = $request->validate([
+        'course_id' => 'required',
+        'joined_at' => 'required',
+    ]);
 
-        $student->courses()->attach($formData['course_id'], ['year_id' => $formData['year_id']]);
+    // Add the student ID manually
+    $formData['student_id'] = $student->id;
 
-        return redirect()->route('admin.students.details', ['student' => $student->id]);
-    }
+    // Save the data to the student_joined_course table
+    StudentJoinedCourse::create($formData);
+
+    return redirect('admin/students');
+}
 
     public function changePassword($identifier)
     {

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('student_course_years', function (Blueprint $table) {
+        Schema::create('student_joined_courses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students');
-            $table->foreignId('course_id')->constrained('courses');
-            $table->foreignId('year_id')->constrained('years');
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
+            $table->date('joined_at')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_course_years');
+        Schema::dropIfExists('student_joined_courses');
     }
 };

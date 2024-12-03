@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminEventRegisterController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminSlideController;
+use App\Http\Controllers\Admin\AdminPartnerController;
 use App\Http\Controllers\Admin\AdminPositionController;
 use App\Http\Controllers\Admin\AdminSeminarController;
 use App\Http\Controllers\Admin\AdminTeamController;
@@ -330,6 +331,15 @@ Route::middleware(['auth', 'role:admin|manager|staff|registrar|faculty'])->name(
     Route::get('student/{student}/grading/{grading}/semester/{semester}/edit',[AdminGradingController::class,'edit'])->name('student.grading.edit');
     Route::put('student/{student}/grading/{grading}/semester/{semester}', [AdminGradingController::class, 'update'])->name('student.grading.update');
 
+    //MOU Partner
+    Route::get('/partners', [AdminPartnerController::class, 'index'])->name('partner.index');
+    Route::get('/partners/create', [AdminPartnerController::class, 'create'])->name('partner.create');
+    Route::post('/partners/store', [AdminPartnerController::class, 'store'])->name('partner.store');
+    Route::get('/partners/{partner:id}/edit', [AdminPartnerController::class, 'edit'])->name('partner.edit');
+    Route::post('/partners/upload', [AdminPartnerController::class, 'uploadImage'])->name('partner.upload');
+    Route::patch('/partners/{partner:id}/update', [AdminPartnerController::class, 'update'])->name('partner.update');
+    Route::delete('/partners/{partner:id}/delete', [AdminPartnerController::class, 'delete'])->name('partner.delete');
+
 });
 
 //admin, manager, staff
@@ -456,9 +466,17 @@ Route::get('/checkUserRole', [UserController::class, 'checkUserRole']);
 //     dd($analyticsData[0]['pageViews']);
 // });
 
-// Route::get('/testing',function(){
-//     return view('testing');
+// Route::get('/profile',function(){
+//     return view('student.profile');
 // });
+Route::middleware('auth:student')->group(function() {
+    Route::get('student/{identifier}/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('student/{identifier}/profile', [StudentController::class, 'index'])->name('student.profile');
+    Route::get('student/{identifier}/courses', [StudentController::class, 'courses'])->name('student.courses');
+    Route::get('student/{identifier}/exams', [StudentController::class, 'exams'])->name('student.exams');
+    Route::get('student/{identifier}/time-line', [StudentController::class, 'timeLine'])->name('student.time-line');
+});
+
 
 Route::any('{any}',function(){
     return view('error.404');

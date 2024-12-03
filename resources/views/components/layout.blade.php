@@ -19,11 +19,11 @@
     @endif
   @endif
   <x-header />
-  <x-search_box />
-  <x-mobileMenu />
+  {{-- <x-search_box /> --}}
+  {{-- <x-mobileMenu /> --}}
   {{ $slot }}
-  <x-socialShare />
-  <x-userLoginRegister />
+  {{-- <x-socialShare /> --}}
+  {{-- <x-userLoginRegister /> --}}
   <x-footer />
   <x-scriptLinks />
 </body>

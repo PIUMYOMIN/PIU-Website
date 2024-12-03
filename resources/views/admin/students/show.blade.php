@@ -51,41 +51,12 @@
                                             @endforeach
                                         </td>
                                     </tr>
-                                    {{-- <tr>
-                                        <td>Joined Courses</td>
-                                        <td>:</td>
-                                        <td>
-                                            @if ($joinedCourses->isNotEmpty())
-                                                <ul>
-                                                    @foreach ($joinedCourses as $joinedCourse)
-                                                        <li>
-                                                            <div class="row">
-                                                                <div class="col s4">
-                                                                    {{ $joinedCourse->title }} -
-                                                                    <form
-                                                                            action="{{ route('admin.students.course.year.delete', ['student' => $student->id, 'year' => $joinedCourse->years[0]->id]) }}"
-                                                                            method="POST">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger">Delete</button>
-                                                                        </form>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
-                                            @else
-                                                <p>No joined courses found.</p>
-                                            @endif
-                                        </td>
-                                    </tr> --}}
-                                    {{-- <tr>
+                                    <tr>
                                         <td>Add Joined Program</td>
                                         <td>:</td>
                                         <td>
                                             <form
-                                                action="{{ route('admin.students.addCourse', ['student' => $student->id]) }}"
+                                                action="{{ route('admin.student.addCourse', ['student' => $student->id]) }}"
                                                 method="POST">
                                                 @csrf
                                                 <div class="row">
@@ -104,26 +75,17 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col s6">
-                                                        <select class="input-field" name="year_id" required>
-                                                            <option value="" disabled selected>Academic Year
-                                                            </option>
-                                                            @foreach ($years as $year)
-                                                                <option
-                                                                    {{ $year->id == old('year_id') ? 'selected' : '' }}
-                                                                    value="{{ $year->id }}">{{ $year->name }}
-                                                                </option>
-                                                                @error('year_id')
-                                                                    <p class="text-danger">{{ $message }}</p>
-                                                                @enderror
-                                                            @endforeach
-                                                        </select>
+                                                    <div class="input-field col s6">
+                                                        <input id="joined_at" type="date" name="joined_at" value="{{ old('joined_at') }}" class="validate">
+                                                            @error('joined_at')
+                                                                <p class="text-danger">{{ $message }}</p>
+                                                            @enderror
+                                                        </div>
                                                     </div>
-                                                </div>
                                                 <button type="submit">Add Course</button>
                                             </form>
                                         </td>
-                                    </tr> --}}
+                                    </tr>
 
                                     <tr>
                                         <td>Student Id</td>

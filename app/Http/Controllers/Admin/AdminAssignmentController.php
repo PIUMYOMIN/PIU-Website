@@ -17,7 +17,7 @@ class AdminAssignmentController extends Controller
     public function index()
     {
        return view('admin.assignments.index',[
-        'assignments' => Assignment::all(),
+        'assignments' => Assignment::latest()->get(),
         'student_assignments' => StudentAssignment::all(),
         'modules' => Module::all(),
         'subjects' => Subject::all(),

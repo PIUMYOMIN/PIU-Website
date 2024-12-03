@@ -217,6 +217,9 @@
                 <li>
                     <a href="/admin/slides"><i class="fa fa-image" aria-hidden="true"></i> Slider</a>
                 </li>
+                <li>
+                    <a href="/admin/partners"><i class="fa fa-image" aria-hidden="true"></i> MOU Parnership</a>
+                </li>
                 @if (auth()->user()->can('Read and Write') ||
                     auth()->user()->can('Read') ||
                     auth()->user()->can('Write'))

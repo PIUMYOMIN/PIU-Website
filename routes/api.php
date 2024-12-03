@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\V1\AdmissionController;
 use App\Http\Controllers\Api\V1\BlogController;
 use App\Http\Controllers\Api\V1\CampusController;
 use App\Http\Controllers\Api\V1\ContactController;
+use App\Http\Controllers\Api\V1\PartnerController;
 use App\Http\Middleware\Cors;
 
 
@@ -48,6 +49,7 @@ Route::middleware([Cors::class])->group(function () {
         Route::resource('/campus', CampusController::class);
         Route::resource('/departments', DepartmentController::class);
         Route::resource('/positions', PositionController::class);
+        Route::resource('/partners', PartnerController::class);
         Route::post('/login', [UserController::class, 'apiLogin']);
         Route::post('/register', [UserController::class, 'register']);
         Route::post('/application-form/submit', [AdmissionController::class, 'store']);
