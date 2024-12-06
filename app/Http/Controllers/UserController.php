@@ -383,15 +383,17 @@ public function user_login(Request $request)
 
     public function redirectToTwitter()
     {
+        // dd('hit');
         return Socialite::driver('twitter')->redirect();
     }
 
     //twitter callback
     public function twitterCallback()
     {
-        $user = Socialite::driver('twitter')->user();
         try {
         $user = Socialite::driver('twitter')->user();
+        dd($user);
+        $finduser = User::where('provider_id', $user->id)->first();
     } catch (\Exception $e) {
         Log::error('Twitter authentication failed', ['error' => $e->getMessage()]);
         return redirect('/')->with('error', 'Failed to authenticate with Twitter.');
