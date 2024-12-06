@@ -381,57 +381,57 @@ public function user_login(Request $request)
 
 // twitter redirect
 
-    public function redirectToTwitter()
-    {
-        // dd('hit');
-        return Socialite::driver('twitter')->redirect();
-    }
+    // public function redirectToTwitter()
+    // {
+    //     // dd('hit');
+    //     return Socialite::driver('twitter')->redirect();
+    // }
 
     //twitter callback
-    public function twitterCallback()
-    {
-        try {
-        $user = Socialite::driver('twitter')->user();
-        dd($user);
-        $finduser = User::where('provider_id', $user->id)->first();
-    } catch (\Exception $e) {
-        Log::error('Twitter authentication failed', ['error' => $e->getMessage()]);
-        return redirect('/')->with('error', 'Failed to authenticate with Twitter.');
-    }
+    // public function twitterCallback()
+    // {
+    //     try {
+    //     $user = Socialite::driver('twitter')->user();
+    //     dd($user);
+    //     $finduser = User::where('provider_id', $user->id)->first();
+    // } catch (\Exception $e) {
+    //     Log::error('Twitter authentication failed', ['error' => $e->getMessage()]);
+    //     return redirect('/')->with('error', 'Failed to authenticate with Twitter.');
+    // }
 
-        $exitingUser = User::where('email', $user->email)->first();
+    //     $exitingUser = User::where('email', $user->email)->first();
 
-        if($exitingUser){
-            auth()->login($exitingUser);
-            if ($exitingUser->hasRole('admin')) {
-                return redirect('/admin')->with('success', 'Welcome back');
-            } elseif($exitingUser->hasRole('manager|faculty|registrar')) {
-                return redirect()->route('admin.users.profile.edit',[$exitingUser->id])->with('success', 'Welcome back');
-            } else {
-                return redirect()->route('admin.users.profile.edit',[$exitingUser->id])->with('success', 'Welcome back');
-            }
-        }else{
-            $newUser = User::create([
-                'name' => $user->name,
-                'email' => $user->email ?? null,
-                'phone' => $user->phone ?? null,
-                'password' => null,
-                'picture' => $user->avatar,
-                'provider_id' => $user->id,
-            ]);
+    //     if($exitingUser){
+    //         auth()->login($exitingUser);
+    //         if ($exitingUser->hasRole('admin')) {
+    //             return redirect('/admin')->with('success', 'Welcome back');
+    //         } elseif($exitingUser->hasRole('manager|faculty|registrar')) {
+    //             return redirect()->route('admin.users.profile.edit',[$exitingUser->id])->with('success', 'Welcome back');
+    //         } else {
+    //             return redirect()->route('admin.users.profile.edit',[$exitingUser->id])->with('success', 'Welcome back');
+    //         }
+    //     }else{
+    //         $newUser = User::create([
+    //             'name' => $user->name,
+    //             'email' => $user->email ?? null,
+    //             'phone' => $user->phone ?? null,
+    //             'password' => null,
+    //             'picture' => $user->avatar,
+    //             'provider_id' => $user->id,
+    //         ]);
 
-            auth()->login($newUser);
-            if ($newUser->hasRole('admin')) {
-                return redirect('/admin')->with('success', 'Welcome back');
-            } elseif($newUser->hasRole('manager|faculty|registrar')) {
-                return redirect()->route('admin.users.profile.edit',[$newUser->id])->with('success', 'Welcome back');
-            } else {
-                return redirect()->route('admin.users.profile.edit',[$newUser->id])->with('success', 'Welcome back');
-            }
-        }
+    //         auth()->login($newUser);
+    //         if ($newUser->hasRole('admin')) {
+    //             return redirect('/admin')->with('success', 'Welcome back');
+    //         } elseif($newUser->hasRole('manager|faculty|registrar')) {
+    //             return redirect()->route('admin.users.profile.edit',[$newUser->id])->with('success', 'Welcome back');
+    //         } else {
+    //             return redirect()->route('admin.users.profile.edit',[$newUser->id])->with('success', 'Welcome back');
+    //         }
+    //     }
 
-        // return redirect('/')->with('success', 'Welcome ' . auth()->user()->name);
-    }
+    //     // return redirect('/')->with('success', 'Welcome ' . auth()->user()->name);
+    // }
 
     public function passwordChange(User $user)
     {

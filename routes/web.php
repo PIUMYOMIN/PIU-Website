@@ -446,8 +446,8 @@ Route::get('/auth/facebook/user/redirect', [UserController::class, 'redirectToFa
 Route::get('/auth/facebook/user/callback', [UserController::class, 'facebookCallback'])->name('facebookCallback');
 
 //twitter login
-Route::get('/auth/twitter/user/redirect', [UserController::class, 'redirectToTwitter'])->name('auth.twitter.user.redirect')->middleware('guest');
-Route::get('/auth/twitter/user/callback', [UserController::class, 'twitterCallback'])->name('twitterCallback');
+// Route::get('/auth/twitter/user/redirect', [UserController::class, 'redirectToTwitter'])->name('auth.twitter.user.redirect')->middleware('guest');
+// Route::get('/auth/twitter/user/callback', [UserController::class, 'twitterCallback'])->name('twitterCallback');
 
 // Route::get('/about-us', function () {
 //     return view('user.about.index');
