@@ -48,7 +48,7 @@
                             <div class="col s4" style="margin: 0px 0px !important;">
                                     <a href="{{ route('auth.facebook.user.redirect') }}" class="btn btn-light btn-outline-light" style="color: white !important; margin: 3px 0px !important;"><i class="fa fa-facebook"></i> Login with Facebook</a>
                                     <a href="{{ route('auth.google.user.redirect') }}" class="btn btn-danger btn-outline-danger" style="color: white !important; margin: 3px 0px !important;"><i class="fa fa-google"></i> Login with Google</a>
-                                    <a href="{{ route('auth.twitter.user.redirect') }}" class="btn btn-info btn-outline-info" style="color: white !important; margin: 3px 0px !important;"><i class="fa fa-twitter"></i> Login with Twitter</a>
+                                    {{-- <a href="{{ route('auth.twitter.user.redirect') }}" class="btn btn-info btn-outline-info" style="color: white !important; margin: 3px 0px !important;"><i class="fa fa-twitter"></i> Login with Twitter</a> --}}
                                 </div>
                             <div>
                                 <div class="input-field s12"> <a href="{{ route('forget-password') }}">Forgot password?</a> | <a

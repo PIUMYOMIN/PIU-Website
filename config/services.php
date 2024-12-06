@@ -47,6 +47,10 @@ return [
         'client_id' => env('TWITTER_CLIENT_ID'),
         'client_secret' => env('TWITTER_CLIENT_SECRET'),
         'redirect' => env('TWITTER_REDIRECT'),
+        'authorize_url' => 'https://twitter.com/i/oauth2/authorize',
+        'token_url' => 'https://api.twitter.com/oauth2/token',
+        'revoke_url' => 'https://api.twitter.com/oauth2/revoke',
+        'user_info_url' => 'https://api.twitter.com/2/users/me',
     ],
 
     'ga4' => [
