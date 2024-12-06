@@ -383,7 +383,7 @@ public function user_login(Request $request)
 
     public function redirectToTwitter()
     {
-        dd('hit');
+        // dd('hit');
         return Socialite::driver('twitter')->redirect();
     }
 
