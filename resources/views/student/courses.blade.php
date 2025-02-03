@@ -1,24 +1,25 @@
 <x-layout>
         <!--SECTION START-->
     <section>
+        <style>
+            th,td{
+                padding: 10px 0;
+            }
+        </style>
         <div class="pro-cover">
         </div>
         <div class="pro-menu">
             <div class="container">
                 <div class="col-md-9 col-md-offset-3">
                     <ul>
-                        <li><a href="{{ route('student.dashboard',['identifier' => $identifier]) }}">My Dashboard</a></li>
                         <li><a href="{{ route('student.profile',['identifier' => $identifier]) }}" class="pro-act">Profile</a></li>
                         <li><a href="{{ route('student.courses',['identifier' => $identifier]) }}">Courses</a></li>
-                        <li><a href="{{ route('student.exams',['identifier' => $identifier]) }}">Exams</a></li>
-                        <li><a href="{{ route('student.time-line',['identifier' => $identifier]) }}">Time Line</a></li>
-                        <li><a href="#">Entry</a></li>
-                        <li><a href="#">Notifications</a></li>
+                        <li><a href="{{ route('student.exams',['identifier' => $identifier]) }}">Calendar</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="stu-db">
+        <!-- <div class="stu-db">
             <div class="container pg-inn">
                 <div class="col-md-3">
                     <div class="pro-user">
@@ -164,27 +165,131 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!--SECTION END-->
+        </div> -->
 
-
-    <!--SECTION START-->
-    <section>
-        <div class="full-bot-book">
+        <div class="row grey lighten-5" style="padding: 20px; height: auto;">
             <div class="container">
-                <div class="row">
-                    <div class="bot-book">
-                        <div class="col-md-2 bb-img">
-                            <img src="images/3.png" alt="">
+                <div class="col s12 m3" style="height:auto;">
+                    <div class="grey lighten-3 p-5" style="padding:10px 0">
+                        <div class="text-center">
+                            <img 
+                            class="responsive-img" 
+                            src="https://i.pinimg.com/736x/2b/90/7e/2b907e8ab481caf2a0f2c9cd0b500a2d.jpg" 
+                            alt="User" 
+                            style="width: 200px; height:200px; object-fit:cover; margin:10px 0; border-radius:15px;"
+                            />
                         </div>
-                        <div class="col-md-7 bb-text">
-                            <h4>therefore always free from repetition</h4>
-                            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour</p>
+                        <div class="" style="margin-left:10px;">
+                            <p class=""><strong>Name :</strong> {{ $student->fname }} {{$student->lname}}</p>
+                            <p><strong>Student ID :</strong> {{ $student->student_id }}</p>
+                            <p><strong>Email :</strong> {{ $student->email }}</p>
+                            <p><strong>DOB :</strong> {{ $student->dob }}</p>
+                            <p class=""><strong>Major :</strong> Bachelor of Science in Information Technology</p>
                         </div>
-                        <div class="col-md-3 bb-link">
-                            <a href="course-details.html">Book This Course</a>
+                    </div>
+                </div>
+                
+                <div class="col s12 m9">
+                    <div class="grey lighten-4">
+
+                        <div class="">
+                            <h3 class="center-align">Bachelor of Science in Information Technology</h3>
+                            <h5 class="center-align">Total Credits: 132</h5>
+
+                            <table class="striped centered responsive-table">
+                                <thead class="blue white-text">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Category</th>
+                                        <th>Courses</th>
+                                        <th>Credits</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr class="grey lighten-2">
+                                        <td colspan="4"><strong>General Education Courses (30-40 credits)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>English & Communication</td>
+                                        <td>English Composition, Technical Writing, Public Speaking</td>
+                                        <td>6-9</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Mathematics</td>
+                                        <td>College Algebra, Discrete Mathematics, Statistics</td>
+                                        <td>6-9</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Science</td>
+                                        <td>Physics for IT, Computer Science Fundamentals</td>
+                                        <td>6-8</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Social Sciences & Humanities</td>
+                                        <td>Psychology, Ethics in IT, Business Management</td>
+                                        <td>6-9</td>
+                                    </tr>
+
+                                    
+                                    <tr class="grey lighten-2">
+                                        <td colspan="4"><strong>Core IT Courses (60-70 credits)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Programming & Development</td>
+                                        <td>Python, Java, Web Development, Mobile App Development</td>
+                                        <td>15-18</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>Database & Data Science</td>
+                                        <td>SQL, NoSQL, Data Structures, Big Data Analytics</td>
+                                        <td>9-12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>Networking & Security</td>
+                                        <td>Computer Networks, Cybersecurity, Cloud Computing</td>
+                                        <td>9-12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>Software Engineering & Systems</td>
+                                        <td>Operating Systems, DevOps, System Analysis</td>
+                                        <td>9-12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>AI & Emerging Technologies</td>
+                                        <td>Machine Learning, IoT, Blockchain</td>
+                                        <td>6-9</td>
+                                    </tr>
+
+                                    
+                                    <tr class="grey lighten-2">
+                                        <td colspan="4"><strong>Electives & Capstone (15-20 credits)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>Elective Courses</td>
+                                        <td>Game Development, AR/VR, Human-Computer Interaction</td>
+                                        <td>9-12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>Capstone & Internship</td>
+                                        <td>Senior Project, Internship</td>
+                                        <td>6-8</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
+                        
                     </div>
                 </div>
             </div>

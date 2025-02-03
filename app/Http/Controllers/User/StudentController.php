@@ -97,6 +97,27 @@ class StudentController extends Controller
         ]);
     }
 
+    public function second($identifier)
+    {
+        // Extract the student ID from the identifier
+        $student_id = substr($identifier, 0, 7);
+
+        // Fetch the student details
+        $student = Student::where('student_id', $student_id)->firstOrFail();
+
+        // Ensure the student ID matches the authenticated student's ID
+        if ($student->student_id !== auth()->guard('student')->user()->student_id) {
+            abort(404); // Identifier integrity check failed
+        }
+
+        // You can return a view here
+        return view('student.second', [
+            'student' => $student,
+            'identifier' => $identifier // Keep the identifier consistent
+        ]);
+    }
+
+
     public function exams($identifier)
     {
         // Extract the student ID from the identifier
