@@ -478,6 +478,7 @@ Route::middleware('auth:student')->group(function() {
     Route::get('student/{identifier}/courses', [StudentController::class, 'courses'])->name('student.courses');
     Route::get('student/{identifier}/exams', [StudentController::class, 'exams'])->name('student.exams');
     Route::get('student/{identifier}/time-line', [StudentController::class, 'timeLine'])->name('student.time-line');
+    Route::get('student/{identifier}/second', [StudentController::class, 'second'])->name('student.second');
 });
 
 

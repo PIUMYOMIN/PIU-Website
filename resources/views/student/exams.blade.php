@@ -1,23 +1,19 @@
 <x-layout>
-        <section>
+    <section>
         <div class="pro-cover">
         </div>
         <div class="pro-menu">
             <div class="container">
                 <div class="col-md-9 col-md-offset-3">
                     <ul>
-                        <li><a href="{{ route('student.dashboard',['identifier' => $identifier]) }}">My Dashboard</a></li>
                         <li><a href="{{ route('student.profile',['identifier' => $identifier]) }}" class="pro-act">Profile</a></li>
                         <li><a href="{{ route('student.courses',['identifier' => $identifier]) }}">Courses</a></li>
                         <li><a href="{{ route('student.exams',['identifier' => $identifier]) }}">Exams</a></li>
-                        <li><a href="{{ route('student.time-line',['identifier' => $identifier]) }}">Time Line</a></li>
-                        <li><a href="#">Entry</a></li>
-                        <li><a href="#">Notifications</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="stu-db">
+        <!-- <div class="stu-db">
             <div class="container pg-inn">
                 <div class="col-md-3">
                     <div class="pro-user">
@@ -183,13 +179,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </section>
     <!--SECTION END-->
 
 
     <!--SECTION START-->
-    <section>
+    <!-- <section>
         <div class="full-bot-book">
             <div class="container">
                 <div class="row">
@@ -208,7 +204,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <!--SECTION END-->
 </x-layout>
 
