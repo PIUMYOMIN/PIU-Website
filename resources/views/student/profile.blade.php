@@ -34,9 +34,9 @@
                                 <h4>{{ $student->fname }} {{$student->lname}}</h4>
                             </li>
                             <li>Student Id: {{ $student->student_id }}</li>
-                            <li><a href="#!"><i class="fa fa-facebook"></i> Facebook: my sample</a></li>
-                            <li><a href="#!"><i class="fa fa-google-plus"></i> Google: my sample</a></li>
-                            <li><a href="#!"><i class="fa fa-twitter"></i> Twitter: my sample</a></li>
+                            <li><a href="#!"><i class="fa fa-envelope"></i>Email: {{ $student->email }}</a></li>
+                            <li><a href="#!"><i class="fa fa-calendar"></i>Birthday: {{ $student->dob }}</a></li>
+                            <li><a href="#!"><i class="fa fa-twitter"></i> Program: my sample</a></li>
                         </ul>
                     </div>
                 </div>

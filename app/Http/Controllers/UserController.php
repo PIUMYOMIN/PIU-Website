@@ -197,15 +197,14 @@ public function user_login(Request $request)
                 // Redirect with the mixed identifier appended to the route
                 return redirect()->intended(route('student.profile', ['identifier' => $mixedIdentifier]))->with('success', 'Welcome back!');
             } else {
-                return redirect('/login')->withErrors(['login' => 'Invalid login credentials.']);
+                return redirect()->back()->withErrors(['login' => 'Invalid login credentials.'])->with('error', 'Something went wrong with user login');
             }
         }
     }
 
     // If neither user nor student login is successful, redirect back with an error
-    return redirect('/login')->withErrors(['login' => 'Invalid login credentials.']);
+    return redirect('/')->withErrors(['login' => 'Invalid login credentials.']);
 }
-
 
 
     public function assignRole(Request $request, User $user)

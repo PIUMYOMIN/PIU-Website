@@ -72,7 +72,7 @@
                                 </div>
                             </div> --}}
                         <div>
-                            <div class="input-field s12"> <a href="{{ route('login') }}">Are you a already member ? Login</a> </div>
+                            <div class="input-field s12"> <a href="{{ route('login') }}">Are you a already member? Login Here</a> </div>
                         </div>
                     </form>
                 </div>
