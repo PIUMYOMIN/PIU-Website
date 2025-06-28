@@ -17,14 +17,20 @@
                             @method('POST')
                             <div>
                                 <div class="input-field s12">
-                                    <input type="text" name="identifier" data-ng-model="name" class="validate">
+                                    <input type="text" name="identifier" value="{{ old('identifier') }}" data-ng-model="name" class="validate">
                                     <label class="">Email or Student ID</label>
+                                    @error('identifier')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                             <div>
                                 <div class="input-field s12">
-                                    <input type="password" name="password" class="validate">
+                                    <input type="password" name="password" value="{{ old('password') }}" class="validate">
                                     <label>Password</label>
+                                    @error('password')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                             <div>
