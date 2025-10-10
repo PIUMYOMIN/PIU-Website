@@ -105,12 +105,13 @@
                 <div class="col s12 m3" style="height:auto;">
                     <div class="grey lighten-3 p-5" style="padding:10px 0">
                         <div class="text-center">
-                            <img 
+                            {{-- <img 
                             class="responsive-img" 
                             src="https://i.pinimg.com/736x/2b/90/7e/2b907e8ab481caf2a0f2c9cd0b500a2d.jpg" 
                             alt="User" 
                             style="width: 200px; height:200px; object-fit:cover; margin:10px 0; border-radius:15px;"
-                            />
+                            /> --}}
+                            <img src="{{ asset('storage/'.$student->profile) }}" alt="">
                         </div>
                         <div class="" style="margin-left:10px;">
                             <p class=""><strong>Name :</strong> {{ $student->fname }} {{$student->lname}}</p>
