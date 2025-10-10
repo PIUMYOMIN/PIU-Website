@@ -7,13 +7,9 @@
             <div class="container">
                 <div class="col-md-9 col-md-offset-3">
                     <ul>
-                        <li><a href="{{ route('student.dashboard',['identifier' => $identifier]) }}">My Dashboard</a></li>
                         <li><a href="{{ route('student.profile',['identifier' => $identifier]) }}" class="pro-act">Profile</a></li>
                         <li><a href="{{ route('student.courses',['identifier' => $identifier]) }}">Courses</a></li>
-                        <li><a href="{{ route('student.exams',['identifier' => $identifier]) }}">Exams</a></li>
                         <li><a href="{{ route('student.time-line',['identifier' => $identifier]) }}">Time Line</a></li>
-                        <li><a href="#">Entry</a></li>
-                        <li><a href="#">Notifications</a></li>
                     </ul>
                 </div>
             </div>

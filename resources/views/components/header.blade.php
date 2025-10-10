@@ -1,5 +1,12 @@
     <!--HEADER SECTION-->
     <section>
+        <style>
+            @media print{
+                .ed-top{
+                    display:none;
+                }
+            }
+        </style>
         <!-- TOP BAR -->
         <div class="ed-top">
             <div class="container">

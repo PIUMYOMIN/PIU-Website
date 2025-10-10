@@ -14,12 +14,12 @@
                     <ul>
                         <li><a href="{{ route('student.profile',['identifier' => $identifier]) }}" class="pro-act">Profile</a></li>
                         <li><a href="{{ route('student.courses',['identifier' => $identifier]) }}">Courses</a></li>
-                        <li><a href="{{ route('student.exams',['identifier' => $identifier]) }}">Calendar</a></li>
+                        <li><a href="javascript:void(0);">Time Line</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <!-- <div class="stu-db">
+        <div class="stu-db">
             <div class="container pg-inn">
                 <div class="col-md-3">
                     <div class="pro-user">
@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-md-9">
                     <div class="udb">
-                        <div class="udb-sec udb-cour">
+                        <!-- <div class="udb-sec udb-cour">
                             <h4><img src="images/icon/db2.png" alt="" /> Booking Courses</h4>
                             <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text.The point of using Lorem Ipsummaking it look like readable English.</p>
                             <div class="sdb-cours">
@@ -94,7 +94,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="udb-sec udb-cour-stat">
                             <h4><img src="images/icon/db3.png" alt="" /> Course Status</h4>
                             <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text.The point of using Lorem Ipsummaking it look like readable English.</p>
@@ -165,29 +165,10 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
 
-        <div class="row grey lighten-5" style="padding: 20px; height: auto;">
+        <!-- <div class="row grey lighten-5" style="padding: 20px; height: auto;">
             <div class="container">
-                <div class="col s12 m3" style="height:auto;">
-                    <div class="grey lighten-3 p-5" style="padding:10px 0">
-                        <div class="text-center">
-                            <img 
-                            class="responsive-img" 
-                            src="https://i.pinimg.com/736x/2b/90/7e/2b907e8ab481caf2a0f2c9cd0b500a2d.jpg" 
-                            alt="User" 
-                            style="width: 200px; height:200px; object-fit:cover; margin:10px 0; border-radius:15px;"
-                            />
-                        </div>
-                        <div class="" style="margin-left:10px;">
-                            <p class=""><strong>Name :</strong> {{ $student->fname }} {{$student->lname}}</p>
-                            <p><strong>Student ID :</strong> {{ $student->student_id }}</p>
-                            <p><strong>Email :</strong> {{ $student->email }}</p>
-                            <p><strong>DOB :</strong> {{ $student->dob }}</p>
-                            <p class=""><strong>Major :</strong> Bachelor of Science in Information Technology</p>
-                        </div>
-                    </div>
-                </div>
                 
                 <div class="col s12 m9">
                     <div class="grey lighten-4">
@@ -293,7 +274,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </section>
     <!--SECTION END-->
 </x-layout>

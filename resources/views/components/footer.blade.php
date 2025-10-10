@@ -1,6 +1,13 @@
     <!-- FOOTER -->
     <section class="wed-hom-footer">
-        <div class="container">
+        <style>
+            @media print{
+                .no-print{
+                    display:none;
+                }
+            }
+        </style>
+        <div class="container no-print">
             <div class="row wed-foot-link">
                 <div class="col-md-4 foot-tc-mar-t-o">
                     <h4>New Courses</h4>
