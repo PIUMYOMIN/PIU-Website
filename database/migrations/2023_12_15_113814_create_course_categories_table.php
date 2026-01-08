@@ -11,13 +11,31 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('course_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description');
-            $table->string('user_id');
-            $table->timestamps();
-        });
+        if (Schema::hasTable('users')) {
+            Schema::create('course_categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->text('description')->nullable();
+                $table->unsignedBigInteger('user_id')->nullable();
+
+                // Add foreign key only if users table exists
+                $table->foreign('user_id')
+                    ->references('id')
+                    ->on('users')
+                    ->onDelete('set null');
+
+                $table->timestamps();
+            });
+        } else {
+            // Create without foreign key if users table doesn't exist
+            Schema::create('course_categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->text('description')->nullable();
+                $table->unsignedBigInteger('user_id')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

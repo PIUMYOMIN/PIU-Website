@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Notifications\Notifiable;
-// use Laravel\Sanctum\HasApiTokens;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -20,7 +19,17 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'address',
+        'password',
+        'city',
+        'country',
+        'bio',
+        'picture',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -41,6 +50,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Get the user's primary role.
+     * This accessor makes $user->role work.
+     */
+    public function getRoleAttribute()
+    {
+        return $this->roles->first()?->name;
+    }
+
+    /**
+     * Append role to array and JSON output.
+     */
+    protected $appends = ['role'];
+
+    /**
+     * Eager load roles by default.
+     */
+    protected $with = ['roles'];
 
     public function isAdmin()
     {

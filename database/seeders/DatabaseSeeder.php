@@ -1,11 +1,7 @@
 <?php
 
 namespace Database\Seeders;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\Models\User;
-use App\Models\Seminar;
-use App\Models\Year;
 
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
