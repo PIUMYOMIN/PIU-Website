@@ -60,9 +60,8 @@ Route::prefix('v2')->group(function () {
     Route::get('course-categories/{id}', [CourseCategoryController::class, 'show']);
 
     // Galleries - Public GET routes
-    Route::get('galleries', [GalleryController::class, 'index']);
-    Route::get('galleries/tag/{tag}', [GalleryController::class, 'byTag']);
-    Route::get('galleries/recent/{limit?}', [GalleryController::class, 'recent']);
+    Route::get('gallery', [GalleryController::class, 'index']);
+    Route::get('gallery/recent/{limit?}', [GalleryController::class, 'recent']);
 
     // ==================== AUTHENTICATED ROUTES ====================
     Route::middleware('auth:sanctum')->group(function () {
@@ -117,10 +116,12 @@ Route::prefix('v2')->group(function () {
         Route::apiResource('modules', ModuleController::class);
 
         // ==================== GALLERIES ====================
-        Route::post('galleries', [GalleryController::class, 'store']);
-        Route::put('galleries/{id}', [GalleryController::class, 'update']);
-        Route::patch('galleries/{id}', [GalleryController::class, 'update']);
-        Route::delete('galleries/{id}', [GalleryController::class, 'destroy']);
-        Route::post('galleries/{id}/toggle-active', [GalleryController::class, 'toggleActive']);
+        Route::post('gallery', [GalleryController::class, 'store']);
+        Route::put('gallery/{id}', [GalleryController::class, 'update']);
+        Route::patch('gallery/{id}', [GalleryController::class, 'update']);
+        Route::delete('gallery/{id}', [GalleryController::class, 'destroy']);
+        Route::post('gallery/{id}/toggle-active', [GalleryController::class, 'toggleActive']);
+        Route::get('gallery/tag/{tag}', [GalleryController::class, 'byTag']);
+        Route::get('gallery/recent/{limit?}', [GalleryController::class, 'recent']);
     });
 });
