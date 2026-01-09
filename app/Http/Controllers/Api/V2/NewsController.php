@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\News;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class NewsController extends Controller
 {
@@ -13,7 +17,26 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::all();
+        // Get all news (for admin) or only active news (for public)
+        if (Auth::check() && Auth::user()->hasRole('admin')) {
+            $news = News::with('user:id,name,email')
+                ->latest()
+                ->get();
+        } else {
+            $news = News::where('is_active', true)
+                ->with('user:id,name,email')
+                ->latest()
+                ->get();
+        }
+
+        // Add full URL for images
+        $news->transform(function ($newsItem) {
+            if ($newsItem->image && !filter_var($newsItem->image, FILTER_VALIDATE_URL)) {
+                $newsItem->image = asset('storage/' . $newsItem->image);
+            }
+            return $newsItem;
+        });
+
         return response()->json($news);
     }
 
@@ -22,16 +45,43 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title' => 'required|unique:news|max:255',
-            'slug' => 'required|max:255',
+        // Check if user has admin role
+        if (!Auth::user()->hasRole('admin')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Admin access required.'
+            ], 403);
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|unique:news,title',
             'body' => 'required',
-            'image' => 'nullable|image',
-            'user_id' => 'required|exists:users,id',
+            'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:5120',
+            'is_active' => 'boolean',
         ]);
 
-        $news = News::create($data);
-        return response()->json($news, 201);
+        // Generate slug from title
+        $validated['slug'] = Str::slug($validated['title']);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('news', 'public');
+            $validated['image'] = $imagePath;
+        }
+
+        // Add user_id from authenticated user
+        $validated['user_id'] = Auth::id();
+
+        $news = News::create($validated);
+
+        // Load user relationship
+        $news->load('user:id,name,email');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'News created successfully',
+            'data' => $news,
+        ], 201);
     }
 
     /**
@@ -39,7 +89,30 @@ class NewsController extends Controller
      */
     public function show(string $id)
     {
-        $news = News::findOrFail($id);
+        $news = News::with('user:id,name,email')->findOrFail($id);
+
+        // Add full URL for image
+        if ($news->image && !filter_var($news->image, FILTER_VALIDATE_URL)) {
+            $news->image = asset('storage/' . $news->image);
+        }
+
+        return response()->json($news);
+    }
+
+    /**
+     * Display news by slug.
+     */
+    public function showBySlug(string $slug)
+    {
+        $news = News::where('slug', $slug)
+            ->with('user:id,name,email')
+            ->firstOrFail();
+
+        // Add full URL for image
+        if ($news->image && !filter_var($news->image, FILTER_VALIDATE_URL)) {
+            $news->image = asset('storage/' . $news->image);
+        }
+
         return response()->json($news);
     }
 
@@ -50,16 +123,76 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
 
-        $data = $request->validate([
-            'title' => 'sometimes|required|unique:news,title,' . $news->id . '|max:255',
-            'slug' => 'sometimes|required|max:255',
-            'body' => 'sometimes|required',
-            'image' => 'nullable|image',
-            'user_id' => 'sometimes|required|exists:users,id',
+        // Check if user is authorized (owner or admin)
+        if ($news->user_id !== Auth::id() && !Auth::user()->hasRole('admin')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized to update this news.'
+            ], 403);
+        }
+
+        $validated = $request->validate([
+            'title' => ['required', Rule::unique('news', 'title')->ignore($news->id)],
+            'body' => 'required',
+            'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:5120',
+            'is_active' => 'boolean',
         ]);
 
-        $news->update($data);
-        return response()->json(['message' => 'News updated successfully', 'news' => $news]);
+        // Generate slug from title
+        $validated['slug'] = Str::slug($validated['title']);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($news->image && Storage::disk('public')->exists($news->image)) {
+                Storage::disk('public')->delete($news->image);
+            }
+
+            $imagePath = $request->file('image')->store('news', 'public');
+            $validated['image'] = $imagePath;
+        } else {
+            // Keep old image if not uploading new one
+            unset($validated['image']);
+        }
+
+        $news->update($validated);
+
+        // Reload user relationship
+        $news->load('user:id,name,email');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'News updated successfully',
+            'data' => $news,
+        ]);
+    }
+
+    /**
+     * Toggle active status of news.
+     */
+    public function toggleActive(string $id)
+    {
+        $news = News::findOrFail($id);
+
+        // Check if user is authorized (owner or admin)
+        if ($news->user_id !== Auth::id() && !Auth::user()->hasRole('admin')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized to update this news.'
+            ], 403);
+        }
+
+        $news->update(['is_active' => !$news->is_active]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'News status updated',
+            'data' => [
+                'id' => $news->id,
+                'is_active' => $news->is_active,
+                'title' => $news->title
+            ]
+        ]);
     }
 
     /**
@@ -67,6 +200,53 @@ class NewsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $news = News::findOrFail($id);
+
+        // Check if user is authorized (owner or admin)
+        if ($news->user_id !== Auth::id() && !Auth::user()->hasRole('admin')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized to delete this news.'
+            ], 403);
+        }
+
+        // Delete image file if exists
+        if ($news->image && Storage::disk('public')->exists($news->image)) {
+            Storage::disk('public')->delete($news->image);
+        }
+
+        $news->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'News deleted successfully'
+        ]);
+    }
+
+    /**
+     * Search news by title or body.
+     */
+    public function search(Request $request)
+    {
+        $query = $request->input('search');
+
+        $news = News::where('is_active', true)
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                    ->orWhere('body', 'like', "%{$query}%");
+            })
+            ->with('user:id,name,email')
+            ->latest()
+            ->get();
+
+        // Add full URL for images
+        $news->transform(function ($newsItem) {
+            if ($newsItem->image && !filter_var($newsItem->image, FILTER_VALIDATE_URL)) {
+                $newsItem->image = asset('storage/' . $newsItem->image);
+            }
+            return $newsItem;
+        });
+
+        return response()->json($news);
     }
 }

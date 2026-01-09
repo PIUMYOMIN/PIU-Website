@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Storage;
 
 class SlideController extends Controller
 {
+
+    /**
+     * Constructor to apply middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['index', 'show']);
+    }
+
+
     /**
      * Display a listing of the resource.
      */

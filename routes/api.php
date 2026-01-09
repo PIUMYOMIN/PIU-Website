@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\V2\SlideController;
 use App\Http\Controllers\Api\V2\AssignmentController;
 use App\Http\Controllers\Api\V2\ModuleController;
 use App\Http\Controllers\Api\V2\AuthController;
+use App\Http\Controllers\Api\V2\BlogController;
+use App\Http\Controllers\Api\V2\NewsController;
 
 
 /*
@@ -30,10 +32,20 @@ Route::prefix('v2')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 
     // Public GET routes for courses
-    Route::get('courses', [CourseController::class, 'index']);        // list all courses
-    Route::get('courses/{course}', [CourseController::class, 'show']); // single course
-    Route::get('slides', [SlideController::class, 'index']);          // list all slides
-    Route::get('slides/{slide}', [SlideController::class, 'show']);   // single slide
+    Route::get('courses', [CourseController::class, 'index']);
+    Route::get('courses/{course}', [CourseController::class, 'show']);
+
+    // Public GET routes for slides
+    Route::get('slides', [SlideController::class, 'index']);
+    Route::get('slides/{slide}', [SlideController::class, 'show']);
+
+    //Public GET routes for news
+    Route::get('news', [NewsController::class, 'index']);
+    Route::get('news/{news}', [NewsController::class, 'show']);
+
+    // Public GET routes for blogs
+    Route::get('blogs', [BlogController::class, 'index']);
+    Route::get('blogs/{blog}', [BlogController::class, 'show']);
 
     // Authenticated routes (all other operations)
     Route::middleware('auth:sanctum')->group(function () {
@@ -57,6 +69,12 @@ Route::prefix('v2')->group(function () {
         Route::put('slides/{slide}', [SlideController::class, 'update']);
         Route::patch('slides/{slide}', [SlideController::class, 'update']);
         Route::delete('slides/{slide}', [SlideController::class, 'destroy']);
+
+        //Protected blog routes
+        Route::post('blogs', [BlogController::class, 'store']);
+        Route::put('blogs/{blog}', [BlogController::class, 'update']);
+        Route::patch('blogs/{blog}', [BlogController::class, 'update']);
+        Route::delete('blogs/{blog}', [BlogController::class, 'destroy']);
 
         // Other resources
         Route::apiResource('users', UserController::class);
