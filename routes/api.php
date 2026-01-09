@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V2\ModuleController;
 use App\Http\Controllers\Api\V2\AuthController;
 use App\Http\Controllers\Api\V2\BlogController;
 use App\Http\Controllers\Api\V2\NewsController;
+use App\Http\Controllers\Api\V2\GalleryController;
 
 
 /*
@@ -57,6 +58,11 @@ Route::prefix('v2')->group(function () {
     // Course Categories - Public GET routes
     Route::get('course-categories', [CourseCategoryController::class, 'index']);
     Route::get('course-categories/{id}', [CourseCategoryController::class, 'show']);
+
+    // Galleries - Public GET routes
+    Route::get('galleries', [GalleryController::class, 'index']);
+    Route::get('galleries/tag/{tag}', [GalleryController::class, 'byTag']);
+    Route::get('galleries/recent/{limit?}', [GalleryController::class, 'recent']);
 
     // ==================== AUTHENTICATED ROUTES ====================
     Route::middleware('auth:sanctum')->group(function () {
@@ -109,5 +115,12 @@ Route::prefix('v2')->group(function () {
         Route::apiResource('permissions', PermissionController::class);
         Route::apiResource('assignments', AssignmentController::class);
         Route::apiResource('modules', ModuleController::class);
+
+        // ==================== GALLERIES ====================
+        Route::post('galleries', [GalleryController::class, 'store']);
+        Route::put('galleries/{id}', [GalleryController::class, 'update']);
+        Route::patch('galleries/{id}', [GalleryController::class, 'update']);
+        Route::delete('galleries/{id}', [GalleryController::class, 'destroy']);
+        Route::post('galleries/{id}/toggle-active', [GalleryController::class, 'toggleActive']);
     });
 });

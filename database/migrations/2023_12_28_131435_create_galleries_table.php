@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('link1')->nullable();
             $table->string('link2')->nullable();
             $table->string('image');
-            $table->string('user_id');
-            $table->string('is_active')->default(false);
+            $table->unsignedBigInteger('user_id');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

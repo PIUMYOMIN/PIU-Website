@@ -9,7 +9,14 @@ class Gallery extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'image_tag',
+        'link1',
+        'link2',
+        'image',
+        'user_id',
+        'is_active'
+    ];
 
     public function user()
     {
