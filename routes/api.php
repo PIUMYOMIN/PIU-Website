@@ -31,56 +31,82 @@ Route::prefix('v2')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
 
-    // Public GET routes for courses
+    // ==================== PUBLIC ROUTES ====================
+
+    // Courses - Public GET routes
     Route::get('courses', [CourseController::class, 'index']);
     Route::get('courses/{course}', [CourseController::class, 'show']);
+    Route::get('courses/search', [CourseController::class, 'search']);
 
-    // Public GET routes for slides
+    // Slides - Public GET routes
     Route::get('slides', [SlideController::class, 'index']);
     Route::get('slides/{slide}', [SlideController::class, 'show']);
 
-    //Public GET routes for news
+    // News - Public GET routes
     Route::get('news', [NewsController::class, 'index']);
-    Route::get('news/{news}', [NewsController::class, 'show']);
+    Route::get('news/{id}', [NewsController::class, 'show']);
+    Route::get('news/slug/{slug}', [NewsController::class, 'showBySlug']);
+    Route::get('news/search', [NewsController::class, 'search']);
 
-    // Public GET routes for blogs
+    // Blogs - Public GET routes
     Route::get('blogs', [BlogController::class, 'index']);
-    Route::get('blogs/{blog}', [BlogController::class, 'show']);
+    Route::get('blogs/{id}', [BlogController::class, 'show']);
+    Route::get('blogs/slug/{slug}', [BlogController::class, 'showBySlug']);
+    Route::get('blogs/search', [BlogController::class, 'search']);
 
-    // Authenticated routes (all other operations)
+    // Course Categories - Public GET routes
+    Route::get('course-categories', [CourseCategoryController::class, 'index']);
+    Route::get('course-categories/{id}', [CourseCategoryController::class, 'show']);
+
+    // ==================== AUTHENTICATED ROUTES ====================
     Route::middleware('auth:sanctum')->group(function () {
-        // User routes
+        // Auth routes
         Route::get('/user/profile', [UserController::class, 'profile']);
         Route::put('/user/profile', [UserController::class, 'updateProfile']);
         Route::post('/user/change-password', [UserController::class, 'changePassword']);
         Route::post('logout', [AuthController::class, 'logout']);
 
-        // Protected course routes (create, update, delete)
+        // ==================== COURSES ====================
         Route::post('courses', [CourseController::class, 'store']);
         Route::put('courses/{course}', [CourseController::class, 'update']);
         Route::patch('courses/{course}', [CourseController::class, 'update']);
         Route::delete('courses/{course}', [CourseController::class, 'destroy']);
         Route::post('courses/{course}/isActive', [CourseController::class, 'isActive']);
         Route::post('courses/{course}/application', [CourseController::class, 'application']);
-        Route::get('courses/search', [CourseController::class, 'search']);
 
-        // Protected slide routes
+        // ==================== SLIDES ====================
         Route::post('slides', [SlideController::class, 'store']);
         Route::put('slides/{slide}', [SlideController::class, 'update']);
         Route::patch('slides/{slide}', [SlideController::class, 'update']);
         Route::delete('slides/{slide}', [SlideController::class, 'destroy']);
+        Route::post('slides/{slide}/toggle-active', [SlideController::class, 'toggleActive']);
+        Route::post('slides/update-order', [SlideController::class, 'updateOrder']);
 
-        //Protected blog routes
+        // ==================== NEWS ====================
+        Route::post('news', [NewsController::class, 'store']);
+        Route::put('news/{news}', [NewsController::class, 'update']);
+        Route::patch('news/{news}', [NewsController::class, 'update']);
+        Route::delete('news/{news}', [NewsController::class, 'destroy']);
+        Route::post('news/{news}/toggle-active', [NewsController::class, 'toggleActive']);
+
+        // ==================== BLOGS ====================
         Route::post('blogs', [BlogController::class, 'store']);
         Route::put('blogs/{blog}', [BlogController::class, 'update']);
         Route::patch('blogs/{blog}', [BlogController::class, 'update']);
         Route::delete('blogs/{blog}', [BlogController::class, 'destroy']);
+        Route::post('blogs/{blog}/toggle-active', [BlogController::class, 'toggleActive']);
+        Route::post('blogs/upload-image', [BlogController::class, 'uploadImage']);
 
-        // Other resources
+        // ==================== COURSE CATEGORIES ====================
+        Route::post('course-categories', [CourseCategoryController::class, 'store']);
+        Route::put('course-categories/{category}', [CourseCategoryController::class, 'update']);
+        Route::patch('course-categories/{category}', [CourseCategoryController::class, 'update']);
+        Route::delete('course-categories/{category}', [CourseCategoryController::class, 'destroy']);
+
+        // ==================== OTHER RESOURCES ====================
         Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('permissions', PermissionController::class);
-        Route::apiResource('course-categories', CourseCategoryController::class);
         Route::apiResource('assignments', AssignmentController::class);
         Route::apiResource('modules', ModuleController::class);
     });

@@ -17,17 +17,24 @@ class NewsController extends Controller
      */
     public function index()
     {
-        // Get all news (for admin) or only active news (for public)
+        // Check if news table has is_active column
+        $hasIsActiveColumn = \Schema::hasColumn('news', 'is_active');
+
         if (Auth::check() && Auth::user()->hasRole('admin')) {
-            $news = News::with('user:id,name,email')
-                ->latest()
-                ->get();
+            // Admin can see all news
+            $query = News::with('user:id,name,email')
+                ->latest();
         } else {
-            $news = News::where('is_active', true)
-                ->with('user:id,name,email')
-                ->latest()
-                ->get();
+            // Public users - only show active news if column exists
+            $query = News::with('user:id,name,email')
+                ->latest();
+
+            if ($hasIsActiveColumn) {
+                $query->where('is_active', true);
+            }
         }
+
+        $news = $query->get();
 
         // Add full URL for images
         $news->transform(function ($newsItem) {
@@ -57,8 +64,12 @@ class NewsController extends Controller
             'title' => 'required|unique:news,title',
             'body' => 'required',
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:5120',
-            'is_active' => 'boolean',
         ]);
+
+        // Only add is_active if column exists
+        if (\Schema::hasColumn('news', 'is_active')) {
+            $validated['is_active'] = $request->input('is_active', true);
+        }
 
         // Generate slug from title
         $validated['slug'] = Str::slug($validated['title']);
@@ -104,9 +115,18 @@ class NewsController extends Controller
      */
     public function showBySlug(string $slug)
     {
-        $news = News::where('slug', $slug)
-            ->with('user:id,name,email')
-            ->firstOrFail();
+        // Check if news table has is_active column
+        $hasIsActiveColumn = \Schema::hasColumn('news', 'is_active');
+
+        $query = News::where('slug', $slug)
+            ->with('user:id,name,email');
+
+        // Only filter by is_active if column exists
+        if ($hasIsActiveColumn) {
+            $query->where('is_active', true);
+        }
+
+        $news = $query->firstOrFail();
 
         // Add full URL for image
         if ($news->image && !filter_var($news->image, FILTER_VALIDATE_URL)) {
@@ -135,8 +155,12 @@ class NewsController extends Controller
             'title' => ['required', Rule::unique('news', 'title')->ignore($news->id)],
             'body' => 'required',
             'image' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:5120',
-            'is_active' => 'boolean',
         ]);
+
+        // Only update is_active if column exists
+        if (\Schema::hasColumn('news', 'is_active')) {
+            $validated['is_active'] = $request->input('is_active', $news->is_active);
+        }
 
         // Generate slug from title
         $validated['slug'] = Str::slug($validated['title']);
@@ -168,10 +192,18 @@ class NewsController extends Controller
     }
 
     /**
-     * Toggle active status of news.
+     * Toggle active status of news (only if column exists).
      */
     public function toggleActive(string $id)
     {
+        // Check if column exists
+        if (!\Schema::hasColumn('news', 'is_active')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'is_active column does not exist in news table.'
+            ], 400);
+        }
+
         $news = News::findOrFail($id);
 
         // Check if user is authorized (owner or admin)
@@ -230,12 +262,20 @@ class NewsController extends Controller
     {
         $query = $request->input('search');
 
-        $news = News::where('is_active', true)
-            ->where(function ($q) use ($query) {
-                $q->where('title', 'like', "%{$query}%")
-                    ->orWhere('body', 'like', "%{$query}%");
-            })
-            ->with('user:id,name,email')
+        // Check if news table has is_active column
+        $hasIsActiveColumn = \Schema::hasColumn('news', 'is_active');
+
+        $newsQuery = News::where(function ($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+                ->orWhere('body', 'like', "%{$query}%");
+        });
+
+        // Only filter by is_active if column exists
+        if ($hasIsActiveColumn) {
+            $newsQuery->where('is_active', true);
+        }
+
+        $news = $newsQuery->with('user:id,name,email')
             ->latest()
             ->get();
 

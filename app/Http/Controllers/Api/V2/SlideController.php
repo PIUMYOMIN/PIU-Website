@@ -7,34 +7,50 @@ use Illuminate\Http\Request;
 use App\Models\Slide;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Schema;
 
 class SlideController extends Controller
 {
-
-    /**
-     * Constructor to apply middleware
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum')->except(['index', 'show']);
-    }
-
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        // Check which columns exist in the slides table
+        $hasIsActiveColumn = Schema::hasColumn('slides', 'is_active');
+        $hasOrderColumn = Schema::hasColumn('slides', 'order');
+
         // Get only active slides for public API, all for admin
         if (request()->is('api/v2/slides') && !Auth::check()) {
-            $slides = Slide::where('is_active', true)
-                ->orderBy('order', 'asc')
-                ->orderBy('created_at', 'desc')
-                ->get();
+            // Public API - only active slides
+            $query = Slide::query();
+
+            // Only filter by is_active if column exists
+            if ($hasIsActiveColumn) {
+                $query->where('is_active', true);
+            }
+
+            // Only order by order if column exists, otherwise by created_at
+            if ($hasOrderColumn) {
+                $query->orderBy('order', 'asc')
+                    ->orderBy('created_at', 'desc');
+            } else {
+                $query->orderBy('created_at', 'desc');
+            }
+
+            $slides = $query->get();
         } else {
-            $slides = Slide::orderBy('order', 'asc')
-                ->orderBy('created_at', 'desc')
-                ->get();
+            // Admin API - all slides
+            $query = Slide::query();
+
+            if ($hasOrderColumn) {
+                $query->orderBy('order', 'asc')
+                    ->orderBy('created_at', 'desc');
+            } else {
+                $query->orderBy('created_at', 'desc');
+            }
+
+            $slides = $query->get();
         }
 
         // Add full URL for images
@@ -56,15 +72,35 @@ class SlideController extends Controller
      */
     public function store(Request $request)
     {
+        // Check if user has admin role
+        if (!Auth::user()->hasRole('admin')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Admin access required.'
+            ], 403);
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image_tag' => 'nullable|string|max:255',
             'tag_link' => 'nullable|url',
             'slide_image' => 'required|image|mimes:jpg,jpeg,png,gif|max:5120',
-            'order' => 'nullable|integer|min:0',
-            'is_active' => 'boolean',
         ]);
+
+        // Check if order column exists
+        $hasOrderColumn = Schema::hasColumn('slides', 'order');
+        $hasIsActiveColumn = Schema::hasColumn('slides', 'is_active');
+
+        // Add order if column exists
+        if ($hasOrderColumn) {
+            $validated['order'] = $request->input('order', 0);
+        }
+
+        // Add is_active if column exists
+        if ($hasIsActiveColumn) {
+            $validated['is_active'] = $request->input('is_active', true);
+        }
 
         // Handle file uploads
         if ($request->hasFile('slide_image')) {
@@ -73,7 +109,7 @@ class SlideController extends Controller
         }
 
         // Add user_id from authenticated user
-        $validated['user_id'] = auth()->id();
+        $validated['user_id'] = Auth::id();
 
         $slide = Slide::create($validated);
 
@@ -115,9 +151,21 @@ class SlideController extends Controller
             'image_tag' => 'nullable|string|max:255',
             'tag_link' => 'nullable|url',
             'slide_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5120',
-            'order' => 'nullable|integer|min:0',
-            'is_active' => 'boolean',
         ]);
+
+        // Check if order and is_active columns exist
+        $hasOrderColumn = Schema::hasColumn('slides', 'order');
+        $hasIsActiveColumn = Schema::hasColumn('slides', 'is_active');
+
+        // Add order if column exists
+        if ($hasOrderColumn) {
+            $validated['order'] = $request->input('order', $slide->order);
+        }
+
+        // Add is_active if column exists
+        if ($hasIsActiveColumn) {
+            $validated['is_active'] = $request->input('is_active', $slide->is_active);
+        }
 
         // Handle slide_image upload
         if ($request->hasFile('slide_image')) {
@@ -143,10 +191,18 @@ class SlideController extends Controller
     }
 
     /**
-     * Toggle the active status of the specified slide.
+     * Toggle the active status of the specified slide (only if column exists).
      */
     public function isActive(Request $request, Slide $slide)
     {
+        // Check if is_active column exists
+        if (!Schema::hasColumn('slides', 'is_active')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'is_active column does not exist in slides table.'
+            ], 400);
+        }
+
         $slide->update(['is_active' => !$slide->is_active]);
 
         return response()->json([
@@ -161,10 +217,18 @@ class SlideController extends Controller
     }
 
     /**
-     * Update slide order (for sorting)
+     * Update slide order (only if order column exists).
      */
     public function updateOrder(Request $request)
     {
+        // Check if order column exists
+        if (!Schema::hasColumn('slides', 'order')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'order column does not exist in slides table.'
+            ], 400);
+        }
+
         $request->validate([
             'slides' => 'required|array',
             'slides.*.id' => 'required|exists:slides,id',
