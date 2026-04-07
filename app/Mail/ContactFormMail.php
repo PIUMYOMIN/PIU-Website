@@ -3,10 +3,7 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class ContactFormMail extends Mailable
@@ -31,9 +28,16 @@ class ContactFormMail extends Mailable
 
     public function build()
     {
-        return $this->from($this->data['email'])
-                    ->subject('Contact Form Mail')
-                    ->view('emails.contactMail')
-                    ->with('data',$this->data);
+        $email = data_get($this->data, 'email');
+        $name = data_get($this->data, 'name') ?: 'Contact Form';
+
+        return $this
+            // Gmail/most SMTP providers require FROM to be the authenticated mailbox.
+            // Use replyTo so admins can reply to the sender.
+            ->from(config('mail.from.address'), config('mail.from.name'))
+            ->replyTo($email ?: config('mail.from.address'), $name)
+            ->subject('Contact Form Message')
+            ->view('emails.contact_mail')
+            ->with('data', $this->data);
     }
 }

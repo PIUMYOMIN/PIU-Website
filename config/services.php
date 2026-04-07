@@ -51,5 +51,10 @@ return [
 
     'ga4' => [
         'measurementId' => env('GA_MEASUREMENT_ID'),
-    ]
+    ],
+
+    'recaptcha' => [
+        'secret' => env('RECAPTCHA_SECRET_KEY'),
+        'min_score' => env('RECAPTCHA_MIN_SCORE', 0.5),
+    ],
 ];

@@ -5,28 +5,31 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Admission;
 
 class NewAdmissionFormSubmitted extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $formData;
+    public Admission $admission;
+    public ?string $courseTitle;
+    public string $adminUrl;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($formData)
+    public function __construct(Admission $admission, ?string $courseTitle = null, ?string $adminUrl = null)
     {
-        $this->formData = $formData;
+        $this->admission = $admission;
+        $this->courseTitle = $courseTitle;
+        $this->adminUrl = $adminUrl ?: rtrim(config('app.url'), '/') . '/piu/admin/admission';
 
     }
 
     public function build()
     {
-        $url = route('admin.admission.forms');
-
-        return $this->view('user.admission.newAdmissionFormSubmit', compact('url'))
-            ->subject('New Admission Form Received')
+        return $this->view('emails.admission.new_submission')
+            ->subject('New Admission Application Received')
             ->from(config('mail.from.address'), config('mail.from.name'));
 
     }

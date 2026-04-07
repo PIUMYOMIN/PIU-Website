@@ -2480,6 +2480,8 @@ p, li, a, span, table, tr, td, th, label {
 .ads {
     position: relative;
     overflow: hidden;
+    /* margin-bottom:20px;
+     */
 }
 
 .ads img {
@@ -2495,6 +2497,8 @@ p, li, a, span, table, tr, td, th, label {
 
 .pg-inn {
     background: #fff;
+    /* border: 1px solid #333;
+     */
     box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.08);
     padding: 70px 15px;
 }
@@ -2552,6 +2556,8 @@ p, li, a, span, table, tr, td, th, label {
 
 .pro-menu ul {
     margin-bottom: 0px;
+    /* margin: 0 auto;
+     */
     display: table;
     margin-left: 25px;
 }
@@ -2607,6 +2613,8 @@ p, li, a, span, table, tr, td, th, label {
 
 .pro-user-bio ul li a {
     color: #333;
+    /* font-weight: 500;
+     */
 }
 
 .pro-user-bio ul li a i {
@@ -2631,6 +2639,7 @@ p, li, a, span, table, tr, td, th, label {
 .pro-con-table {
     border: 1px solid #f7f8f9;
     padding: 5px 15px;
+    margin-top: 25px;
 }
 
 .pro-con-table tr {
@@ -3138,7 +3147,7 @@ p, li, a, span, table, tr, td, th, label {
 }
 
 .udb {
-    /* padding: 50px 25px; */
+    padding: 50px 25px;
     position: relative;
     overflow: hidden;
 }

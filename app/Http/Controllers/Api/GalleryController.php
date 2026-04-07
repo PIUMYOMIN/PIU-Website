@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V2;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class GalleryController extends Controller
     {
         // Check if gallery table has is_active column
         $hasIsActiveColumn = Schema::hasColumn('galleries', 'is_active');
-        
+
         // Get all galleries (for admin) or only active galleries (for public)
         if (Auth::check() && Auth::user()->hasRole('admin')) {
             $query = Gallery::with('user:id,name,email')
@@ -27,7 +27,7 @@ class GalleryController extends Controller
         } else {
             $query = Gallery::with('user:id,name,email')
                 ->orderBy('created_at', 'desc');
-            
+
             // Only filter by is_active if column exists
             if ($hasIsActiveColumn) {
                 $query->where('is_active', true);
@@ -231,16 +231,16 @@ class GalleryController extends Controller
     public function byTag(string $tag)
     {
         $hasIsActiveColumn = Schema::hasColumn('galleries', 'is_active');
-        
+
         $query = Gallery::where('image_tag', 'like', "%{$tag}%")
             ->with('user:id,name,email')
             ->orderBy('created_at', 'desc');
-            
+
         // Only filter by is_active if column exists
         if ($hasIsActiveColumn) {
             $query->where('is_active', true);
         }
-        
+
         $galleries = $query->get();
 
         // Add full URL for images
@@ -260,16 +260,16 @@ class GalleryController extends Controller
     public function recent(int $limit = 10)
     {
         $hasIsActiveColumn = Schema::hasColumn('galleries', 'is_active');
-        
+
         $query = Gallery::with('user:id,name,email')
             ->orderBy('created_at', 'desc')
             ->limit($limit);
-            
+
         // Only filter by is_active if column exists
         if ($hasIsActiveColumn) {
             $query->where('is_active', true);
         }
-        
+
         $galleries = $query->get();
 
         // Add full URL for images
@@ -283,3 +283,4 @@ class GalleryController extends Controller
         return response()->json($galleries);
     }
 }
+

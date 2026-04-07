@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -18,8 +19,30 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-    public function store(){
-        //
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'nullable|string|max:20',
+            'password' => 'nullable|string|min:6|confirmed',
+            'role' => 'nullable|string|in:admin,student,teacher,user',
+        ]);
+
+        $password = $data['password'] ?? 'password';
+        $data['password'] = Hash::make($password);
+
+        $role = $data['role'] ?? 'user';
+        unset($data['role']);
+
+        $user = User::create($data);
+        $user->syncRoles([$role]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User created successfully',
+            'user' => $this->formatUserData($user->fresh()->load('roles')),
+        ], 201);
     }
 
     /**

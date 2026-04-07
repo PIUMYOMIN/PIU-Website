@@ -191,6 +191,14 @@ class SlideController extends Controller
     }
 
     /**
+     * Backwards-compatible toggle route handler.
+     */
+    public function toggleActive(Request $request, Slide $slide)
+    {
+        return $this->isActive($request, $slide);
+    }
+
+    /**
      * Toggle the active status of the specified slide (only if column exists).
      */
     public function isActive(Request $request, Slide $slide)

@@ -17,7 +17,12 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = Student::latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $students,
+        ], 200);
     }
 
     /**
@@ -41,7 +46,6 @@ class StudentController extends Controller
                 'gender_sts' => 'required|string',
                 'student_id' => 'required|string|unique:students,student_id',
                 'course_id' => 'nullable|integer',
-                'user_id' => 'required|integer',
                 'national_id' => 'required|string',
                 'passport_id' => 'nullable|string',
 
@@ -52,6 +56,7 @@ class StudentController extends Controller
 
             // ✅ DEFAULT PASSWORD
             $data['password'] = Hash::make('piustudent');
+            $data['user_id'] = auth()->id();
 
             if ($request->hasFile('profile')) {
                 $data['profile'] = $request->file('profile')->store('students', 'public');
@@ -187,6 +192,19 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $student = Student::findOrFail($id);
+
+        foreach (['profile', 'education_certificate', 'other_documents'] as $field) {
+            if ($student->{$field}) {
+                Storage::disk('public')->delete($student->{$field});
+            }
+        }
+
+        $student->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Student deleted successfully',
+        ], 200);
     }
 }

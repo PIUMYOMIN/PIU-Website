@@ -24,12 +24,13 @@ class CurriculumController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'module_ids' => 'nullable|array',
+            'description' => 'required|string',
+            'module_id' => 'required|exists:modules,id',
             'course_id' => 'required|exists:courses,id',
             'year_id' => 'required|exists:years,id',
-            'user_id' => 'required|exists:users,id',
         ]);
+
+        $data['user_id'] = $request->user()->id;
 
         $curriculum = Curriculum::create($data);
         return response()->json(['message' => 'Curriculum created successfully', 'curriculum' => $curriculum], 201);
@@ -53,12 +54,13 @@ class CurriculumController extends Controller
 
         $data = $request->validate([
             'title' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|nullable|string',
-            'module_ids' => 'sometimes|nullable|array',
+            'description' => 'sometimes|required|string',
+            'module_id' => 'sometimes|required|exists:modules,id',
             'course_id' => 'sometimes|required|exists:courses,id',
             'year_id' => 'sometimes|required|exists:years,id',
-            'user_id' => 'sometimes|required|exists:users,id',
         ]);
+
+        $data['user_id'] = $request->user()->id;
 
         $curriculum->update($data);
         return response()->json(['message' => 'Curriculum updated successfully', 'curriculum' => $curriculum]);
@@ -69,6 +71,12 @@ class CurriculumController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $curriculum = Curriculum::findOrFail($id);
+        $curriculum->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Curriculum deleted successfully',
+        ], 200);
     }
 }

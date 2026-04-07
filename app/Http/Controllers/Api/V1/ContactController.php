@@ -4,61 +4,79 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Contact;
 use App\Mail\ContactFormMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 
 class ContactController extends Controller
 {
-    public function store(Request $request)
+    protected function normalizeEmails(array $emails): array
     {
-        $formData = request()->all();
-        // return response()->json($formData);
-
-        $recaptchaSecret = env('NOCAPTCHA_SECRET');
-        $recaptchaResponse = $request->input('recaptcha');
-
-        $client = new Client();
-
-        $response = $client->post('https://www.google.com/recaptcha/api/siteverify', [
-        'form_params' => [
-            'secret' => $recaptchaSecret,
-            'response' => $recaptchaResponse
-        ]
-    ]);
-
-    $responseBody = json_decode((string) $response->getBody());
-
-    if (!$responseBody->success) {
-        return response()->json(['recaptcha' => 'reCAPTCHA verification failed.'], 422);
+        $out = [];
+        foreach ($emails as $email) {
+            $email = trim((string) $email);
+            if ($email === '') continue;
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) $out[] = $email;
+        }
+        return array_values(array_unique($out));
     }
 
+    public function store(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'email', 'max:255'],
+                'phone' => ['required', 'string', 'max:50'],
+                'country' => ['required', 'string', 'max:255'],
+                'message' => ['required', 'string'],
+            ]);
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'country'=> 'required',
-            'message' => 'required',
-            'reCapt' => 'required|captcha',
-        ]);
+            $contact = Contact::create($data);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            $mailStatus = [
+                'sent' => false,
+                'error' => null,
+            ];
+
+            try {
+                // Notify admins + always CC thantarhlaing (and any other configured CCs)
+                $adminRecipients = (array) config('admissions.admin_recipients', []);
+                $alwaysCc = (array) config('admissions.cc_recipients', []);
+
+                // Always include the web developer inbox for contact notifications.
+                $to = $this->normalizeEmails(array_merge(
+                    $adminRecipients,
+                    ['piu.webdeveloper@gmail.com', (string) config('mail.from.address')]
+                ));
+                $cc = $this->normalizeEmails($alwaysCc);
+
+                // If no admin recipient configured, fall back to mail.from.address
+                if (empty($to)) {
+                    $fallback = config('mail.from.address');
+                    if ($fallback) $to = [$fallback];
+                }
+
+                Mail::to($to)->cc($cc)->send(new ContactFormMail($contact));
+                $mailStatus['sent'] = true;
+            } catch (\Throwable $mailError) {
+                // Don't break the API response if mail fails in local
+                \Log::warning('Contact mail failed (continuing): ' . $mailError->getMessage());
+                $mailStatus['error'] = $mailError->getMessage();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Your message has been sent successfully. Thank you for contacting us.',
+                'mail' => $mailStatus,
+            ], 200);
+        } catch (ValidationException $ve) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $ve->errors(),
+            ], 422);
         }
-
-        $data = Contact::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'country'=> $request->country,
-            'message' => $request->message
-        ]);
-
-        // Sending email
-        Mail::to('piu.webdeveloper@gmail.com')->send(new ContactFormMail($data));
-
-        return response()->json(['message' => 'Your message has been sent successfully. Thank you for contacting us.'], 200);
     }
 }

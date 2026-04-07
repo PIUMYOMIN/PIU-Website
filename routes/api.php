@@ -2,18 +2,28 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V2\RoleController;
-use App\Http\Controllers\Api\V2\PermissionController;
-use App\Http\Controllers\Api\V2\UserController;
-use App\Http\Controllers\Api\V2\CourseController;
-use App\Http\Controllers\Api\V2\CourseCategoryController;
-use App\Http\Controllers\Api\V2\SlideController;
-use App\Http\Controllers\Api\V2\AssignmentController;
-use App\Http\Controllers\Api\V2\ModuleController;
-use App\Http\Controllers\Api\V2\AuthController;
-use App\Http\Controllers\Api\V2\BlogController;
-use App\Http\Controllers\Api\V2\NewsController;
-use App\Http\Controllers\Api\V2\GalleryController;
+use App\Http\Controllers\Api\V1\TeamController as V1TeamController;
+use App\Http\Controllers\Api\V1\ContactController as V1ContactController;
+use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\CourseCategoryController;
+use App\Http\Controllers\Api\SlideController;
+use App\Http\Controllers\Api\AssignmentController;
+use App\Http\Controllers\Api\ModuleController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BlogController;
+use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\GalleryController;
+use App\Http\Controllers\Api\AdmissionController;
+use App\Http\Controllers\Api\V2\EventsController;
+use App\Http\Controllers\Api\V2\CurriculumController as V2CurriculumController;
+use App\Http\Controllers\Api\V2\StudentController as V2StudentController;
+use App\Http\Controllers\Api\V2\TeamController as V2TeamController;
+use App\Http\Controllers\Api\V2\YearController as V2YearController;
+use App\Http\Controllers\Api\V2\DepartmentController as V2DepartmentController;
+use App\Http\Controllers\Api\V2\PositionController as V2PositionController;
 
 
 /*
@@ -27,7 +37,19 @@ use App\Http\Controllers\Api\V2\GalleryController;
 |
 */
 
-Route::prefix('v2')->group(function () {
+// ==================== V1 (Legacy public endpoints) ====================
+Route::prefix('v1')->middleware('recaptcha')->group(function () {
+    // Faculty/Team
+    Route::get('team', [V1TeamController::class, 'index']);
+    Route::get('team/{slug}', [V1TeamController::class, 'show']);
+
+    // Contact form (legacy)
+    Route::post('contact/form-submit', [V1ContactController::class, 'store']);
+});
+
+// Note: routes in routes/api.php are automatically prefixed with /api by Laravel.
+// So this group should be /api/v2 (not /api/api/v2).
+Route::prefix('v2')->middleware('recaptcha')->group(function () {
     // Public routes
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
@@ -62,6 +84,12 @@ Route::prefix('v2')->group(function () {
     // Galleries - Public GET routes
     Route::get('gallery', [GalleryController::class, 'index']);
     Route::get('gallery/recent/{limit?}', [GalleryController::class, 'recent']);
+
+    // Events - Public GET routes
+    Route::get('events', [EventsController::class, 'index']);
+
+    // Admissions - Public submit route
+    Route::post('admissions', [AdmissionController::class, 'store']);
 
     // ==================== AUTHENTICATED ROUTES ====================
     Route::middleware('auth:sanctum')->group(function () {
@@ -114,6 +142,20 @@ Route::prefix('v2')->group(function () {
         Route::apiResource('permissions', PermissionController::class);
         Route::apiResource('assignments', AssignmentController::class);
         Route::apiResource('modules', ModuleController::class);
+        Route::apiResource('curriculums', V2CurriculumController::class);
+        Route::apiResource('students', V2StudentController::class);
+        Route::apiResource('teams', V2TeamController::class);
+        Route::post('teams/{team}/toggle-active', [V2TeamController::class, 'toggleActive']);
+
+        Route::get('years', [V2YearController::class, 'index']);
+        Route::get('departments', [V2DepartmentController::class, 'index']);
+        Route::get('positions', [V2PositionController::class, 'index']);
+
+        // Admissions (admin/staff use)
+        Route::get('admissions', [AdmissionController::class, 'index']);
+        Route::get('admissions/{id}', [AdmissionController::class, 'show']);
+        Route::put('admissions/{id}', [AdmissionController::class, 'update']);
+        Route::patch('admissions/{id}', [AdmissionController::class, 'update']);
 
         // ==================== GALLERIES ====================
         Route::post('gallery', [GalleryController::class, 'store']);

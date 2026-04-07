@@ -72,5 +72,6 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'analytic' => \Spatie\Analytics\Middleware\TrackPageViews::class,
+        'recaptcha' => \App\Http\Middleware\VerifyRecaptchaV3::class,
     ];
 }

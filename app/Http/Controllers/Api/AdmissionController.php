@@ -1,10 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\V2;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admission;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use App\Mail\NewAdmissionFormSubmitted;
+use App\Mail\AdmissionApplicantSuccess;
+use App\Models\Course;
+use Illuminate\Validation\ValidationException;
 
 class AdmissionController extends Controller
 {
@@ -68,24 +75,63 @@ class AdmissionController extends Controller
 
             $admission = Admission::create($validatedData);
 
-            // Send email to faculty
-            $adminEmail = $this->getFacultyEmail($validatedData['course_id']);
+            $mailStatus = [
+                'admin_notified' => false,
+                'applicant_confirmed' => false,
+                'error' => null,
+            ];
 
-            Mail::to($adminEmail)
-                ->cc([
-                    'piu.webdeveloper@gmail.com',
-                    'myatmonthu.aug@gmail.com',
-                    'piuacademicaffairs@gmail.com',
-                    'thantarhlaing.piu@gmail.com'
-                ])
-                ->send(new NewAdmissionFormSubmitted($admission));
+            try {
+                $course = Course::find($validatedData['course_id']);
+                $courseTitle = $course?->title;
+
+                $adminUrl = rtrim(config('app.url'), '/') . '/piu/admin/admission';
+
+                $adminRecipients = (array) config('admissions.admin_recipients', []);
+                $alwaysCc = (array) config('admissions.cc_recipients', []);
+                $programManager = $this->getProgramManagerEmail((int) $validatedData['course_id']);
+
+                $to = $this->normalizeEmails($adminRecipients);
+                $cc = $this->normalizeEmails(array_merge($alwaysCc, $programManager ? [$programManager] : []));
+
+                if (!empty($to) || !empty($cc)) {
+                    // If only CC is configured, fall back to sending TO the first CC address.
+                    if (empty($to) && !empty($cc)) {
+                        $to = [array_shift($cc)];
+                    }
+
+                    Mail::to($to)
+                        ->cc($cc)
+                        ->send(new NewAdmissionFormSubmitted($admission, $courseTitle, $adminUrl));
+                    $mailStatus['admin_notified'] = true;
+                }
+
+                // Applicant success email
+                if (!empty($admission->email)) {
+                    Mail::to($admission->email)->send(new AdmissionApplicantSuccess($admission, $courseTitle));
+                    $mailStatus['applicant_confirmed'] = true;
+                }
+            } catch (\Throwable $mailError) {
+                Log::warning('Admission mail failed (continuing):', [
+                    'message' => $mailError->getMessage(),
+                ]);
+                $mailStatus['error'] = $mailError->getMessage();
+            }
 
             return response()->json([
                 'success' => true,
                 'message' => 'Admission form submitted successfully',
-                'data' => $admission
+                'data' => $admission,
+                'mail' => $mailStatus,
             ], 201);
 
+        } catch (ValidationException $ve) {
+            // Return proper 422 instead of masking as 500
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $ve->errors(),
+            ], 422);
         } catch (\Throwable $e) {
 
             Log::error('Admission Error:', [
@@ -101,20 +147,33 @@ class AdmissionController extends Controller
         }
     }
 
-    /**
-     * Faculty email mapping by course
-     */
-    protected function getFacultyEmail(int $courseId): string
+    protected function normalizeEmails(array $emails): array
     {
-        return match ($courseId) {
-            1, 2, 5, 8 => 'thantarhlaing.piu@gmail.com',
-            3 => 'intellay@gmail.com',
-            4 => 'oketama020@gmail.com',
-            6 => 'ohmar.mme@gmail.com',
-            7 => 'mayyimyint.pdopiu@gmail.com',
-            9 => 'moet.khaing@gmail.com',
-            default => 'piuacademicaffairs@gmail.com',
-        };
+        $out = [];
+        foreach ($emails as $email) {
+            $email = trim((string) $email);
+            if ($email === '') continue;
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $out[] = $email;
+            }
+        }
+        return array_values(array_unique($out));
+    }
+
+    /**
+     * Program manager email mapping by course_id.
+     */
+    protected function getProgramManagerEmail(int $courseId): ?string
+    {
+        $map = (array) config('admissions.program_managers', []);
+        $email = $map[$courseId] ?? null;
+
+        if (!$email) {
+            Log::warning('No program manager email configured for course_id', [
+                'course_id' => $courseId,
+            ]);
+        }
+        return $email ? (string) $email : null;
     }
 
     /**
@@ -196,7 +255,6 @@ class AdmissionController extends Controller
         }
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
@@ -205,3 +263,4 @@ class AdmissionController extends Controller
         //
     }
 }
+
