@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Department;
 
 class DepartmentController extends Controller
 {
     public function index()
     {
-       $department = Department::all();
-
-       return response()->json($department);
+        return response()->json([
+            'success' => true,
+            'data' => Department::all(),
+        ]);
     }
 }
+

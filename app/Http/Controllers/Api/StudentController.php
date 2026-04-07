@@ -1,20 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api\V2;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
-
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $students = Student::latest()->get();
@@ -25,9 +20,6 @@ class StudentController extends Controller
         ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         try {
@@ -54,7 +46,6 @@ class StudentController extends Controller
                 'other_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
             ]);
 
-            // ✅ DEFAULT PASSWORD
             $data['password'] = Hash::make('piustudent');
             $data['user_id'] = auth()->id();
 
@@ -76,48 +67,39 @@ class StudentController extends Controller
                 'success' => true,
                 'message' => 'Student created successfully',
                 'default_password' => 'piustudent',
-                'data' => $student
+                'data' => $student,
             ], 201);
-
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Student creation failed',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
 
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-
-        try{
+        try {
             $student = Student::findOrFail($id);
             return response()->json([
                 'success' => true,
-                'data' => $student
+                'data' => $student,
             ], 200);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Student not found'
+                'message' => 'Student not found',
             ], 404);
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         try {
@@ -141,7 +123,6 @@ class StudentController extends Controller
                 'national_id' => 'sometimes|string',
                 'passport_id' => 'nullable|string',
 
-                // 🔑 OPTIONAL PASSWORD
                 'password' => 'nullable|string|min:6',
 
                 'profile' => 'nullable|file|mimes:jpg,jpeg,png',
@@ -149,14 +130,12 @@ class StudentController extends Controller
                 'other_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
             ]);
 
-            // 🔐 Update password only if provided
             if ($request->filled('password')) {
                 $data['password'] = Hash::make($request->password);
             } else {
                 unset($data['password']);
             }
 
-            // 📁 File uploads
             if ($request->hasFile('profile')) {
                 $data['profile'] = $request->file('profile')->store('students', 'public');
             }
@@ -174,22 +153,17 @@ class StudentController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Student updated successfully',
-                'data' => $student
+                'data' => $student,
             ], 200);
-
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Student update failed',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $student = Student::findOrFail($id);
@@ -208,3 +182,4 @@ class StudentController extends Controller
         ], 200);
     }
 }
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,7 +9,7 @@ use App\Mail\ContactFormMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
-class ContactController extends Controller
+class ContactV1Controller extends Controller
 {
     protected function normalizeEmails(array $emails): array
     {
@@ -41,18 +41,15 @@ class ContactController extends Controller
             ];
 
             try {
-                // Notify admins + always CC thantarhlaing (and any other configured CCs)
                 $adminRecipients = (array) config('admissions.admin_recipients', []);
                 $alwaysCc = (array) config('admissions.cc_recipients', []);
 
-                // Always include the web developer inbox for contact notifications.
                 $to = $this->normalizeEmails(array_merge(
                     $adminRecipients,
                     ['piu.webdeveloper@gmail.com', (string) config('mail.from.address')]
                 ));
                 $cc = $this->normalizeEmails($alwaysCc);
 
-                // If no admin recipient configured, fall back to mail.from.address
                 if (empty($to)) {
                     $fallback = config('mail.from.address');
                     if ($fallback) $to = [$fallback];
@@ -61,7 +58,6 @@ class ContactController extends Controller
                 Mail::to($to)->cc($cc)->send(new ContactFormMail($contact));
                 $mailStatus['sent'] = true;
             } catch (\Throwable $mailError) {
-                // Don't break the API response if mail fails in local
                 \Log::warning('Contact mail failed (continuing): ' . $mailError->getMessage());
                 $mailStatus['error'] = $mailError->getMessage();
             }
@@ -80,3 +76,4 @@ class ContactController extends Controller
         }
     }
 }
+

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\V2;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Department;
+use App\Models\Year;
 
-class DepartmentController extends Controller
+class YearController extends Controller
 {
     public function index()
     {
         return response()->json([
             'success' => true,
-            'data' => Department::all(),
+            'data' => Year::all(),
         ]);
     }
 }

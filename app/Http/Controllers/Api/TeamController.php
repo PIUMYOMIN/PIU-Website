@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V2;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Team;
@@ -40,7 +40,6 @@ class TeamController extends Controller
 
         $data['slug'] = Str::slug($data['name']);
         $data['user_id'] = auth()->id();
-
         $data['profile'] = $request->file('profile')->store('team_profiles', 'public');
 
         $team = Team::create($data);

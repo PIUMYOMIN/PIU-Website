@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V2;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,18 +8,12 @@ use App\Models\Curriculum;
 
 class CurriculumController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $curriculums = Curriculum::all();
         return response()->json($curriculums);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -36,18 +30,12 @@ class CurriculumController extends Controller
         return response()->json(['message' => 'Curriculum created successfully', 'curriculum' => $curriculum], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $curriculum = Curriculum::findOrFail($id);
         return response()->json($curriculum);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $curriculum = Curriculum::findOrFail($id);
@@ -66,9 +54,6 @@ class CurriculumController extends Controller
         return response()->json(['message' => 'Curriculum updated successfully', 'curriculum' => $curriculum]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $curriculum = Curriculum::findOrFail($id);
@@ -80,3 +65,4 @@ class CurriculumController extends Controller
         ], 200);
     }
 }
+

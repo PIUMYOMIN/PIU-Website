@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\TeamController as V1TeamController;
-use App\Http\Controllers\Api\V1\ContactController as V1ContactController;
+use App\Http\Controllers\Api\TeamV1Controller;
+use App\Http\Controllers\Api\ContactV1Controller;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\UserController;
@@ -17,13 +17,13 @@ use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\AdmissionController;
-use App\Http\Controllers\Api\V2\EventsController;
-use App\Http\Controllers\Api\V2\CurriculumController as V2CurriculumController;
-use App\Http\Controllers\Api\V2\StudentController as V2StudentController;
-use App\Http\Controllers\Api\V2\TeamController as V2TeamController;
-use App\Http\Controllers\Api\V2\YearController as V2YearController;
-use App\Http\Controllers\Api\V2\DepartmentController as V2DepartmentController;
-use App\Http\Controllers\Api\V2\PositionController as V2PositionController;
+use App\Http\Controllers\Api\EventsController;
+use App\Http\Controllers\Api\CurriculumController;
+use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\YearController;
+use App\Http\Controllers\Api\DepartmentController;
+use App\Http\Controllers\Api\PositionController;
 
 
 /*
@@ -39,17 +39,11 @@ use App\Http\Controllers\Api\V2\PositionController as V2PositionController;
 
 // ==================== V1 (Legacy public endpoints) ====================
 Route::prefix('v1')->middleware('recaptcha')->group(function () {
-    // Faculty/Team
-    Route::get('team', [V1TeamController::class, 'index']);
-    Route::get('team/{slug}', [V1TeamController::class, 'show']);
+    // Legacy Faculty/Team + Contact (keep paths unchanged)
+    Route::get('team', [TeamV1Controller::class, 'index']);
+    Route::get('team/{slug}', [TeamV1Controller::class, 'show']);
+    Route::post('contact/form-submit', [ContactV1Controller::class, 'store']);
 
-    // Contact form (legacy)
-    Route::post('contact/form-submit', [V1ContactController::class, 'store']);
-});
-
-// Note: routes in routes/api.php are automatically prefixed with /api by Laravel.
-// So this group should be /api/v2 (not /api/api/v2).
-Route::prefix('v2')->middleware('recaptcha')->group(function () {
     // Public routes
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
@@ -142,14 +136,14 @@ Route::prefix('v2')->middleware('recaptcha')->group(function () {
         Route::apiResource('permissions', PermissionController::class);
         Route::apiResource('assignments', AssignmentController::class);
         Route::apiResource('modules', ModuleController::class);
-        Route::apiResource('curriculums', V2CurriculumController::class);
-        Route::apiResource('students', V2StudentController::class);
-        Route::apiResource('teams', V2TeamController::class);
-        Route::post('teams/{team}/toggle-active', [V2TeamController::class, 'toggleActive']);
+        Route::apiResource('curriculums', CurriculumController::class);
+        Route::apiResource('students', StudentController::class);
+        Route::apiResource('teams', TeamController::class);
+        Route::post('teams/{team}/toggle-active', [TeamController::class, 'toggleActive']);
 
-        Route::get('years', [V2YearController::class, 'index']);
-        Route::get('departments', [V2DepartmentController::class, 'index']);
-        Route::get('positions', [V2PositionController::class, 'index']);
+        Route::get('years', [YearController::class, 'index']);
+        Route::get('departments', [DepartmentController::class, 'index']);
+        Route::get('positions', [PositionController::class, 'index']);
 
         // Admissions (admin/staff use)
         Route::get('admissions', [AdmissionController::class, 'index']);

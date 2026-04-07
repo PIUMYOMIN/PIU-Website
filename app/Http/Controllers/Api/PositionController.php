@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\V2;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Year;
+use App\Models\Position;
 
-class YearController extends Controller
+class PositionController extends Controller
 {
     public function index()
     {
         return response()->json([
             'success' => true,
-            'data' => Year::all(),
+            'data' => Position::all(),
         ]);
     }
 }
