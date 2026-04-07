@@ -30,8 +30,6 @@ return [
 
     'max_age' => 0,
 
-    // If supports_credentials=true, you cannot use allowed_origins='*' in browsers.
-    // We don't rely on cookies for the API (we use Bearer tokens), so keep this false.
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];
