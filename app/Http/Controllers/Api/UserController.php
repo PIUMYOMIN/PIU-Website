@@ -11,6 +11,34 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    private function normalizeRoleName(?string $role): ?string
+    {
+        if (!$role) return null;
+        $normalized = strtolower(trim($role));
+        if ($normalized === 'faculty') return 'teacher';
+        return $normalized;
+    }
+
+    private function resolveRoleForSync(string $role): Role
+    {
+        $normalized = $this->normalizeRoleName($role) ?? 'user';
+
+        $existing = Role::query()
+            ->whereRaw('LOWER(name) = ?', [$normalized])
+            ->first();
+
+        if ($existing) {
+            // Keep role naming consistent going forward.
+            if ($existing->name !== $normalized) {
+                $existing->name = $normalized;
+                $existing->save();
+            }
+            return $existing;
+        }
+
+        return Role::firstOrCreate(['name' => $normalized]);
+    }
+
     public function index()
     {
         $users = User::with('roles')->get();
@@ -24,17 +52,17 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|string|max:20',
             'password' => 'nullable|string|min:6|confirmed',
-            'role' => 'nullable|string|in:admin,student,teacher,user,registrar',
+            'role' => 'nullable|string|in:admin,student,teacher,faculty,user,registrar',
         ]);
 
         $password = $data['password'] ?? 'password';
         $data['password'] = Hash::make($password);
 
-        $role = $data['role'] ?? 'user';
+        $role = $this->normalizeRoleName($data['role'] ?? 'user');
         unset($data['role']);
 
         $user = User::create($data);
-        $user->syncRoles([$role]);
+        $user->syncRoles([$this->resolveRoleForSync($role)->name]);
 
         return response()->json([
             'success' => true,
@@ -134,7 +162,7 @@ class UserController extends Controller
             'city' => 'sometimes|nullable|string|max:100',
             'country' => 'sometimes|nullable|string|max:100',
             'password' => 'sometimes|nullable|string|min:6|confirmed',
-            'role' => 'sometimes|string|in:admin,student,teacher,user,registrar',
+            'role' => 'sometimes|string|in:admin,student,teacher,faculty,user,registrar',
             'profile_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
@@ -144,7 +172,7 @@ class UserController extends Controller
             unset($data['password']);
         }
 
-        $roleToSync = $data['role'] ?? null;
+        $roleToSync = isset($data['role']) ? $this->normalizeRoleName($data['role']) : null;
         unset($data['role']);
 
         if ($request->hasFile('profile_image')) {
@@ -163,7 +191,7 @@ class UserController extends Controller
         $user->update($data);
 
         if ($roleToSync) {
-            $user->syncRoles([$roleToSync]);
+            $user->syncRoles([$this->resolveRoleForSync($roleToSync)->name]);
         }
 
         return response()->json([
@@ -194,7 +222,7 @@ class UserController extends Controller
      */
     public function auditRoles()
     {
-        $validRoles = ['admin', 'teacher', 'registrar', 'user', 'student'];
+        $validRoles = ['admin', 'teacher', 'registrar', 'user', 'student', 'faculty'];
         $users = User::with('roles')->get();
 
         $missing = [];
@@ -250,11 +278,11 @@ class UserController extends Controller
     public function assignMissingRoles(Request $request)
     {
         $data = $request->validate([
-            'default_role' => 'nullable|string|in:admin,teacher,registrar,user,student',
+            'default_role' => 'nullable|string|in:admin,teacher,faculty,registrar,user,student',
         ]);
 
-        $defaultRole = $data['default_role'] ?? 'user';
-        $role = Role::firstOrCreate(['name' => $defaultRole]);
+        $defaultRole = $this->normalizeRoleName($data['default_role'] ?? 'user');
+        $role = $this->resolveRoleForSync($defaultRole);
 
         $users = User::with('roles')->get();
         $updated = [];
