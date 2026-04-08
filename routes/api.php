@@ -37,16 +37,23 @@ use App\Http\Controllers\Api\PositionController;
 |
 */
 
+// Explicitly handle CORS preflight for mobile/edge environments.
+Route::options('v1/{any}', function () {
+    return response('', 204);
+})->where('any', '.*');
+
 // ==================== V1 (Legacy public endpoints) ====================
-Route::prefix('v1')->middleware('recaptcha')->group(function () {
+Route::prefix('v1')->group(function () {
     // Legacy Faculty/Team + Contact (keep paths unchanged)
     Route::get('team', [TeamV1Controller::class, 'index']);
     Route::get('team/{slug}', [TeamV1Controller::class, 'show']);
-    Route::post('contact/form-submit', [ContactV1Controller::class, 'store']);
+    Route::post('contact/form-submit', [ContactV1Controller::class, 'store'])->middleware('recaptcha');
 
     // Public routes
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
     // ==================== PUBLIC ROUTES ====================
 
@@ -83,7 +90,7 @@ Route::prefix('v1')->middleware('recaptcha')->group(function () {
     Route::get('events', [EventsController::class, 'index']);
 
     // Admissions - Public submit route
-    Route::post('admissions', [AdmissionController::class, 'store']);
+    Route::post('admissions', [AdmissionController::class, 'store'])->middleware('recaptcha');
 
     // ==================== AUTHENTICATED ROUTES ====================
     Route::middleware('auth:sanctum')->group(function () {
