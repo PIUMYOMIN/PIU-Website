@@ -19,10 +19,15 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
-    // 'allowed_origins' => ['http://localhost:5173'],
+    'allowed_origins' => [
+        'https://api.piueducation.org',
+        'http://localhost:5173',
+        'http://localhost:5174',
+        'https://piueducation.org',
+        'https://www.piueducation.org',
+    ],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['^http://localhost:\d+$', '^http://127\.0\.0\.1:\d+$'],
 
     'allowed_headers' => ['*'],
 
@@ -30,6 +35,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
+    'supports_credentials' => false,
 
 ];
