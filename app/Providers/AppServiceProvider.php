@@ -8,6 +8,7 @@ use App\Models\Course;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Auth\Notifications\ResetPassword;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        ResetPassword::createUrlUsing(function (object $user, string $token) {
+            $frontendUrl = rtrim((string) env('FRONTEND_URL', 'https://www.piueducation.org'), '/');
+            return $frontendUrl . '/reset-password?token=' . urlencode($token) . '&email=' . urlencode($user->email);
+        });
+
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });

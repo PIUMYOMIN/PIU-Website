@@ -9,6 +9,7 @@ use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -72,5 +73,13 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->hasRole('admin|registrar');
+    }
+
+    /**
+     * Send the password reset notification email with a custom template.
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
