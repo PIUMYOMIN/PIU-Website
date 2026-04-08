@@ -101,70 +101,72 @@ Route::prefix('v1')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
 
         // ==================== COURSES ====================
-        Route::post('courses', [CourseController::class, 'store']);
-        Route::put('courses/{course}', [CourseController::class, 'update']);
-        Route::patch('courses/{course}', [CourseController::class, 'update']);
-        Route::delete('courses/{course}', [CourseController::class, 'destroy']);
-        Route::post('courses/{course}/isActive', [CourseController::class, 'isActive']);
-        Route::post('courses/{course}/application', [CourseController::class, 'application']);
+        Route::post('courses', [CourseController::class, 'store'])->middleware('role:admin|teacher|registrar');
+        Route::put('courses/{course}', [CourseController::class, 'update'])->middleware('role:admin|teacher|registrar');
+        Route::patch('courses/{course}', [CourseController::class, 'update'])->middleware('role:admin|teacher|registrar');
+        Route::delete('courses/{course}', [CourseController::class, 'destroy'])->middleware('role:admin|teacher|registrar');
+        Route::post('courses/{course}/isActive', [CourseController::class, 'isActive'])->middleware('role:admin|teacher|registrar');
+        Route::post('courses/{course}/application', [CourseController::class, 'application'])->middleware('role:admin|teacher|registrar');
 
         // ==================== SLIDES ====================
-        Route::post('slides', [SlideController::class, 'store']);
-        Route::put('slides/{slide}', [SlideController::class, 'update']);
-        Route::patch('slides/{slide}', [SlideController::class, 'update']);
-        Route::delete('slides/{slide}', [SlideController::class, 'destroy']);
-        Route::post('slides/{slide}/toggle-active', [SlideController::class, 'toggleActive']);
-        Route::post('slides/update-order', [SlideController::class, 'updateOrder']);
+        Route::post('slides', [SlideController::class, 'store'])->middleware('role:admin');
+        Route::put('slides/{slide}', [SlideController::class, 'update'])->middleware('role:admin');
+        Route::patch('slides/{slide}', [SlideController::class, 'update'])->middleware('role:admin');
+        Route::delete('slides/{slide}', [SlideController::class, 'destroy'])->middleware('role:admin');
+        Route::post('slides/{slide}/toggle-active', [SlideController::class, 'toggleActive'])->middleware('role:admin');
+        Route::post('slides/update-order', [SlideController::class, 'updateOrder'])->middleware('role:admin');
 
         // ==================== NEWS ====================
-        Route::post('news', [NewsController::class, 'store']);
-        Route::put('news/{news}', [NewsController::class, 'update']);
-        Route::patch('news/{news}', [NewsController::class, 'update']);
-        Route::delete('news/{news}', [NewsController::class, 'destroy']);
-        Route::post('news/{news}/toggle-active', [NewsController::class, 'toggleActive']);
+        Route::post('news', [NewsController::class, 'store'])->middleware('role:admin|teacher|registrar');
+        Route::put('news/{news}', [NewsController::class, 'update'])->middleware('role:admin|teacher|registrar');
+        Route::patch('news/{news}', [NewsController::class, 'update'])->middleware('role:admin|teacher|registrar');
+        Route::delete('news/{news}', [NewsController::class, 'destroy'])->middleware('role:admin|teacher|registrar');
+        Route::post('news/{news}/toggle-active', [NewsController::class, 'toggleActive'])->middleware('role:admin|teacher|registrar');
 
         // ==================== BLOGS ====================
-        Route::post('blogs', [BlogController::class, 'store']);
-        Route::put('blogs/{blog}', [BlogController::class, 'update']);
-        Route::patch('blogs/{blog}', [BlogController::class, 'update']);
-        Route::delete('blogs/{blog}', [BlogController::class, 'destroy']);
-        Route::post('blogs/{blog}/toggle-active', [BlogController::class, 'toggleActive']);
-        Route::post('blogs/upload-image', [BlogController::class, 'uploadImage']);
+        Route::post('blogs', [BlogController::class, 'store'])->middleware('role:admin|teacher|registrar');
+        Route::put('blogs/{blog}', [BlogController::class, 'update'])->middleware('role:admin|teacher|registrar');
+        Route::patch('blogs/{blog}', [BlogController::class, 'update'])->middleware('role:admin|teacher|registrar');
+        Route::delete('blogs/{blog}', [BlogController::class, 'destroy'])->middleware('role:admin|teacher|registrar');
+        Route::post('blogs/{blog}/toggle-active', [BlogController::class, 'toggleActive'])->middleware('role:admin|teacher|registrar');
+        Route::post('blogs/upload-image', [BlogController::class, 'uploadImage'])->middleware('role:admin|teacher|registrar');
 
         // ==================== COURSE CATEGORIES ====================
-        Route::post('course-categories', [CourseCategoryController::class, 'store']);
-        Route::put('course-categories/{category}', [CourseCategoryController::class, 'update']);
-        Route::patch('course-categories/{category}', [CourseCategoryController::class, 'update']);
-        Route::delete('course-categories/{category}', [CourseCategoryController::class, 'destroy']);
+        Route::post('course-categories', [CourseCategoryController::class, 'store'])->middleware('role:admin|registrar');
+        Route::put('course-categories/{category}', [CourseCategoryController::class, 'update'])->middleware('role:admin|registrar');
+        Route::patch('course-categories/{category}', [CourseCategoryController::class, 'update'])->middleware('role:admin|registrar');
+        Route::delete('course-categories/{category}', [CourseCategoryController::class, 'destroy'])->middleware('role:admin|registrar');
 
         // ==================== OTHER RESOURCES ====================
-        Route::apiResource('users', UserController::class);
-        Route::apiResource('roles', RoleController::class);
-        Route::apiResource('permissions', PermissionController::class);
-        Route::apiResource('assignments', AssignmentController::class);
-        Route::apiResource('modules', ModuleController::class);
-        Route::apiResource('curriculums', CurriculumController::class);
-        Route::apiResource('students', StudentController::class);
-        Route::apiResource('teams', TeamController::class);
-        Route::post('teams/{team}/toggle-active', [TeamController::class, 'toggleActive']);
+        Route::apiResource('users', UserController::class)->middleware('role:admin');
+        Route::get('users/role-audit', [UserController::class, 'auditRoles'])->middleware('role:admin');
+        Route::post('users/assign-missing-roles', [UserController::class, 'assignMissingRoles'])->middleware('role:admin');
+        Route::apiResource('roles', RoleController::class)->middleware('role:admin');
+        Route::apiResource('permissions', PermissionController::class)->middleware('role:admin');
+        Route::apiResource('assignments', AssignmentController::class)->middleware('role:admin|teacher');
+        Route::apiResource('modules', ModuleController::class)->middleware('role:admin|teacher|registrar');
+        Route::apiResource('curriculums', CurriculumController::class)->middleware('role:admin|teacher|registrar');
+        Route::apiResource('students', StudentController::class)->middleware('role:admin|teacher|registrar');
+        Route::apiResource('teams', TeamController::class)->middleware('role:admin');
+        Route::post('teams/{team}/toggle-active', [TeamController::class, 'toggleActive'])->middleware('role:admin');
 
-        Route::get('years', [YearController::class, 'index']);
-        Route::get('departments', [DepartmentController::class, 'index']);
-        Route::get('positions', [PositionController::class, 'index']);
+        Route::get('years', [YearController::class, 'index'])->middleware('role:admin|teacher|registrar');
+        Route::get('departments', [DepartmentController::class, 'index'])->middleware('role:admin|teacher|registrar');
+        Route::get('positions', [PositionController::class, 'index'])->middleware('role:admin|teacher|registrar');
 
         // Admissions (admin/staff use)
-        Route::get('admissions', [AdmissionController::class, 'index']);
-        Route::get('admissions/{id}', [AdmissionController::class, 'show']);
-        Route::put('admissions/{id}', [AdmissionController::class, 'update']);
-        Route::patch('admissions/{id}', [AdmissionController::class, 'update']);
+        Route::get('admissions', [AdmissionController::class, 'index'])->middleware('role:admin|registrar');
+        Route::get('admissions/{id}', [AdmissionController::class, 'show'])->middleware('role:admin|registrar');
+        Route::put('admissions/{id}', [AdmissionController::class, 'update'])->middleware('role:admin|registrar');
+        Route::patch('admissions/{id}', [AdmissionController::class, 'update'])->middleware('role:admin|registrar');
 
         // ==================== GALLERIES ====================
-        Route::post('gallery', [GalleryController::class, 'store']);
-        Route::put('gallery/{id}', [GalleryController::class, 'update']);
-        Route::patch('gallery/{id}', [GalleryController::class, 'update']);
-        Route::delete('gallery/{id}', [GalleryController::class, 'destroy']);
-        Route::post('gallery/{id}/toggle-active', [GalleryController::class, 'toggleActive']);
-        Route::get('gallery/tag/{tag}', [GalleryController::class, 'byTag']);
-        Route::get('gallery/recent/{limit?}', [GalleryController::class, 'recent']);
+        Route::post('gallery', [GalleryController::class, 'store'])->middleware('role:admin|teacher|registrar');
+        Route::put('gallery/{id}', [GalleryController::class, 'update'])->middleware('role:admin|teacher|registrar');
+        Route::patch('gallery/{id}', [GalleryController::class, 'update'])->middleware('role:admin|teacher|registrar');
+        Route::delete('gallery/{id}', [GalleryController::class, 'destroy'])->middleware('role:admin|teacher|registrar');
+        Route::post('gallery/{id}/toggle-active', [GalleryController::class, 'toggleActive'])->middleware('role:admin|teacher|registrar');
+        Route::get('gallery/tag/{tag}', [GalleryController::class, 'byTag'])->middleware('role:admin|teacher|registrar');
+        Route::get('gallery/recent/{limit?}', [GalleryController::class, 'recent'])->middleware('role:admin|teacher|registrar');
     });
 });

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -23,7 +24,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|string|max:20',
             'password' => 'nullable|string|min:6|confirmed',
-            'role' => 'nullable|string|in:admin,student,teacher,user',
+            'role' => 'nullable|string|in:admin,student,teacher,user,registrar',
         ]);
 
         $password = $data['password'] ?? 'password';
@@ -133,7 +134,7 @@ class UserController extends Controller
             'city' => 'sometimes|nullable|string|max:100',
             'country' => 'sometimes|nullable|string|max:100',
             'password' => 'sometimes|nullable|string|min:6|confirmed',
-            'role' => 'sometimes|string|in:admin,student,teacher,user',
+            'role' => 'sometimes|string|in:admin,student,teacher,user,registrar',
             'profile_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
@@ -182,6 +183,97 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'User deleted successfully',
+        ]);
+    }
+
+    /**
+     * Audit users with missing or invalid roles.
+     */
+    public function auditRoles()
+    {
+        $validRoles = ['admin', 'teacher', 'registrar', 'user', 'student'];
+        $users = User::with('roles')->get();
+
+        $missing = [];
+        $invalid = [];
+        $okCount = 0;
+
+        foreach ($users as $user) {
+            $roles = $user->getRoleNames()->values();
+
+            if ($roles->isEmpty()) {
+                $missing[] = [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ];
+                continue;
+            }
+
+            $bad = $roles->filter(function ($r) use ($validRoles) {
+                return !in_array((string) $r, $validRoles, true);
+            })->values();
+
+            if ($bad->isNotEmpty()) {
+                $invalid[] = [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'roles' => $roles,
+                    'invalid_roles' => $bad,
+                ];
+            } else {
+                $okCount++;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'summary' => [
+                'total_users' => $users->count(),
+                'ok_users' => $okCount,
+                'missing_role_users' => count($missing),
+                'invalid_role_users' => count($invalid),
+            ],
+            'missing_role_users' => $missing,
+            'invalid_role_users' => $invalid,
+            'valid_roles' => $validRoles,
+        ]);
+    }
+
+    /**
+     * Assign default role to users that currently have no role.
+     */
+    public function assignMissingRoles(Request $request)
+    {
+        $data = $request->validate([
+            'default_role' => 'nullable|string|in:admin,teacher,registrar,user,student',
+        ]);
+
+        $defaultRole = $data['default_role'] ?? 'user';
+        $role = Role::firstOrCreate(['name' => $defaultRole]);
+
+        $users = User::with('roles')->get();
+        $updated = [];
+
+        foreach ($users as $user) {
+            if ($user->getRoleNames()->isEmpty()) {
+                $user->assignRole($role);
+                $updated[] = [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'assigned_role' => $defaultRole,
+                ];
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Missing roles assigned successfully',
+            'default_role' => $defaultRole,
+            'updated_count' => count($updated),
+            'updated_users' => $updated,
         ]);
     }
 
