@@ -144,6 +144,9 @@ class UserController extends Controller
             unset($data['password']);
         }
 
+        $roleToSync = $data['role'] ?? null;
+        unset($data['role']);
+
         if ($request->hasFile('profile_image')) {
             if ($user->profile_image) {
                 Storage::disk('public')->delete($user->profile_image);
@@ -159,8 +162,8 @@ class UserController extends Controller
 
         $user->update($data);
 
-        if (isset($data['role'])) {
-            $user->syncRoles([$data['role']]);
+        if ($roleToSync) {
+            $user->syncRoles([$roleToSync]);
         }
 
         return response()->json([

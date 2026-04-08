@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\YearController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\PositionController;
+use App\Http\Controllers\Api\PartnerController;
 
 
 /*
@@ -152,7 +153,20 @@ Route::prefix('v1')->group(function () {
 
         Route::get('years', [YearController::class, 'index'])->middleware('role:admin|teacher|registrar');
         Route::get('departments', [DepartmentController::class, 'index'])->middleware('role:admin|teacher|registrar');
+        Route::post('departments', [DepartmentController::class, 'store'])->middleware('role:admin|registrar');
+        Route::get('departments/{id}', [DepartmentController::class, 'show'])->middleware('role:admin|teacher|registrar');
+        Route::put('departments/{id}', [DepartmentController::class, 'update'])->middleware('role:admin|registrar');
+        Route::patch('departments/{id}', [DepartmentController::class, 'update'])->middleware('role:admin|registrar');
+        Route::delete('departments/{id}', [DepartmentController::class, 'destroy'])->middleware('role:admin');
         Route::get('positions', [PositionController::class, 'index'])->middleware('role:admin|teacher|registrar');
+
+        // MOU partners
+        Route::get('partners', [PartnerController::class, 'index'])->middleware('role:admin|teacher|registrar');
+        Route::post('partners', [PartnerController::class, 'store'])->middleware('role:admin|registrar');
+        Route::get('partners/{id}', [PartnerController::class, 'show'])->middleware('role:admin|teacher|registrar');
+        Route::put('partners/{id}', [PartnerController::class, 'update'])->middleware('role:admin|registrar');
+        Route::patch('partners/{id}', [PartnerController::class, 'update'])->middleware('role:admin|registrar');
+        Route::delete('partners/{id}', [PartnerController::class, 'destroy'])->middleware('role:admin');
 
         // Admissions (admin/staff use)
         Route::get('admissions', [AdmissionController::class, 'index'])->middleware('role:admin|registrar');
