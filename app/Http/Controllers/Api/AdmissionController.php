@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Admission;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Mail\NewAdmissionFormSubmitted;
 use App\Mail\AdmissionApplicantSuccess;
@@ -20,7 +21,7 @@ class AdmissionController extends Controller
      */
     public function index()
     {
-        $admissions = Admission::all();
+        $admissions = Admission::latest()->get();
         return response()->json($admissions);
     }
 
@@ -30,16 +31,27 @@ class AdmissionController extends Controller
     public function store(Request $request)
     {
         try {
+            $request->merge([
+                'name' => trim((string) $request->input('name', '')),
+                'email' => trim((string) $request->input('email', '')),
+                'phone' => trim((string) $request->input('phone', '')),
+                'address' => trim((string) $request->input('address', '')),
+                'country' => trim((string) $request->input('country', '')),
+                'city' => trim((string) $request->input('city', '')),
+                'zipcode' => trim((string) $request->input('zipcode', '')),
+                'national_id' => trim((string) $request->input('national_id', '')),
+                'student_id' => trim((string) $request->input('student_id', '')),
+            ]);
 
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:admissions,email',
-                'phone' => 'required|string|max:11',
+                'phone' => 'required|string|max:20',
                 'address' => 'required|string',
                 'country' => 'required|string',
                 'city' => 'required|string',
                 'zipcode' => 'required|string',
-                'course_id' => 'required|integer',
+                'course_id' => 'required|integer|exists:courses,id',
                 'gender' => 'required|string',
                 'dob' => 'required|date_format:Y-m-d',
                 'national_id' => 'required|string',
@@ -192,16 +204,27 @@ class AdmissionController extends Controller
     {
         try {
             $admission = Admission::findOrFail($id);
+            $request->merge([
+                'name' => trim((string) $request->input('name', '')),
+                'email' => trim((string) $request->input('email', '')),
+                'phone' => trim((string) $request->input('phone', '')),
+                'address' => trim((string) $request->input('address', '')),
+                'country' => trim((string) $request->input('country', '')),
+                'city' => trim((string) $request->input('city', '')),
+                'zipcode' => trim((string) $request->input('zipcode', '')),
+                'national_id' => trim((string) $request->input('national_id', '')),
+                'student_id' => trim((string) $request->input('student_id', '')),
+            ]);
 
             $validatedData = $request->validate([
                 'name' => 'sometimes|required|string|max:255',
                 'email' => 'sometimes|required|email|unique:admissions,email,' . $admission->id,
-                'phone' => 'sometimes|required|string|max:11',
+                'phone' => 'sometimes|required|string|max:20',
                 'address' => 'sometimes|required|string',
                 'country' => 'sometimes|required|string',
                 'city' => 'sometimes|required|string',
                 'zipcode' => 'sometimes|required|string',
-                'course_id' => 'sometimes|required|integer',
+                'course_id' => 'sometimes|required|integer|exists:courses,id',
                 'gender' => 'sometimes|required|string',
                 'dob' => 'sometimes|required|date_format:Y-m-d',
                 'national_id' => 'sometimes|required|string',
@@ -241,6 +264,12 @@ class AdmissionController extends Controller
                 'data' => $admission
             ], 200);
 
+        } catch (ValidationException $ve) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $ve->errors(),
+            ], 422);
         } catch (\Throwable $e) {
 
             \Log::error('Admission Update Error:', [
@@ -260,7 +289,40 @@ class AdmissionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $admission = Admission::findOrFail($id);
+            $fileFields = [
+                'language_proficiency',
+                'education_certificate',
+                'profile',
+                'personal_statement',
+                'other_document',
+            ];
+
+            foreach ($fileFields as $field) {
+                $path = $admission->{$field} ?? null;
+                if ($path && Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
+                }
+            }
+
+            $admission->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Admission deleted successfully',
+            ], 200);
+        } catch (\Throwable $e) {
+            Log::error('Admission Delete Error:', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Admission delete failed',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
 

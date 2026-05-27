@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Course extends Model
 {
     use HasFactory;
+
+    public const DEFAULT_IMAGE_URL = 'images/course/3.jpg';
 
     protected $guarded = [];
 
@@ -38,10 +41,12 @@ class Course extends Model
                         return asset($this->image);
                     }
 
-                    // Assume it's in storage
-                    return asset('storage/' . $this->image);
+                    if (Storage::disk('public')->exists($this->image)) {
+                        return asset('storage/' . $this->image);
+                    }
                 }
-                return null;
+
+                return asset(self::DEFAULT_IMAGE_URL);
             },
         );
     }

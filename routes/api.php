@@ -53,6 +53,7 @@ Route::prefix('v1')->group(function () {
     // Public routes
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
+    Route::post('student-portal/login', [AuthController::class, 'studentPortalLogin']);
     Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
@@ -60,8 +61,8 @@ Route::prefix('v1')->group(function () {
 
     // Courses - Public GET routes
     Route::get('courses', [CourseController::class, 'index']);
-    Route::get('courses/{course}', [CourseController::class, 'show']);
     Route::get('courses/search', [CourseController::class, 'search']);
+    Route::get('courses/{course}', [CourseController::class, 'show']);
 
     // Slides - Public GET routes
     Route::get('slides', [SlideController::class, 'index']);
@@ -173,6 +174,7 @@ Route::prefix('v1')->group(function () {
         Route::get('admissions/{id}', [AdmissionController::class, 'show'])->middleware('role:admin|registrar');
         Route::put('admissions/{id}', [AdmissionController::class, 'update'])->middleware('role:admin|registrar');
         Route::patch('admissions/{id}', [AdmissionController::class, 'update'])->middleware('role:admin|registrar');
+        Route::delete('admissions/{id}', [AdmissionController::class, 'destroy'])->middleware('role:admin');
 
         // ==================== GALLERIES ====================
         Route::post('gallery', [GalleryController::class, 'store'])->middleware('role:admin|teacher|registrar');

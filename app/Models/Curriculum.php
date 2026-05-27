@@ -27,4 +27,9 @@ class Curriculum extends Model
     {
         return $this->belongsTo(Year::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

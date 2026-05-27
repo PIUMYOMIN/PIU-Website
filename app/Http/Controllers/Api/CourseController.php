@@ -15,7 +15,7 @@ class CourseController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except(['index', 'show']);
+        $this->middleware('auth:sanctum')->except(['index', 'show', 'search']);
     }
 
     /**
@@ -25,11 +25,8 @@ class CourseController extends Controller
     {
         $courses = Course::with('category')->latest()->get();
 
-        // Add full URL for images
         $courses->transform(function ($course) {
-            $course->image = $course->image
-                ? asset('storage/' . $course->image)
-                : asset('storage/course_images/default.png');
+            $course->image = $course->image_url;
             return $course;
         });
 
@@ -68,8 +65,9 @@ class CourseController extends Controller
 
         // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('courses', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = $this->storeOptimizedCourseImage($request->file('image'));
+        } else {
+            $validated['image'] = '';
         }
 
         $course = Course::create($validated);
@@ -88,10 +86,7 @@ class CourseController extends Controller
     {
         $course = Course::with(['category', 'user'])->findOrFail($id);
 
-        // Add full URL for the image
-        $course->image = $course->image
-            ? asset('storage/' . $course->image)
-            : asset('storage/course_images/default.png');
+        $course->image = $course->image_url;
 
         return response()->json($course);
     }
@@ -127,13 +122,9 @@ class CourseController extends Controller
 
         // Handle image upload
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($course->image) {
-                Storage::disk('public')->delete($course->image);
-            }
+            $this->deleteStoredImage($course->getRawOriginal('image'));
 
-            $imagePath = $request->file('image')->store('courses', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = $this->storeOptimizedCourseImage($request->file('image'));
         } else {
             // Keep old image if not uploading new one
             unset($validated['image']);
@@ -207,12 +198,75 @@ class CourseController extends Controller
     public function destroy(string $id)
     {
         $course = Course::findOrFail($id);
+        $this->deleteStoredImage($course->getRawOriginal('image'));
         $course->delete();
 
         return response()->json([
             'success' => true,
             'message' => 'Course deleted successfully'
         ]);
+    }
+
+    private function storeOptimizedCourseImage($file): string
+    {
+        $sourcePath = $file->getRealPath();
+        $mimeType = $file->getMimeType();
+        $image = match ($mimeType) {
+            'image/jpeg', 'image/jpg' => imagecreatefromjpeg($sourcePath),
+            'image/png' => imagecreatefrompng($sourcePath),
+            default => false,
+        };
+
+        if (!$image) {
+            return $file->store('course_images', 'public');
+        }
+
+        $sourceWidth = imagesx($image);
+        $sourceHeight = imagesy($image);
+        $maxWidth = 1600;
+        $maxHeight = 900;
+        $ratio = min($maxWidth / $sourceWidth, $maxHeight / $sourceHeight, 1);
+        $targetWidth = (int) round($sourceWidth * $ratio);
+        $targetHeight = (int) round($sourceHeight * $ratio);
+
+        $optimized = imagecreatetruecolor($targetWidth, $targetHeight);
+        $white = imagecolorallocate($optimized, 255, 255, 255);
+        imagefill($optimized, 0, 0, $white);
+        imagecopyresampled(
+            $optimized,
+            $image,
+            0,
+            0,
+            0,
+            0,
+            $targetWidth,
+            $targetHeight,
+            $sourceWidth,
+            $sourceHeight
+        );
+
+        $path = 'course_images/' . Str::uuid() . '.jpg';
+        Storage::disk('public')->makeDirectory('course_images');
+        $absolutePath = Storage::disk('public')->path($path);
+        imagejpeg($optimized, $absolutePath, 82);
+
+        imagedestroy($image);
+        imagedestroy($optimized);
+
+        return $path;
+    }
+
+    private function deleteStoredImage(?string $path): void
+    {
+        if (!$path || filter_var($path, FILTER_VALIDATE_URL)) {
+            return;
+        }
+
+        $path = ltrim(str_replace('storage/', '', $path), '/');
+
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
     }
 }
 

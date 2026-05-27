@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CourseCategory;
+use Illuminate\Validation\Rule;
 
 class CourseCategoryController extends Controller
 {
     public function index()
     {
         $categories = CourseCategory::with('user:id,name,email')
+            ->withCount('courses')
             ->latest()
             ->get();
 
@@ -24,6 +26,8 @@ class CourseCategoryController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        $validated['name'] = trim($validated['name']);
+        $validated['description'] = $validated['description'] ?? '';
         $validated['user_id'] = auth()->id();
 
         $category = CourseCategory::create($validated);
@@ -38,7 +42,9 @@ class CourseCategoryController extends Controller
 
     public function show(string $id)
     {
-        $courseCategory = CourseCategory::with('user:id,name,email')->findOrFail($id);
+        $courseCategory = CourseCategory::with('user:id,name,email')
+            ->withCount('courses')
+            ->findOrFail($id);
         return response()->json($courseCategory);
     }
 
@@ -46,20 +52,20 @@ class CourseCategoryController extends Controller
     {
         $category = CourseCategory::findOrFail($id);
 
-        if ($category->user_id !== auth()->id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You are not authorized to update this category',
-            ], 403);
-        }
-
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:course_categories,name,' . $category->id,
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('course_categories', 'name')->ignore($category->id),
+            ],
             'description' => 'nullable|string',
         ]);
 
+        $validated['name'] = trim($validated['name']);
+        $validated['description'] = $validated['description'] ?? '';
         $category->update($validated);
-        $category->load('user:id,name,email');
+        $category->load('user:id,name,email')->loadCount('courses');
 
         return response()->json([
             'success' => true,
@@ -70,13 +76,13 @@ class CourseCategoryController extends Controller
 
     public function destroy(string $id)
     {
-        $category = CourseCategory::findOrFail($id);
+        $category = CourseCategory::withCount('courses')->findOrFail($id);
 
-        if ($category->user_id !== auth()->id()) {
+        if ($category->courses_count > 0) {
             return response()->json([
                 'success' => false,
-                'message' => 'You are not authorized to delete this category',
-            ], 403);
+                'message' => 'This category cannot be deleted while courses are assigned to it.',
+            ], 422);
         }
 
         $category->delete();
