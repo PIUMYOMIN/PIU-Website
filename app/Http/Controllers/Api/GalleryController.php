@@ -12,6 +12,21 @@ use Illuminate\Support\Facades\Schema;
 
 class GalleryController extends Controller
 {
+    private function canManageAllGallery(): bool
+    {
+        $user = Auth::user();
+        return $user && $user->hasAnyRole(['admin', 'teacher', 'registrar']);
+    }
+
+    private function canMutateGallery(Gallery $gallery): bool
+    {
+        if ($this->canManageAllGallery()) {
+            return true;
+        }
+
+        return (int) $gallery->user_id === (int) Auth::id();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -21,7 +36,7 @@ class GalleryController extends Controller
         $hasIsActiveColumn = Schema::hasColumn('galleries', 'is_active');
 
         // Get all galleries (for admin) or only active galleries (for public)
-        if (Auth::check() && Auth::user()->hasRole('admin')) {
+        if (Auth::check() && $this->canManageAllGallery()) {
             $query = Gallery::with('user:id,name,email')
                 ->orderBy('created_at', 'desc');
         } else {
@@ -53,10 +68,10 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         // Check if user has admin role
-        if (!Auth::user()->hasRole('admin')) {
+        if (!$this->canManageAllGallery()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthorized. Admin access required.'
+                'message' => 'Unauthorized. Staff access required.'
             ], 403);
         }
 
@@ -116,7 +131,7 @@ class GalleryController extends Controller
         $gallery = Gallery::findOrFail($id);
 
         // Check if user is authorized (owner or admin)
-        if ($gallery->user_id !== Auth::id() && !Auth::user()->hasRole('admin')) {
+        if (!$this->canMutateGallery($gallery)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized to update this gallery item.'
@@ -177,7 +192,7 @@ class GalleryController extends Controller
         $gallery = Gallery::findOrFail($id);
 
         // Check if user is authorized (owner or admin)
-        if ($gallery->user_id !== Auth::id() && !Auth::user()->hasRole('admin')) {
+        if (!$this->canMutateGallery($gallery)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized to update this gallery item.'
@@ -205,7 +220,7 @@ class GalleryController extends Controller
         $gallery = Gallery::findOrFail($id);
 
         // Check if user is authorized (owner or admin)
-        if ($gallery->user_id !== Auth::id() && !Auth::user()->hasRole('admin')) {
+        if (!$this->canMutateGallery($gallery)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized to delete this gallery item.'
