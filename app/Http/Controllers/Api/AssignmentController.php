@@ -20,8 +20,8 @@ class AssignmentController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'assignments' => Assignment::latest()->get(),
-                'student_assignments' => StudentAssignment::all(),
+                'assignments' => Assignment::with(['course', 'module', 'subject'])->latest()->get(),
+                'student_assignments' => StudentAssignment::with(['student', 'assignment'])->latest()->get(),
                 'courses' => Course::all(),
                 'modules' => Module::all(),
                 'subjects' => Subject::all(),
@@ -67,7 +67,11 @@ class AssignmentController extends Controller
 
     public function show(string $id)
     {
-        $assignment = Assignment::where('slug', $id)->firstOrFail();
+        $assignment = Assignment::with(['course', 'module', 'subject'])
+            ->where(function ($query) use ($id) {
+                $query->where('id', $id)->orWhere('slug', $id);
+            })
+            ->firstOrFail();
 
         return response()->json([
             'success' => true,

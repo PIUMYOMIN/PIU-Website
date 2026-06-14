@@ -46,7 +46,10 @@ class StudentAssignmentController extends Controller
             $formData['attach_file'] = $filePath;
         }
 
-        StudentAssignment::create($formData);
+        StudentAssignment::create([
+            ...$formData,
+            'is_turned_in' => true,
+        ]);
 
         return redirect('/admin/student/assignments');
     }

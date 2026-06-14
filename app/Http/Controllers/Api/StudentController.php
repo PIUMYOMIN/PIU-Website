@@ -13,7 +13,7 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::latest()->get();
+        $students = Student::with(['course', 'year'])->latest()->get();
 
         return response()->json([
             'success' => true,
@@ -61,6 +61,8 @@ class StudentController extends Controller
             if ($request->hasFile('other_documents')) {
                 $data['other_documents'] = $request->file('other_documents')->store('students', 'public');
             }
+
+            $data['is_active'] = true;
 
             $student = Student::create($data);
 

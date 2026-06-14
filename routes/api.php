@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\AdmissionController;
 use App\Http\Controllers\Api\EventsController;
 use App\Http\Controllers\Api\CurriculumController;
+use App\Http\Controllers\Api\StudentPortalController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\YearController;
@@ -101,6 +102,17 @@ Route::prefix('v1')->group(function () {
         Route::put('/user/profile', [UserController::class, 'updateProfile']);
         Route::post('/user/change-password', [UserController::class, 'changePassword']);
         Route::post('logout', [AuthController::class, 'logout']);
+
+        // Student portal (authenticated student accounts only)
+        Route::prefix('student-portal')->group(function () {
+            Route::get('dashboard', [StudentPortalController::class, 'dashboard']);
+            Route::get('grades', [StudentPortalController::class, 'grades']);
+            Route::get('courses', [StudentPortalController::class, 'courses']);
+            Route::get('assignments', [StudentPortalController::class, 'assignments']);
+            Route::post('assignments/{assignment}/submit', [StudentPortalController::class, 'submitAssignment']);
+            Route::match(['put', 'post'], 'profile', [StudentPortalController::class, 'updateProfile']);
+            Route::post('change-password', [StudentPortalController::class, 'changePassword']);
+        });
 
         // ==================== COURSES ====================
         Route::post('courses', [CourseController::class, 'store'])->middleware('role:admin|teacher|registrar');

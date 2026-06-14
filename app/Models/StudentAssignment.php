@@ -16,7 +16,11 @@ class StudentAssignment extends Model
         'student_id',
         'body',
         'attach_file',
-        'is_submitted'
+        'is_turned_in',
+    ];
+
+    protected $casts = [
+        'is_turned_in' => 'boolean',
     ];
 
     public function assignment()
@@ -27,5 +31,10 @@ class StudentAssignment extends Model
     public function module()
     {
         return $this->belongsTo(Module::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
     }
 }

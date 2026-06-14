@@ -115,8 +115,12 @@ class AuthController extends Controller
             ->where('student_id', $studentId)
             ->first();
 
-        if (!$student || !Hash::check((string) $credentials['password'], (string) $student->password)) {
+        if (!$student || !StudentAuth::verifyPortalPassword($student, (string) $credentials['password'])) {
             return response()->json(['message' => 'Invalid student ID or password.'], 401);
+        }
+
+        if (StudentAuth::usesLegacyDefaultPassword($student)) {
+            StudentAuth::normalizePortalPassword($student);
         }
 
         $token = $student->createToken('student_portal_token')->plainTextToken;

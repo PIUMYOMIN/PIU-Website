@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\StudentJoinedCourse;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use App\Support\StudentAuth;
 
 
 class AdminStudentController extends Controller
@@ -58,7 +59,7 @@ class AdminStudentController extends Controller
              'other_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
          ]);
 
-        $formData['password'] = Hash::make('piustudent2024');
+        $formData['password'] = Hash::make(StudentAuth::DEFAULT_PASSWORD);
         $formData['user_id'] = auth()->id();
 
         // Asynchronously process the file uploads

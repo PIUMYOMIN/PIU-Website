@@ -78,6 +78,8 @@ class UserController extends Controller
         $authed = $request->user();
 
         if ($authed instanceof Student) {
+            $authed->loadMissing(['course.category', 'year']);
+
             return response()->json([
                 'success' => true,
                 'account_type' => 'student',
