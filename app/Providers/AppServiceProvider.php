@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Support\Mailer;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Models\Course;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -25,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Mail::alwaysFrom(Mailer::fromAddress(), Mailer::fromName());
+
         ResetPassword::createUrlUsing(function (object $user, string $token) {
             $frontendUrl = rtrim((string) env('FRONTEND_URL', 'https://www.piueducation.org'), '/');
             return $frontendUrl . '/reset-password?token=' . urlencode($token) . '&email=' . urlencode($user->email);

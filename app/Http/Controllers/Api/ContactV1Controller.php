@@ -3,25 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Contact;
 use App\Mail\ContactFormMail;
+use App\Models\Contact;
+use App\Support\Mailer;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class ContactV1Controller extends Controller
 {
-    protected function normalizeEmails(array $emails): array
-    {
-        $out = [];
-        foreach ($emails as $email) {
-            $email = trim((string) $email);
-            if ($email === '') continue;
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) $out[] = $email;
-        }
-        return array_values(array_unique($out));
-    }
-
     public function store(Request $request)
     {
         try {
@@ -41,21 +31,14 @@ class ContactV1Controller extends Controller
             ];
 
             try {
-                $adminRecipients = (array) config('admissions.admin_recipients', []);
-                $alwaysCc = (array) config('admissions.cc_recipients', []);
+                $recipients = Mailer::contactRecipients();
+                $pending = Mail::to($recipients['to']);
 
-                $to = $this->normalizeEmails(array_merge(
-                    $adminRecipients,
-                    ['piu.webdeveloper@gmail.com', (string) config('mail.from.address')]
-                ));
-                $cc = $this->normalizeEmails($alwaysCc);
-
-                if (empty($to)) {
-                    $fallback = config('mail.from.address');
-                    if ($fallback) $to = [$fallback];
+                if (!empty($recipients['cc'])) {
+                    $pending->cc($recipients['cc']);
                 }
 
-                Mail::to($to)->cc($cc)->send(new ContactFormMail($contact));
+                $pending->send(new ContactFormMail($contact));
                 $mailStatus['sent'] = true;
             } catch (\Throwable $mailError) {
                 \Log::warning('Contact mail failed (continuing): ' . $mailError->getMessage());
@@ -76,4 +59,3 @@ class ContactV1Controller extends Controller
         }
     }
 }
-

@@ -23,8 +23,7 @@ class AdmissionApplicantSuccess extends Mailable
     public function build()
     {
         return $this->view('emails.admission.applicant_success')
-            ->subject('Your admission application was received')
-            ->from(config('mail.from.address'), config('mail.from.name'));
+            ->subject('Your admission application was received');
     }
 }
 

@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Admission;
+use App\Support\Mailer;
 
 class NewAdmissionFormSubmitted extends Mailable
 {
@@ -22,15 +23,12 @@ class NewAdmissionFormSubmitted extends Mailable
     {
         $this->admission = $admission;
         $this->courseTitle = $courseTitle;
-        $this->adminUrl = $adminUrl ?: rtrim(config('app.url'), '/') . '/piu/admin/admission';
-
+        $this->adminUrl = $adminUrl ?: Mailer::frontendUrl('/piu/admin/admission');
     }
 
     public function build()
     {
         return $this->view('emails.admission.new_submission')
-            ->subject('New Admission Application Received')
-            ->from(config('mail.from.address'), config('mail.from.name'));
-
+            ->subject('New Admission Application Received');
     }
 }

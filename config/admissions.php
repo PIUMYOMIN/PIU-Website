@@ -23,6 +23,11 @@ return [
      *
      * Update this list when course ids change.
      */
+    'default_program_manager' => env(
+        'ADMISSION_DEFAULT_PROGRAM_MANAGER',
+        'piuacademicaffairs@gmail.com'
+    ),
+
     'program_managers' => [
         1 => 'thantarhlaing.piu@gmail.com',
         2 => 'thantarhlaing.piu@gmail.com',
@@ -33,6 +38,7 @@ return [
         7 => 'mayyimyint.pdopiu@gmail.com',
         8 => 'thantarhlaing.piu@gmail.com',
         9 => 'moet.khaing@gmail.com',
+        10 => 'piuacademicaffairs@gmail.com',
     ],
 ];
 

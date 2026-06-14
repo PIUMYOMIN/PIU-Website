@@ -30,11 +30,21 @@ class CourseCommentMail extends Mailable
 
     public function build()
     {
-        return $this->from($this->data['email'])
-                    ->subject('New Course Comment Received')
-                    ->view('emails.courseCommentMail')
-                    ->with([
-                        'courseLink' => $this->data['course_link']
-                    ]);
+        $senderEmail = data_get($this->data, 'email');
+        $senderName = data_get($this->data, 'name', 'Course Comment');
+
+        $message = $this
+            ->subject('New Course Comment Received')
+            ->view('emails.courseCommentMail')
+            ->with([
+                'data' => $this->data,
+                'courseLink' => data_get($this->data, 'course_link'),
+            ]);
+
+        if ($senderEmail && filter_var($senderEmail, FILTER_VALIDATE_EMAIL)) {
+            $message->replyTo($senderEmail, $senderName);
+        }
+
+        return $message;
     }
 }

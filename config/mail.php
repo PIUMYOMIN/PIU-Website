@@ -35,7 +35,6 @@ return [
 
     'mailers' => [
         'smtp' => [
-            'driver' => env('MAIL_DRIVER', 'smtp'),
             'transport' => 'smtp',
             'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
@@ -101,9 +100,14 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'piu.edu2014@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'Phaung Daw Oo International University'),
     ],
+
+    'contact_recipients' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', env('CONTACT_ADMIN_EMAILS', 'piuacademicaffairs@gmail.com,piu.edu2014@gmail.com'))
+    ))),
 
     /*
     |--------------------------------------------------------------------------

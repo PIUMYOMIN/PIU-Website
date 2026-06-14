@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use App\Mail\NewAdmissionFormSubmitted;
 use App\Mail\AdmissionApplicantSuccess;
 use App\Models\Course;
+use App\Support\Mailer;
 use Illuminate\Validation\ValidationException;
 
 class AdmissionController extends Controller
@@ -96,29 +97,17 @@ class AdmissionController extends Controller
             try {
                 $course = Course::find($validatedData['course_id']);
                 $courseTitle = $course?->title;
+                $adminUrl = Mailer::frontendUrl('/piu/admin/admission');
+                $targets = Mailer::admissionMailTargets((int) $validatedData['course_id']);
 
-                $adminUrl = rtrim(config('app.url'), '/') . '/piu/admin/admission';
-
-                $adminRecipients = (array) config('admissions.admin_recipients', []);
-                $alwaysCc = (array) config('admissions.cc_recipients', []);
-                $programManager = $this->getProgramManagerEmail((int) $validatedData['course_id']);
-
-                $to = $this->normalizeEmails($adminRecipients);
-                $cc = $this->normalizeEmails(array_merge($alwaysCc, $programManager ? [$programManager] : []));
-
-                if (!empty($to) || !empty($cc)) {
-                    // If only CC is configured, fall back to sending TO the first CC address.
-                    if (empty($to) && !empty($cc)) {
-                        $to = [array_shift($cc)];
-                    }
-
-                    Mail::to($to)
-                        ->cc($cc)
-                        ->send(new NewAdmissionFormSubmitted($admission, $courseTitle, $adminUrl));
-                    $mailStatus['admin_notified'] = true;
+                $pending = Mail::to($targets['to']);
+                if (!empty($targets['cc'])) {
+                    $pending->cc($targets['cc']);
                 }
 
-                // Applicant success email
+                $pending->send(new NewAdmissionFormSubmitted($admission, $courseTitle, $adminUrl));
+                $mailStatus['admin_notified'] = true;
+
                 if (!empty($admission->email)) {
                     Mail::to($admission->email)->send(new AdmissionApplicantSuccess($admission, $courseTitle));
                     $mailStatus['applicant_confirmed'] = true;
@@ -157,35 +146,6 @@ class AdmissionController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    protected function normalizeEmails(array $emails): array
-    {
-        $out = [];
-        foreach ($emails as $email) {
-            $email = trim((string) $email);
-            if ($email === '') continue;
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $out[] = $email;
-            }
-        }
-        return array_values(array_unique($out));
-    }
-
-    /**
-     * Program manager email mapping by course_id.
-     */
-    protected function getProgramManagerEmail(int $courseId): ?string
-    {
-        $map = (array) config('admissions.program_managers', []);
-        $email = $map[$courseId] ?? null;
-
-        if (!$email) {
-            Log::warning('No program manager email configured for course_id', [
-                'course_id' => $courseId,
-            ]);
-        }
-        return $email ? (string) $email : null;
     }
 
     /**

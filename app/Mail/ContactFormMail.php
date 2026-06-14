@@ -31,13 +31,15 @@ class ContactFormMail extends Mailable
         $email = data_get($this->data, 'email');
         $name = data_get($this->data, 'name') ?: 'Contact Form';
 
-        return $this
-            // Gmail/most SMTP providers require FROM to be the authenticated mailbox.
-            // Use replyTo so admins can reply to the sender.
-            ->from(config('mail.from.address'), config('mail.from.name'))
-            ->replyTo($email ?: config('mail.from.address'), $name)
+        $message = $this
             ->subject('Contact Form Message')
             ->view('emails.contact_mail')
             ->with('data', $this->data);
+
+        if ($email && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $message->replyTo($email, $name);
+        }
+
+        return $message;
     }
 }
