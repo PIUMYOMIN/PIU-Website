@@ -39,10 +39,10 @@ class NewsController extends Controller
 
     public function store(Request $request)
     {
-        if (!Auth::user()->hasRole('admin')) {
+        if (!Auth::user()->hasAnyRole(['admin', 'teacher', 'registrar'])) {
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthorized. Admin access required.',
+                'message' => 'Unauthorized.',
             ], 403);
         }
 

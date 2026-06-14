@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Student;
+use App\Support\StudentAuth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
@@ -73,10 +75,21 @@ class UserController extends Controller
 
     public function profile(Request $request)
     {
-        $user = $request->user()->load('roles');
+        $authed = $request->user();
+
+        if ($authed instanceof Student) {
+            return response()->json([
+                'success' => true,
+                'account_type' => 'student',
+                'user' => StudentAuth::formatForApi($authed),
+            ]);
+        }
+
+        $user = $authed->load('roles');
 
         return response()->json([
             'success' => true,
+            'account_type' => 'staff',
             'user' => $this->formatUserData($user),
         ]);
     }
@@ -323,6 +336,7 @@ class UserController extends Controller
             'role' => $user->role,
             'roles' => $user->getRoleNames(),
             'permissions' => $user->getAllPermissions()->pluck('name'),
+            'account_type' => 'staff',
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
         ];

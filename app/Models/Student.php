@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Student extends Model implements Authenticatable
 {
-    use HasFactory, AuthenticatableTrait;
+    use HasApiTokens, HasFactory, AuthenticatableTrait;
 
     protected $fillable = [
         'fname',
@@ -34,6 +35,10 @@ class Student extends Model implements Authenticatable
         'passport_id',
         'education_certificate',
         'other_documents',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 
     public function year()

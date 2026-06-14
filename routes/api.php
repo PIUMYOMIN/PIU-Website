@@ -149,6 +149,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('modules', ModuleController::class)->middleware('role:admin|teacher|registrar');
         Route::apiResource('curriculums', CurriculumController::class)->middleware('role:admin|teacher|registrar');
         Route::apiResource('students', StudentController::class)->middleware('role:admin|teacher|registrar');
+        Route::post('students/{student}/toggle-active', [StudentController::class, 'toggleActive'])->middleware('role:admin|teacher|registrar');
         Route::apiResource('teams', TeamController::class)->middleware('role:admin');
         Route::post('teams/{team}/toggle-active', [TeamController::class, 'toggleActive'])->middleware('role:admin');
 

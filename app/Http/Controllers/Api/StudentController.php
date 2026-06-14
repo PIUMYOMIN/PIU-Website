@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Support\StudentAuth;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Support\Facades\Hash;
@@ -46,7 +47,7 @@ class StudentController extends Controller
                 'other_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
             ]);
 
-            $data['password'] = Hash::make('piustudent');
+            $data['password'] = Hash::make(StudentAuth::DEFAULT_PASSWORD);
             $data['user_id'] = auth()->id();
 
             if ($request->hasFile('profile')) {
@@ -66,7 +67,7 @@ class StudentController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Student created successfully',
-                'default_password' => 'piustudent',
+                'default_password' => StudentAuth::DEFAULT_PASSWORD,
                 'data' => $student,
             ], 201);
         } catch (\Throwable $e) {
@@ -179,6 +180,17 @@ class StudentController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Student deleted successfully',
+        ], 200);
+    }
+
+    public function toggleActive(Student $student)
+    {
+        $student->update(['is_active' => !$student->is_active]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Student status updated',
+            'data' => $student->fresh(),
         ], 200);
     }
 }
