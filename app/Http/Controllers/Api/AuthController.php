@@ -32,7 +32,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:users,email',
             'phone' => 'nullable|string',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = User::create([
@@ -53,6 +53,8 @@ class AuthController extends Controller
             'message' => 'User registered successfully',
             'token' => $token,
             'account_type' => 'staff',
+            'portal_area' => $user->portalArea(),
+            'no_access_reason' => $user->noAccessReason(),
             'user' => $this->formatUserData($user),
         ], 201);
     }
@@ -75,16 +77,19 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        // Login using Laravel's session
-        \Auth::login($user);
-
-        // Create Sanctum token for API
+        // This is an API-only app (no routes/web.php, no session-backed
+        // "web" middleware on these routes) — Sanctum's token auth is
+        // the only auth mechanism in play. We intentionally do not call
+        // Auth::login() here: it would create a server-side session
+        // that nothing reads back, on top of the Sanctum token.
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'User logged in successfully',
             'token' => $token,
             'account_type' => 'staff',
+            'portal_area' => $user->portalArea(),
+            'no_access_reason' => $user->noAccessReason(),
             'user' => $this->formatUserData($user),
         ]);
     }
@@ -100,7 +105,10 @@ class AuthController extends Controller
     }
 
     /**
-     * Login for student portal using student ID and default password.
+     * Login for student portal using a student ID and password.
+     * New accounts use a registrar-issued temporary password (see
+     * StudentAuth::generateTemporaryPassword) and must change it on
+     * first login — see must_change_password in the response.
      */
     public function studentPortalLogin(Request $request)
     {
@@ -119,8 +127,10 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid student ID or password.'], 401);
         }
 
-        if (StudentAuth::usesLegacyDefaultPassword($student)) {
-            StudentAuth::normalizePortalPassword($student);
+        if (!$student->is_active) {
+            return response()->json([
+                'message' => 'This account is inactive. Please contact the registrar.',
+            ], 403);
         }
 
         $token = $student->createToken('student_portal_token')->plainTextToken;
@@ -129,6 +139,7 @@ class AuthController extends Controller
             'message' => 'Student logged in successfully',
             'token' => $token,
             'account_type' => 'student',
+            'must_change_password' => StudentAuth::mustChangePassword($student),
             'user' => StudentAuth::formatForApi($student),
         ], 200);
     }
@@ -165,7 +176,7 @@ class AuthController extends Controller
         $request->validate([
             'token' => 'required|string',
             'email' => 'required|email',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         $status = Password::reset(

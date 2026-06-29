@@ -47,7 +47,12 @@ class StudentController extends Controller
                 'other_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
             ]);
 
-            $data['password'] = Hash::make(StudentAuth::DEFAULT_PASSWORD);
+            // Each student gets their own random temporary password —
+            // never a shared/default value. It is returned once in this
+            // response only, never stored in plaintext or logged.
+            $temporaryPassword = StudentAuth::generateTemporaryPassword();
+            $data['password'] = Hash::make($temporaryPassword);
+            $data['must_change_password'] = true;
             $data['user_id'] = auth()->id();
 
             if ($request->hasFile('profile')) {
@@ -69,14 +74,13 @@ class StudentController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Student created successfully',
-                'default_password' => StudentAuth::DEFAULT_PASSWORD,
+                'temporary_password' => $temporaryPassword,
                 'data' => $student,
             ], 201);
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Student creation failed',
-                'error' => $e->getMessage(),
+                'message' => 'Student creation failed. Please try again later.',
             ], 500);
         }
     }
@@ -95,10 +99,13 @@ class StudentController extends Controller
                 'message' => 'Student not found',
             ], 404);
         } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Student Show Error:', [
+                'message' => $e->getMessage(),
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'An error occurred',
-                'error' => $e->getMessage(),
+                'message' => 'An error occurred. Please try again later.',
             ], 500);
         }
     }
@@ -126,7 +133,7 @@ class StudentController extends Controller
                 'national_id' => 'sometimes|string',
                 'passport_id' => 'nullable|string',
 
-                'password' => 'nullable|string|min:6',
+                'password' => 'nullable|string|min:8',
 
                 'profile' => 'nullable|file|mimes:jpg,jpeg,png',
                 'education_certificate' => 'nullable|file|mimes:pdf,doc,docx',
@@ -134,7 +141,11 @@ class StudentController extends Controller
             ]);
 
             if ($request->filled('password')) {
+                // Admin/registrar manually set a password for this
+                // student — treat it the same as a fresh temporary
+                // password: force them to change it on next login.
                 $data['password'] = Hash::make($request->password);
+                $data['must_change_password'] = true;
             } else {
                 unset($data['password']);
             }
@@ -159,10 +170,13 @@ class StudentController extends Controller
                 'data' => $student,
             ], 200);
         } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Student Update Error:', [
+                'message' => $e->getMessage(),
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'Student update failed',
-                'error' => $e->getMessage(),
+                'message' => 'Student update failed. Please try again later.',
             ], 500);
         }
     }

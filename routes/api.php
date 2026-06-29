@@ -53,10 +53,10 @@ Route::prefix('v1')->group(function () {
 
     // Public routes
     Route::post('register', [AuthController::class, 'register']);
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('student-portal/login', [AuthController::class, 'studentPortalLogin']);
-    Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
-    Route::post('reset-password', [AuthController::class, 'resetPassword']);
+    Route::post('login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+    Route::post('student-portal/login', [AuthController::class, 'studentPortalLogin'])->middleware('throttle:10,1');
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:5,1');
+    Route::post('reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:10,1');
 
     // ==================== PUBLIC ROUTES ====================
 
@@ -185,6 +185,7 @@ Route::prefix('v1')->group(function () {
         // Admissions (admin/staff use)
         Route::get('admissions', [AdmissionController::class, 'index'])->middleware('role:admin|registrar');
         Route::get('admissions/{id}', [AdmissionController::class, 'show'])->middleware('role:admin|registrar');
+        Route::get('admissions/{id}/documents/{field}', [AdmissionController::class, 'downloadDocument'])->middleware('role:admin|registrar');
         Route::put('admissions/{id}', [AdmissionController::class, 'update'])->middleware('role:admin|registrar');
         Route::patch('admissions/{id}', [AdmissionController::class, 'update'])->middleware('role:admin|registrar');
         Route::delete('admissions/{id}', [AdmissionController::class, 'destroy'])->middleware('role:admin');

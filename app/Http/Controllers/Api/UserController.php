@@ -53,7 +53,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|string|max:20',
-            'password' => 'nullable|string|min:6|confirmed',
+            'password' => 'nullable|string|min:8|confirmed',
             'role' => 'nullable|string|in:admin,student,teacher,faculty,user,registrar',
         ]);
 
@@ -92,6 +92,8 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'account_type' => 'staff',
+            'portal_area' => $user->portalArea(),
+            'no_access_reason' => $user->noAccessReason(),
             'user' => $this->formatUserData($user),
         ]);
     }
@@ -104,7 +106,51 @@ class UserController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $user = $request->user();
+        $authed = $request->user();
+
+        // This endpoint is shared by both staff (User) and student
+        // accounts. Students have a different schema (e.g. "profile"
+        // not "profile_image", no roles() relation) — branch explicitly
+        // rather than letting a Student instance fall into User-shaped
+        // validation/update logic, which would either silently drop
+        // fields or throw (Student has no roles() relationship).
+        if ($authed instanceof Student) {
+            if (!$authed->is_active) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This account is inactive. Please contact the registrar.',
+                ], 403);
+            }
+
+            $data = $request->validate([
+                'phone' => 'sometimes|nullable|string|max:20',
+                'email' => 'sometimes|email|unique:students,email,' . $authed->id,
+                'address' => 'sometimes|nullable|string|max:255',
+                'permanent_address' => 'sometimes|nullable|string|max:255',
+                'city' => 'sometimes|nullable|string|max:100',
+                'country' => 'sometimes|nullable|string|max:100',
+                'profile' => 'sometimes|image|mimes:jpg,jpeg,png|max:2048',
+            ]);
+
+            if ($request->hasFile('profile')) {
+                if ($authed->profile) {
+                    Storage::disk('public')->delete($authed->profile);
+                }
+                $data['profile'] = $request->file('profile')->store('students', 'public');
+            } else {
+                unset($data['profile']);
+            }
+
+            $authed->update($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile updated successfully',
+                'user' => StudentAuth::formatForApi($authed->fresh()->loadMissing(['course.category', 'year'])),
+            ]);
+        }
+
+        $user = $authed;
 
         $data = $request->validate([
             'name' => 'sometimes|required|string|max:255',
@@ -124,9 +170,7 @@ class UserController extends Controller
 
             $imagePath = $request->file('profile_image')->store('profile_images', 'public');
             $data['profile_image'] = $imagePath;
-        }
-
-        if (!$request->hasFile('profile_image')) {
+        } else {
             unset($data['profile_image']);
         }
 
@@ -141,11 +185,34 @@ class UserController extends Controller
 
     public function changePassword(Request $request)
     {
-        $user = $request->user();
+        $authed = $request->user();
+
+        if ($authed instanceof Student) {
+            $validated = $request->validate([
+                'current_password' => 'required|string',
+                'password' => 'required|string|min:8|confirmed',
+            ]);
+
+            if (!StudentAuth::verifyPortalPassword($authed, (string) $validated['current_password'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Current password is incorrect',
+                ], 422);
+            }
+
+            StudentAuth::setOwnPassword($authed, $validated['password']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Password changed successfully',
+            ]);
+        }
+
+        $user = $authed;
 
         $request->validate([
             'current_password' => 'required|string',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         if (!Hash::check($request->current_password, $user->password)) {
@@ -176,7 +243,7 @@ class UserController extends Controller
             'address' => 'sometimes|nullable|string|max:255',
             'city' => 'sometimes|nullable|string|max:100',
             'country' => 'sometimes|nullable|string|max:100',
-            'password' => 'sometimes|nullable|string|min:6|confirmed',
+            'password' => 'sometimes|nullable|string|min:8|confirmed',
             'role' => 'sometimes|string|in:admin,student,teacher,faculty,user,registrar',
             'profile_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);

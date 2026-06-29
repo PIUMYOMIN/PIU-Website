@@ -44,6 +44,17 @@ return [
             'throw' => false,
         ],
 
+        // Holds sensitive uploaded documents (admission forms, national
+        // ID scans, personal statements, etc.) that must NOT be reachable
+        // by a plain URL. Files here are only ever served through an
+        // authenticated, role-checked controller action.
+        'private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private'),
+            'visibility' => 'private',
+            'throw' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

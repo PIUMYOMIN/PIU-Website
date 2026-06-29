@@ -76,6 +76,55 @@ class User extends Authenticatable
     }
 
     /**
+     * Which staff portal area this user should land on after login or
+     * on session restore. Single source of truth used by both
+     * AuthController (login/register) and UserController (profile),
+     * so the frontend always gets the same answer regardless of which
+     * endpoint it called.
+     *
+     * Roles seeded but not wired into any route/controller permission
+     * check — currently "manager" and "staff" — are treated as
+     * legacy/unused: the account authenticates fine but has no
+     * dashboard, same as a plain "user" account.
+     */
+    public function portalArea(): string
+    {
+        if ($this->hasRole('admin')) {
+            return 'admin';
+        }
+        if ($this->hasRole('registrar')) {
+            return 'registrar';
+        }
+        if ($this->hasRole('teacher')) {
+            return 'teacher';
+        }
+
+        return 'none';
+    }
+
+    /**
+     * Human-readable reason for a 'none' portal area, so the frontend
+     * can show the right message instead of a silent dead end. Null
+     * when the user does have a portal area.
+     */
+    public function noAccessReason(): ?string
+    {
+        if ($this->portalArea() !== 'none') {
+            return null;
+        }
+
+        $unmappedRoles = $this->getRoleNames()
+            ->intersect(['manager', 'staff'])
+            ->values();
+
+        if ($unmappedRoles->isNotEmpty()) {
+            return 'Your account role (' . $unmappedRoles->implode(', ') . ') is not yet assigned to a dashboard. Please contact an administrator.';
+        }
+
+        return 'Your account does not have access to a staff dashboard.';
+    }
+
+    /**
      * Send the password reset notification email with a custom template.
      */
     public function sendPasswordResetNotification($token): void

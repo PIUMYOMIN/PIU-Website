@@ -59,7 +59,14 @@ class AdminStudentController extends Controller
              'other_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
          ]);
 
-        $formData['password'] = Hash::make(StudentAuth::DEFAULT_PASSWORD);
+        // Each student gets their own random temporary password —
+        // never a shared/default value. The registrar sees it once on
+        // the next screen so it can be handed to the student; it is
+        // never stored in plaintext or logged anywhere.
+        $temporaryPassword = StudentAuth::generateTemporaryPassword();
+        $formData['password'] = Hash::make($temporaryPassword);
+        $formData['must_change_password'] = true;
+        $formData['is_active'] = true;
         $formData['user_id'] = auth()->id();
 
         // Asynchronously process the file uploads
@@ -75,9 +82,14 @@ class AdminStudentController extends Controller
             $formData['other_documents'] = $request->file('other_documents')->store('student_documents');
         }
 
-        Student::create($formData);
+        $student = Student::create($formData);
 
-        return redirect('admin/students');
+        // Flash the one-time temporary password to the next request only.
+        // It is intentionally not persisted anywhere in plaintext.
+        return redirect('admin/students')->with([
+            'temporary_password' => $temporaryPassword,
+            'temporary_password_student' => $student->student_id,
+        ]);
     }
 
     public function show(Student $student)
@@ -200,13 +212,13 @@ class AdminStudentController extends Controller
 
         // For users with a traditional password, check the old password
         $oldPassword = request('old_password');
-        if (!Hash::check($oldPassword, $student->password)) {
+        if (!StudentAuth::verifyPortalPassword($student, (string) $oldPassword)) {
             return back()->withErrors(['old_password' => 'The old password is incorrect.']);
         }
 
-        // Update the user's password
-        $student->password = Hash::make($data['new_password']);
-        $student->save();
+        // Update the user's password and clear the forced-change flag,
+        // since the student has now set their own password.
+        StudentAuth::setOwnPassword($student, $data['new_password']);
 
         // Redirect the user with a success message
         return redirect()->route('admin.student.profile', ['identifier' => $identifier])->with('success', 'Password updated successfully!');

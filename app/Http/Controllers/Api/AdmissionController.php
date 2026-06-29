@@ -82,7 +82,7 @@ class AdmissionController extends Controller
                 if ($request->hasFile($field)) {
                     $validatedData[$field] = $request
                         ->file($field)
-                        ->store('admission_forms_docs', 'public');
+                        ->store('admission_forms_docs', 'private');
                 }
             }
 
@@ -142,8 +142,7 @@ class AdmissionController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Admission submission failed',
-                'error' => $e->getMessage()
+                'message' => 'Admission submission failed. Please try again later.',
             ], 500);
         }
     }
@@ -155,6 +154,38 @@ class AdmissionController extends Controller
     {
         $admission = Admission::findOrFail($id);
         return response()->json($admission);
+    }
+
+    /**
+     * Stream a single uploaded admission document to the client.
+     *
+     * These files live on the private disk (not publicly browsable),
+     * so this is the only way to retrieve them. Reachable only via
+     * routes guarded by auth:sanctum + role:admin|registrar — see
+     * routes/api.php.
+     */
+    public function downloadDocument(string $id, string $field)
+    {
+        $allowedFields = [
+            'language_proficiency',
+            'profile',
+            'personal_statement',
+            'education_certificate',
+            'other_document',
+        ];
+
+        if (!in_array($field, $allowedFields, true)) {
+            abort(404);
+        }
+
+        $admission = Admission::findOrFail($id);
+        $path = $admission->{$field};
+
+        if (!$path || !Storage::disk('private')->exists($path)) {
+            abort(404, 'Document not found.');
+        }
+
+        return Storage::disk('private')->download($path);
     }
 
     /**
@@ -212,7 +243,7 @@ class AdmissionController extends Controller
                 if ($request->hasFile($field)) {
                     $validatedData[$field] = $request
                         ->file($field)
-                        ->store('admission_forms_docs', 'public');
+                        ->store('admission_forms_docs', 'private');
                 }
             }
 
@@ -238,8 +269,7 @@ class AdmissionController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Admission update failed',
-                'error' => $e->getMessage()
+                'message' => 'Admission update failed. Please try again later.',
             ], 500);
         }
     }
@@ -261,8 +291,8 @@ class AdmissionController extends Controller
 
             foreach ($fileFields as $field) {
                 $path = $admission->{$field} ?? null;
-                if ($path && Storage::disk('public')->exists($path)) {
-                    Storage::disk('public')->delete($path);
+                if ($path && Storage::disk('private')->exists($path)) {
+                    Storage::disk('private')->delete($path);
                 }
             }
 
@@ -279,8 +309,7 @@ class AdmissionController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Admission delete failed',
-                'error' => $e->getMessage(),
+                'message' => 'Admission delete failed. Please try again later.',
             ], 500);
         }
     }

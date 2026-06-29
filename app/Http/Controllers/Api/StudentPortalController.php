@@ -11,17 +11,40 @@ use App\Models\StudentAssignment;
 use App\Models\StudentJoinedCourse;
 use App\Support\StudentAuth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class StudentPortalController extends Controller
 {
-    private function resolveStudent(Request $request): Student
+    /**
+     * Resolve the authenticated student.
+     *
+     * By default this blocks access if the student still has a
+     * registrar-issued temporary password that hasn't been changed yet
+     * — this is enforced server-side, not just left to the frontend, so
+     * a forced password change can't be bypassed by calling other API
+     * endpoints directly with a valid token.
+     *
+     * Pass $allowPendingPasswordChange = true only for endpoints that
+     * must remain reachable before the change (changing the password
+     * itself, logging out).
+     */
+    private function resolveStudent(Request $request, bool $allowPendingPasswordChange = false): Student
     {
         $user = $request->user();
 
         if (!$user instanceof Student) {
             abort(403, 'Student portal access only.');
+        }
+
+        if (!$user->is_active) {
+            // Revoke this token immediately so a deactivated student's
+            // existing session is cut off, not just blocked on next login.
+            $user->currentAccessToken()?->delete();
+            abort(403, 'This account is inactive. Please contact the registrar.');
+        }
+
+        if (!$allowPendingPasswordChange && StudentAuth::mustChangePassword($user)) {
+            abort(423, 'You must set a new password before continuing.');
         }
 
         return $user->loadMissing(['course.category', 'year']);
@@ -148,7 +171,12 @@ class StudentPortalController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $student = $this->resolveStudent($request);
+        // Profile fields (phone, address, photo) carry no academic
+        // weight, so they're allowed even before the student has
+        // changed their temporary password — unlike grades/assignments,
+        // there's nothing sensitive to gate here. Matches the equivalent
+        // branch in UserController::updateProfile.
+        $student = $this->resolveStudent($request, allowPendingPasswordChange: true);
 
         $data = $request->validate([
             'phone' => 'sometimes|nullable|string|max:20',
@@ -181,11 +209,11 @@ class StudentPortalController extends Controller
 
     public function changePassword(Request $request)
     {
-        $student = $this->resolveStudent($request);
+        $student = $this->resolveStudent($request, allowPendingPasswordChange: true);
 
         $validated = $request->validate([
             'current_password' => 'required|string',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         if (!StudentAuth::verifyPortalPassword($student, (string) $validated['current_password'])) {
@@ -195,9 +223,7 @@ class StudentPortalController extends Controller
             ], 422);
         }
 
-        $student->update([
-            'password' => Hash::make($validated['password']),
-        ]);
+        StudentAuth::setOwnPassword($student, $validated['password']);
 
         return response()->json([
             'success' => true,

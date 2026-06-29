@@ -20,6 +20,7 @@ class Student extends Model implements Authenticatable
         'address',
         'permanent_address',
         'password',
+        'must_change_password',
         'city',
         'country',
         'dob',
@@ -39,6 +40,11 @@ class Student extends Model implements Authenticatable
 
     protected $casts = [
         'is_active' => 'boolean',
+        'must_change_password' => 'boolean',
+    ];
+
+    protected $hidden = [
+        'password',
     ];
 
     public function year()
