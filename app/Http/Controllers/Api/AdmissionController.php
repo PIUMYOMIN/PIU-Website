@@ -60,11 +60,11 @@ class AdmissionController extends Controller
                 'alumni_sts' => 'required|string',
                 'student_id' => 'nullable|string',
 
-                'language_proficiency' => 'nullable|file|mimes:pdf,doc,docx',
-                'profile' => 'nullable|file|mimes:jpg,jpeg,png',
-                'personal_statement' => 'required|file|mimes:pdf,doc,docx',
-                'education_certificate' => 'required|file|mimes:pdf,doc,docx',
-                'other_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
+                'language_proficiency' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+                'profile' => 'required|file|mimes:jpg,jpeg,png|max:5120',
+                'personal_statement' => 'required|file|mimes:pdf,doc,docx|max:5120',
+                'education_certificate' => 'required|file|mimes:pdf,doc,docx|max:5120',
+                'other_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
             ]);
 
             $validatedData['verification_token'] = Str::random(40);
@@ -223,14 +223,17 @@ class AdmissionController extends Controller
                 'alumni_sts' => 'sometimes|required|string',
                 'student_id' => 'nullable|string',
 
-                'language_proficiency' => 'nullable|file|mimes:pdf,doc,docx',
-                'profile' => 'nullable|file|mimes:jpg,jpeg,png',
-                'personal_statement' => 'nullable|file|mimes:pdf,doc,docx',
-                'education_certificate' => 'nullable|file|mimes:pdf,doc,docx',
-                'other_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
+                'language_proficiency' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+                'profile' => 'nullable|file|mimes:jpg,jpeg,png|max:5120',
+                'personal_statement' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+                'education_certificate' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+                'other_document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
             ]);
 
-            // Handle file updates
+            // Handle file updates — delete the old file being replaced so
+            // it doesn't linger as an orphan on the private disk (these
+            // are sensitive documents like ID scans; old copies should
+            // not be retained indefinitely once superseded).
             $fileFields = [
                 'language_proficiency',
                 'education_certificate',
@@ -241,9 +244,15 @@ class AdmissionController extends Controller
 
             foreach ($fileFields as $field) {
                 if ($request->hasFile($field)) {
+                    $oldPath = $admission->{$field};
+
                     $validatedData[$field] = $request
                         ->file($field)
                         ->store('admission_forms_docs', 'private');
+
+                    if ($oldPath && Storage::disk('private')->exists($oldPath)) {
+                        Storage::disk('private')->delete($oldPath);
+                    }
                 }
             }
 

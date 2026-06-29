@@ -30,6 +30,8 @@ class User extends Authenticatable
         'country',
         'bio',
         'picture',
+        'provider',
+        'provider_id',
     ];
 
     /**

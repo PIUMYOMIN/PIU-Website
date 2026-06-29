@@ -54,6 +54,7 @@ Route::prefix('v1')->group(function () {
     // Public routes
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+    Route::post('auth/google', [AuthController::class, 'googleLogin'])->middleware('throttle:10,1');
     Route::post('student-portal/login', [AuthController::class, 'studentPortalLogin'])->middleware('throttle:10,1');
     Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:5,1');
     Route::post('reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:10,1');
@@ -93,7 +94,7 @@ Route::prefix('v1')->group(function () {
     Route::get('events', [EventsController::class, 'index']);
 
     // Admissions - Public submit route
-    Route::post('admissions', [AdmissionController::class, 'store'])->middleware('recaptcha');
+    Route::post('admissions', [AdmissionController::class, 'store'])->middleware(['recaptcha', 'throttle:5,1']);
 
     // ==================== AUTHENTICATED ROUTES ====================
     Route::middleware('auth:sanctum')->group(function () {
