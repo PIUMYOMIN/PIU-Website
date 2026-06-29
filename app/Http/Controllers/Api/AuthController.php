@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Student;
 use App\Support\StudentAuth;
-use App\Models\User;
 use App\Support\GoogleIdTokenVerifier;
 use App\Support\ProfileImage;
 use Spatie\Permission\Models\Role;

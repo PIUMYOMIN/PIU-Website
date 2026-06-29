@@ -103,7 +103,7 @@ class User extends Authenticatable
         if ($this->hasRole('registrar')) {
             return 'registrar';
         }
-        if ($this->hasRole('teacher')) {
+        if ($this->hasRole('teacher|faculty')) {
             return 'teacher';
         }
 
