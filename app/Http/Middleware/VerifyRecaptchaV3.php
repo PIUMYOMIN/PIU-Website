@@ -33,7 +33,13 @@ class VerifyRecaptchaV3
             if (app()->environment('local')) {
                 return $next($request);
             }
-            return response()->json(['message' => 'reCAPTCHA token is missing'], 422);
+            return response()->json([
+                'success' => false,
+                'message' => 'reCAPTCHA token is missing',
+                'errors' => [
+                    'recaptcha' => ['Security verification failed. Please refresh the page and try again.'],
+                ],
+            ], 422);
         }
 
         try {
@@ -60,7 +66,13 @@ class VerifyRecaptchaV3
                     'action' => $respAction,
                     'errors' => $data['error-codes'] ?? null,
                 ]);
-                return response()->json(['message' => 'reCAPTCHA verification failed'], 422);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'reCAPTCHA verification failed',
+                    'errors' => [
+                        'recaptcha' => ['Security verification failed. Please refresh the page and try again.'],
+                    ],
+                ], 422);
             }
 
             // If Google provided an action, ensure it matches what the client claimed.
@@ -69,7 +81,13 @@ class VerifyRecaptchaV3
                     'expectedAction' => $action,
                     'action' => $respAction,
                 ]);
-                return response()->json(['message' => 'reCAPTCHA action mismatch'], 422);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'reCAPTCHA action mismatch',
+                    'errors' => [
+                        'recaptcha' => ['Security verification failed. Please refresh the page and try again.'],
+                    ],
+                ], 422);
             }
         } catch (\Throwable $e) {
             Log::warning('reCAPTCHA verification error (continuing in local?)', [
@@ -79,7 +97,13 @@ class VerifyRecaptchaV3
             if (app()->environment('local')) {
                 return $next($request);
             }
-            return response()->json(['message' => 'reCAPTCHA verification error'], 422);
+            return response()->json([
+                'success' => false,
+                'message' => 'reCAPTCHA verification error',
+                'errors' => [
+                    'recaptcha' => ['Security verification failed. Please refresh the page and try again.'],
+                ],
+            ], 422);
         }
 
         return $next($request);
