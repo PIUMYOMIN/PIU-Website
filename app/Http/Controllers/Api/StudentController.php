@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Support\StudentAuth;
+use App\Support\TeacherCourseAccess;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +15,14 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::with(['course', 'year'])->latest()->get();
+        $user = auth()->user();
+        $query = Student::with(['course', 'year'])->latest();
+
+        if ($user instanceof User) {
+            $query = TeacherCourseAccess::scopeStudents($user, $query);
+        }
+
+        $students = $query->get();
 
         return response()->json([
             'success' => true,
@@ -89,6 +98,11 @@ class StudentController extends Controller
     {
         try {
             $student = Student::findOrFail($id);
+            $user = auth()->user();
+            if ($user instanceof User) {
+                TeacherCourseAccess::ensureStudentAccess($user, $student);
+            }
+
             return response()->json([
                 'success' => true,
                 'data' => $student,
@@ -114,6 +128,10 @@ class StudentController extends Controller
     {
         try {
             $student = Student::findOrFail($id);
+            $user = auth()->user();
+            if ($user instanceof User) {
+                TeacherCourseAccess::ensureStudentAccess($user, $student);
+            }
 
             $data = $request->validate([
                 'fname' => 'sometimes|string|max:255',
@@ -150,6 +168,10 @@ class StudentController extends Controller
                 unset($data['password']);
             }
 
+            if (isset($data['course_id']) && $user instanceof User) {
+                TeacherCourseAccess::ensureCourseAccess($user, (int) $data['course_id']);
+            }
+
             if ($request->hasFile('profile')) {
                 $data['profile'] = $request->file('profile')->store('students', 'public');
             }
@@ -184,6 +206,10 @@ class StudentController extends Controller
     public function destroy(string $id)
     {
         $student = Student::findOrFail($id);
+        $user = auth()->user();
+        if ($user instanceof User) {
+            TeacherCourseAccess::ensureStudentAccess($user, $student);
+        }
 
         foreach (['profile', 'education_certificate', 'other_documents'] as $field) {
             if ($student->{$field}) {

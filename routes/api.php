@@ -25,6 +25,8 @@ use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\YearController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\PositionController;
+use App\Http\Controllers\Api\GradingController;
+use App\Http\Controllers\Api\TeacherProgramController;
 use App\Http\Controllers\Api\PartnerController;
 
 
@@ -154,6 +156,8 @@ Route::prefix('v1')->group(function () {
 
         // ==================== OTHER RESOURCES ====================
         Route::apiResource('users', UserController::class)->middleware('role:admin');
+        Route::get('users/{user}/assigned-courses', [UserController::class, 'assignedCourses'])->middleware('role:admin|registrar');
+        Route::put('users/{user}/assigned-courses', [UserController::class, 'syncAssignedCourses'])->middleware('role:admin|registrar');
         Route::get('users/role-audit', [UserController::class, 'auditRoles'])->middleware('role:admin');
         Route::post('users/assign-missing-roles', [UserController::class, 'assignMissingRoles'])->middleware('role:admin');
         Route::apiResource('roles', RoleController::class)->middleware('role:admin');
@@ -199,5 +203,20 @@ Route::prefix('v1')->group(function () {
         Route::post('gallery/{id}/toggle-active', [GalleryController::class, 'toggleActive'])->middleware('role:admin|teacher|registrar');
         Route::get('gallery/tag/{tag}', [GalleryController::class, 'byTag'])->middleware('role:admin|teacher|registrar');
         Route::get('gallery/recent/{limit?}', [GalleryController::class, 'recent'])->middleware('role:admin|teacher|registrar');
+
+        // Teacher portal — program-scoped data only
+        Route::prefix('teacher')->middleware('role:teacher|faculty')->group(function () {
+            Route::get('dashboard', [TeacherProgramController::class, 'dashboard']);
+            Route::get('courses', [TeacherProgramController::class, 'courses']);
+            Route::get('students', [TeacherProgramController::class, 'students']);
+            Route::get('modules', [TeacherProgramController::class, 'modules']);
+            Route::get('assignments', [TeacherProgramController::class, 'assignments']);
+            Route::get('curriculums', [TeacherProgramController::class, 'curriculums']);
+            Route::get('grades', [GradingController::class, 'index']);
+            Route::get('students/{student}/grades', [GradingController::class, 'forStudent']);
+            Route::post('grades', [GradingController::class, 'store']);
+            Route::put('grades/{grading}', [GradingController::class, 'update']);
+            Route::delete('grades/{grading}', [GradingController::class, 'destroy']);
+        });
     });
 });

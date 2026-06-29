@@ -68,4 +68,14 @@ class Course extends Model
             ->withPivot('student_id')
             ->withTimestamps();
     }
+
+    public function teachers()
+    {
+        return $this->belongsToMany(User::class, 'course_teacher')->withTimestamps();
+    }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'course_id');
+    }
 }

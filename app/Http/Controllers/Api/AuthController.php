@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Student;
 use App\Support\StudentAuth;
+use App\Models\User;
 use App\Support\GoogleIdTokenVerifier;
+use App\Support\ProfileImage;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Log;
@@ -315,8 +317,9 @@ class AuthController extends Controller
             'address' => $user->address,
             'city' => $user->city,
             'country' => $user->country,
-            'bio' => $user->bio,
-            'profile_image' => $user->profile_image ? asset('storage/' . $user->profile_image) : null,
+            'bio' => $user->bio ?? null,
+            'picture' => ProfileImage::urlForUser($user),
+            'profile_image' => ProfileImage::urlForUser($user),
             'role' => $user->role,
             'roles' => $user->getRoleNames(),
             'permissions' => $user->getAllPermissions()->pluck('name'),

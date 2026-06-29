@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Assignment;
+use App\Models\User;
+use App\Support\TeacherCourseAccess;
 use App\Models\StudentAssignment;
 use App\Models\Course;
 use App\Models\Module;
@@ -17,13 +19,24 @@ class AssignmentController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+        $assignmentQuery = Assignment::with(['course', 'module', 'subject'])->latest();
+        $courseQuery = \App\Models\Course::query();
+        $moduleQuery = Module::query();
+
+        if ($user instanceof User) {
+            $assignmentQuery = TeacherCourseAccess::scopeAssignments($user, $assignmentQuery);
+            $courseQuery = TeacherCourseAccess::scopeCourses($user, $courseQuery);
+            $moduleQuery = TeacherCourseAccess::scopeModulesForTeacher($user, $moduleQuery);
+        }
+
         return response()->json([
             'success' => true,
             'data' => [
-                'assignments' => Assignment::with(['course', 'module', 'subject'])->latest()->get(),
+                'assignments' => $assignmentQuery->get(),
                 'student_assignments' => StudentAssignment::with(['student', 'assignment'])->latest()->get(),
-                'courses' => Course::all(),
-                'modules' => Module::all(),
+                'courses' => $courseQuery->get(),
+                'modules' => $moduleQuery->get(),
                 'subjects' => Subject::all(),
             ],
         ], 200);
@@ -43,6 +56,11 @@ class AssignmentController extends Controller
 
             $data['slug'] = Str::slug($data['name']);
             $data['user_id'] = auth()->id();
+
+            $user = auth()->user();
+            if ($user instanceof User) {
+                TeacherCourseAccess::ensureCourseAccess($user, (int) $data['course_id']);
+            }
 
             if ($request->hasFile('attach_file')) {
                 $data['attach_file'] = $request->file('attach_file')
@@ -73,6 +91,11 @@ class AssignmentController extends Controller
             })
             ->firstOrFail();
 
+        $user = auth()->user();
+        if ($user instanceof User) {
+            TeacherCourseAccess::ensureAssignmentAccess($user, $assignment);
+        }
+
         return response()->json([
             'success' => true,
             'data' => $assignment,
@@ -83,6 +106,10 @@ class AssignmentController extends Controller
     {
         try {
             $assignment = Assignment::findOrFail($id);
+            $user = auth()->user();
+            if ($user instanceof User) {
+                TeacherCourseAccess::ensureAssignmentAccess($user, $assignment);
+            }
 
             $data = $request->validate([
                 'name' => [
@@ -96,6 +123,10 @@ class AssignmentController extends Controller
                 'subject_id' => 'nullable|integer',
                 'attach_file' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
             ]);
+
+            if (isset($data['course_id']) && $user instanceof User) {
+                TeacherCourseAccess::ensureCourseAccess($user, (int) $data['course_id']);
+            }
 
             if (isset($data['name'])) {
                 $data['slug'] = Str::slug($data['name']);
@@ -130,6 +161,10 @@ class AssignmentController extends Controller
     public function destroy(string $id)
     {
         $assignment = Assignment::findOrFail($id);
+        $user = auth()->user();
+        if ($user instanceof User) {
+            TeacherCourseAccess::ensureAssignmentAccess($user, $assignment);
+        }
 
         if ($assignment->attach_file) {
             Storage::disk('public')->delete($assignment->attach_file);

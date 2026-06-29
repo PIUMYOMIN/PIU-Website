@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Student;
+use App\Models\Course;
 use App\Support\StudentAuth;
+use App\Support\ProfileImage;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
@@ -164,15 +166,14 @@ class UserController extends Controller
         ]);
 
         if ($request->hasFile('profile_image')) {
-            if ($user->profile_image) {
-                Storage::disk('public')->delete($user->profile_image);
+            if (ProfileImage::isDeletableStoredPath($user->picture)) {
+                Storage::disk('public')->delete($user->picture);
             }
 
-            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
-            $data['profile_image'] = $imagePath;
-        } else {
-            unset($data['profile_image']);
+            $data['picture'] = $request->file('profile_image')->store('profile_images', 'public');
         }
+
+        unset($data['profile_image']);
 
         $user->update($data);
 
@@ -258,17 +259,14 @@ class UserController extends Controller
         unset($data['role']);
 
         if ($request->hasFile('profile_image')) {
-            if ($user->profile_image) {
-                Storage::disk('public')->delete($user->profile_image);
+            if (ProfileImage::isDeletableStoredPath($user->picture)) {
+                Storage::disk('public')->delete($user->picture);
             }
 
-            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
-            $data['profile_image'] = $imagePath;
+            $data['picture'] = $request->file('profile_image')->store('profile_images', 'public');
         }
 
-        if (!$request->hasFile('profile_image')) {
-            unset($data['profile_image']);
-        }
+        unset($data['profile_image']);
 
         $user->update($data);
 
@@ -287,8 +285,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if ($user->profile_image) {
-            Storage::disk('public')->delete($user->profile_image);
+        if (ProfileImage::isDeletableStoredPath($user->picture)) {
+            Storage::disk('public')->delete($user->picture);
         }
 
         $user->delete();
@@ -390,8 +388,49 @@ class UserController extends Controller
         ]);
     }
 
+    public function assignedCourses(string $id)
+    {
+        $user = User::with(['teachingCourses.category', 'roles'])->findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'user_id' => $user->id,
+            'role' => $user->role,
+            'course_ids' => $user->teachingCourses->pluck('id')->values(),
+            'courses' => $user->teachingCourses,
+        ]);
+    }
+
+    public function syncAssignedCourses(Request $request, string $id)
+    {
+        $user = User::with('roles')->findOrFail($id);
+
+        if (!$user->hasRole('teacher|faculty')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Program assignments apply only to teacher accounts.',
+            ], 422);
+        }
+
+        $data = $request->validate([
+            'course_ids' => 'present|array',
+            'course_ids.*' => 'integer|exists:courses,id',
+        ]);
+
+        $user->teachingCourses()->sync($data['course_ids']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Teacher program assignments updated successfully',
+            'course_ids' => $user->teachingCourses()->pluck('courses.id'),
+            'courses' => $user->teachingCourses()->with('category')->get(),
+        ]);
+    }
+
     private function formatUserData(User $user)
     {
+        $user->loadMissing('teachingCourses');
+
         return [
             'id' => $user->id,
             'name' => $user->name,
@@ -400,11 +439,17 @@ class UserController extends Controller
             'address' => $user->address,
             'city' => $user->city,
             'country' => $user->country,
-            'bio' => $user->bio,
-            'profile_image' => $user->profile_image ? asset('storage/' . $user->profile_image) : null,
+            'bio' => $user->bio ?? null,
+            'picture' => ProfileImage::urlForUser($user),
+            'profile_image' => ProfileImage::urlForUser($user),
             'role' => $user->role,
             'roles' => $user->getRoleNames(),
             'permissions' => $user->getAllPermissions()->pluck('name'),
+            'assigned_course_ids' => $user->teachingCourses->pluck('id')->values(),
+            'assigned_programs' => $user->teachingCourses->map(fn (Course $course) => [
+                'id' => $course->id,
+                'title' => $course->title,
+            ])->values(),
             'account_type' => 'staff',
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
