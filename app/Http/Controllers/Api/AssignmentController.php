@@ -14,6 +14,7 @@ use App\Models\Subject;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class AssignmentController extends Controller
 {
@@ -56,9 +57,9 @@ class AssignmentController extends Controller
             $data = $request->validate([
                 'name' => 'required|string|unique:assignments,name',
                 'description' => 'nullable|string',
-                'course_id' => 'required|integer',
-                'module_id' => 'required|integer',
-                'subject_id' => 'nullable|integer',
+                'course_id' => 'required|integer|exists:courses,id',
+                'module_id' => 'required|integer|exists:modules,id',
+                'subject_id' => 'nullable|integer|exists:subjects,id',
                 'attach_file' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
             ]);
 
@@ -80,8 +81,10 @@ class AssignmentController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Assignment created successfully',
-                'data' => $assignment,
+                'data' => $assignment->load(['course', 'module', 'subject']),
             ], 201);
+        } catch (ValidationException $ve) {
+            throw $ve;
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
@@ -116,7 +119,7 @@ class AssignmentController extends Controller
             $assignment = Assignment::findOrFail($id);
             $user = auth()->user();
             if ($user instanceof User) {
-                TeacherCourseAccess::ensureAssignmentAccess($user, $assignment);
+                TeacherCourseAccess::ensureAssignmentOwnership($user, $assignment);
             }
 
             $data = $request->validate([
@@ -149,7 +152,6 @@ class AssignmentController extends Controller
                     ->store('assignment_attachments', 'public');
             }
 
-            $data['user_id'] = auth()->id();
             $assignment->update($data);
 
             return response()->json([
@@ -171,7 +173,7 @@ class AssignmentController extends Controller
         $assignment = Assignment::findOrFail($id);
         $user = auth()->user();
         if ($user instanceof User) {
-            TeacherCourseAccess::ensureAssignmentAccess($user, $assignment);
+            TeacherCourseAccess::ensureAssignmentOwnership($user, $assignment);
         }
 
         if ($assignment->attach_file) {

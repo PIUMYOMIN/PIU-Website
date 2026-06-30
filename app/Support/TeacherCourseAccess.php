@@ -151,6 +151,22 @@ class TeacherCourseAccess
         self::ensureCourseAccess($user, (int) $student->course_id);
     }
 
+    public static function ensureAssignmentOwnership(User $user, Assignment $assignment): void
+    {
+        self::ensureAssignmentAccess($user, $assignment);
+
+        if (self::bypassesScope($user) || !self::isTeacher($user)) {
+            return;
+        }
+
+        if ((int) $assignment->user_id !== (int) $user->id) {
+            throw new HttpResponseException(response()->json([
+                'success' => false,
+                'message' => 'You can only modify or delete assignments you created.',
+            ], 403));
+        }
+    }
+
     public static function ensureGradingAccess(User $user, Grading $grading): void
     {
         self::ensureCourseAccess($user, (int) $grading->course_id);
