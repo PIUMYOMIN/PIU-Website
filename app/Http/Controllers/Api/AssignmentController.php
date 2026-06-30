@@ -30,11 +30,19 @@ class AssignmentController extends Controller
             $moduleQuery = TeacherCourseAccess::scopeModulesForTeacher($user, $moduleQuery);
         }
 
+        $studentAssignmentQuery = StudentAssignment::with(['student', 'assignment'])->latest();
+        if ($user instanceof User && TeacherCourseAccess::isTeacher($user) && !TeacherCourseAccess::bypassesScope($user)) {
+            $courseIds = TeacherCourseAccess::assignedCourseIds($user);
+            $studentAssignmentQuery
+                ->whereHas('assignment', fn ($q) => $q->whereIn('course_id', $courseIds ?: [-1]))
+                ->whereHas('student', fn ($q) => $q->whereIn('course_id', $courseIds ?: [-1]));
+        }
+
         return response()->json([
             'success' => true,
             'data' => [
                 'assignments' => $assignmentQuery->get(),
-                'student_assignments' => StudentAssignment::with(['student', 'assignment'])->latest()->get(),
+                'student_assignments' => $studentAssignmentQuery->get(),
                 'courses' => $courseQuery->get(),
                 'modules' => $moduleQuery->get(),
                 'subjects' => Subject::all(),

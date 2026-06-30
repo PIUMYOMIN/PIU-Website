@@ -462,6 +462,19 @@ class StudentPortalController extends Controller
             ->latest()
             ->get();
 
+        $curriculumModuleIds = $this->curriculumQuery($student)
+            ->pluck('module_id')
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        if (!empty($curriculumModuleIds)) {
+            $assignments = $assignments->filter(
+                fn (Assignment $assignment) => in_array((int) $assignment->module_id, array_map('intval', $curriculumModuleIds), true)
+            );
+        }
+
         $submissions = StudentAssignment::query()
             ->where('student_id', $student->id)
             ->get()

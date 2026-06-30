@@ -162,7 +162,7 @@ Route::prefix('v1')->group(function () {
         Route::post('users/assign-missing-roles', [UserController::class, 'assignMissingRoles'])->middleware('role:admin');
         Route::apiResource('roles', RoleController::class)->middleware('role:admin');
         Route::apiResource('permissions', PermissionController::class)->middleware('role:admin');
-        Route::apiResource('assignments', AssignmentController::class)->middleware('role:admin|teacher');
+        Route::apiResource('assignments', AssignmentController::class)->middleware('role:admin|teacher|faculty');
         Route::apiResource('modules', ModuleController::class)->middleware('role:admin|teacher|registrar');
         Route::apiResource('curriculums', CurriculumController::class)->middleware('role:admin|teacher|registrar');
         Route::apiResource('students', StudentController::class)->middleware('role:admin|teacher|registrar');
